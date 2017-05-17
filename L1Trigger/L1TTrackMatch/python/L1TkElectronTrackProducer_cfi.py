@@ -36,6 +36,8 @@ L1TkElectrons = cms.EDProducer("L1TkElectronTrackProducer",
 L1TkIsoElectrons = L1TkElectrons.clone(
     IsoCut = cms.double( 0.10 )
 )
+L1TkIsoElectrons = L1TkElectrons.clone()
+L1TkIsoElectrons.IsoCut = cms.double( 0.10 )
 # for  LowPt Electron
 L1TkElectronsLoose = L1TkElectrons.clone(
     TrackEGammaDeltaPhi = cms.vdouble(0.07, 0.0, 0.0),
