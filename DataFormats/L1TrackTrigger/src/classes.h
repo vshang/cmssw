@@ -120,9 +120,9 @@ namespace DataFormats_L1TrackTrigger
     edm::Wrapper<l1t::L1TkHTMissParticleCollection> w_TkHTMissColl;
     
     // L1TkMuonParticle
-    //     l1t::L1TkMuonParticleCollection trkmuColl ;
-    //     edm::Wrapper<l1t::L1TkMuonParticleCollection> w_trkmuColl;
-    //     l1t::L1TkMuonParticleRef reftrkMu ;
+    l1t::L1TkMuonParticleCollection trkmuColl ;
+    edm::Wrapper<l1t::L1TkMuonParticleCollection> w_trkmuColl;
+    l1t::L1TkMuonParticleRef reftrkMu ;
     
     // L1TkTauParticle
     l1t::L1TkTauParticleCollection trktauColl ;
