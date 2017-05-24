@@ -41,6 +41,7 @@
 
 #include "DataFormats/Math/interface/LorentzVector.h"
 #include "DataFormats/L1Trigger/interface/Muon.h"
+#include "DataFormats/L1Trigger/interface/MuonPhase2.h"
 #include "DataFormats/L1TMuon/interface/RegionalMuonCand.h"
 
 #include "CondFormats/L1TObjects/interface/L1TMuonGlobalParams.h"
@@ -151,6 +152,7 @@ L1TMuonProducer::L1TMuonProducer(const edm::ParameterSet& iConfig)
   m_autoBxRange = iConfig.getParameter<bool>("autoBxRange");
   m_bxMin = iConfig.getParameter<int>("bxMin");
   m_bxMax = iConfig.getParameter<int>("bxMax");
+  m_runPhase2 = iConfig.getParameter<bool>("runPhase2");
 
   m_autoCancelMode = iConfig.getParameter<bool>("autoCancelMode");
   if (!m_autoCancelMode && iConfig.getParameter<std::string>("emtfCancelMode").find("tracks") == 0) {
@@ -169,6 +171,8 @@ L1TMuonProducer::L1TMuonProducer(const edm::ParameterSet& iConfig)
   produces<MuonBxCollection>("imdMuonsEMTFNeg");
   produces<MuonBxCollection>("imdMuonsOMTFPos");
   produces<MuonBxCollection>("imdMuonsOMTFNeg");
+  if (m_runPhase2)
+    produces<MuonPhase2BxCollection>();
 }
 
 L1TMuonProducer::~L1TMuonProducer() { m_debugOut.close(); }
@@ -238,6 +242,7 @@ void L1TMuonProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 
   // set BX range for outputs
   outMuons->setBXRange(m_bxMin, m_bxMax);
+  outMuonsPhase2->setBXRange(m_bxMin, m_bxMax);
   imdMuonsBMTF->setBXRange(m_bxMin, m_bxMax);
   imdMuonsEMTFPos->setBXRange(m_bxMin, m_bxMax);
   imdMuonsEMTFNeg->setBXRange(m_bxMin, m_bxMax);
@@ -345,6 +350,8 @@ void L1TMuonProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
         outMu.setPhiAtVtx(MicroGMTConfiguration::calcMuonPhiExtra(outMu));
         m_debugOut << mu->hwCaloPhi() << " " << mu->hwCaloEta() << std::endl;
         outMuons->push_back(bx, outMu);
+	 if (m_runPhase2)
+	  outMuonsPhase2->push_back(bx, MuonPhase2(outMu));
       }
     }
   }
@@ -355,6 +362,8 @@ void L1TMuonProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   iEvent.put(std::move(imdMuonsEMTFNeg), "imdMuonsEMTFNeg");
   iEvent.put(std::move(imdMuonsOMTFPos), "imdMuonsOMTFPos");
   iEvent.put(std::move(imdMuonsOMTFNeg), "imdMuonsOMTFNeg");
+  if (m_runPhase2)
+    iEvent.put(std::move(outMuonsPhase2));
 }
 
 bool L1TMuonProducer::compareMuons(const std::shared_ptr<MicroGMTConfiguration::InterMuon>& mu1,
