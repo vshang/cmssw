@@ -21,6 +21,9 @@ namespace l1t {
 
     L1Candidate(const PolarLorentzVector& p4, int pt = 0, int eta = 0, int phi = 0, int qual = 0, int iso = 0);
 
+    // copy constructor
+    L1Candidate( const L1Candidate&)=default;
+
     ~L1Candidate() override;
 
     // methods to set integer values
