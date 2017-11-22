@@ -87,6 +87,7 @@ private:
   TTree* tree_;
 
   // EDM input tags
+  edm::EDGetTokenT<EcalEBTrigPrimDigiCollection> ecalEBToken_;
   edm::EDGetTokenT<EcalTrigPrimDigiCollection> ecalToken_;
   edm::EDGetTokenT<HcalTrigPrimDigiCollection> hcalToken_;
   edm::EDGetTokenT<l1t::CaloTowerBxCollection> l1TowerToken_;
@@ -143,9 +144,11 @@ void L1CaloTowerTreeProducer::analyze(const edm::Event& iEvent, const edm::Event
   edm::ESHandle<CaloTPGTranscoder> decoder;
   iSetup.get<CaloTPGRecord>().get(decoder);
 
+  edm::Handle<EcalEBTrigPrimDigiCollection> ecalEBTPs;
   edm::Handle<EcalTrigPrimDigiCollection> ecalTPs;
   edm::Handle<HcalTrigPrimDigiCollection> hcalTPs;
 
+  iEvent.getByToken(ecalEBToken_, ecalEBTPs);
   iEvent.getByToken(ecalToken_, ecalTPs);
   iEvent.getByToken(hcalToken_, hcalTPs);
 

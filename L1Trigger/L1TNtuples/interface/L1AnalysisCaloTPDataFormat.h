@@ -30,6 +30,14 @@ namespace L1Analysis {
       ecalTPet.clear();
       ecalTPcompEt.clear();
       ecalTPfineGrain.clear();
+      nECALEBTP = 0;
+      ecalEBTPieta.clear();
+      ecalEBTPiphi.clear();
+      ecalEBTPCaliphi.clear();
+      ecalEBTPet.clear();
+      ecalEBTPencodEt.clear();
+      ecalEBTPspike.clear();
+      ecalEBTPtime.clear();
     }
 
     void Init() {}
