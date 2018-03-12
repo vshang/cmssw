@@ -42,6 +42,8 @@
 
 using namespace l1t;
 
+using namespace l1t ;
+
 //
 // class declaration
 //
