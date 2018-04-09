@@ -637,7 +637,8 @@ std::unique_ptr<l1tpf_calo::SimpleCaloLinkerBase> l1tpf_calo::makeCaloLinker(con
   }
 }
 
-std::unique_ptr<l1t::PFClusterCollection> l1tpf_calo::SimpleCaloLinker::fetchWithRefs(const edm::OrphanHandle<l1t::PFClusterCollection> & ecal, const edm::OrphanHandle<l1t::PFClusterCollection> & hcal) const {
+std::unique_ptr<l1t::PFClusterCollection> l1tpf_calo::SimpleCaloLinker::fetch(const edm::OrphanHandle<l1t::PFClusterCollection> & ecal, const edm::OrphanHandle<l1t::PFClusterCollection> & hcal) const {
+    bool setRefs = (ecal.isValid() && hcal.isValid());
     auto ret = std::make_unique<l1t::PFClusterCollection>();
     for (const CombinedCluster & cluster : clusters_) {
         if (cluster.et > 0) {
@@ -646,12 +647,14 @@ std::unique_ptr<l1t::PFClusterCollection> l1tpf_calo::SimpleCaloLinker::fetchWit
                 ret->emplace_back(cluster.et, cluster.eta, cluster.phi, 
                         cluster.ecal_et > 0 ? std::max(cluster.et-cluster.ecal_et,0.f)/cluster.ecal_et : -1,
                         photon); 
-                for (auto & pair : cluster.constituents) {
-                    assert(pair.first != 0);
-                    if (pair.first > 0) { // 1+hcal index
-                        ret->back().addConstituent(edm::Ptr<l1t::PFCluster>(hcal, +pair.first-1), pair.second);
-                    } else { // -1-ecal index
-                        ret->back().addConstituent(edm::Ptr<l1t::PFCluster>(ecal, -pair.first+1), pair.second);
+                if (setRefs) {
+                    for (auto & pair : cluster.constituents) {
+                        assert(pair.first != 0);
+                        if (pair.first > 0) { // 1+hcal index
+                            ret->back().addConstituent(edm::Ptr<l1t::PFCluster>(hcal, +pair.first-1), pair.second);
+                        } else { // -1-ecal index
+                            ret->back().addConstituent(edm::Ptr<l1t::PFCluster>(ecal, -pair.first+1), pair.second);
+                        }
                     }
                 }
             }
