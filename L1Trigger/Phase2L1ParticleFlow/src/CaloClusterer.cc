@@ -636,3 +636,26 @@ std::unique_ptr<l1tpf_calo::SimpleCaloLinkerBase> l1tpf_calo::makeCaloLinker(con
     throw cms::Exception("Configuration") << "Unsupported linker algo '" << algo << "'\n";
   }
 }
+
+std::unique_ptr<l1t::PFClusterCollection> l1tpf_calo::SimpleCaloLinker::fetchWithRefs(const edm::OrphanHandle<l1t::PFClusterCollection> & ecal, const edm::OrphanHandle<l1t::PFClusterCollection> & hcal) const {
+    auto ret = std::make_unique<l1t::PFClusterCollection>();
+    for (const CombinedCluster & cluster : clusters_) {
+        if (cluster.et > 0) {
+            bool photon = (cluster.hcal_et < hoeCut_* cluster.ecal_et);
+            if (cluster.et > (photon ? minPhotonEt_ : minHadronEt_)) {
+                ret->emplace_back(cluster.et, cluster.eta, cluster.phi, 
+                        cluster.ecal_et > 0 ? std::max(cluster.et-cluster.ecal_et,0.f)/cluster.ecal_et : -1,
+                        photon); 
+                for (auto & pair : cluster.constituents) {
+                    assert(pair.first != 0);
+                    if (pair.first > 0) { // 1+hcal index
+                        ret->back().addConstituent(edm::Ptr<l1t::PFCluster>(hcal, +pair.first-1), pair.second);
+                    } else { // -1-ecal index
+                        ret->back().addConstituent(edm::Ptr<l1t::PFCluster>(ecal, -pair.first+1), pair.second);
+                    }
+                }
+            }
+        }
+    }
+    return ret;
+}
