@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 # Defines the L1 Emulator sequence for simulation use-case subsystem emulators
 # run on the results of previous (in the hardware chain) subsystem emulator:
-#  
+#
 #     SimL1Emulator = cms.Sequence(...)
 #
 # properly configured for the current Era (e.g. Run1, 2015, or 2016).  Also
@@ -17,7 +17,7 @@ import FWCore.ParameterSet.Config as cms
 
 # Notes on Inputs:
 
-# ECAL TPG emulator and HCAL TPG run in the simulation sequence in order to be able 
+# ECAL TPG emulator and HCAL TPG run in the simulation sequence in order to be able
 # to use unsuppressed digis produced by ECAL and HCAL simulation, respectively
 # in Configuration/StandardSequences/python/Digi_cff.py
 # SimCalorimetry.Configuration.SimCalorimetry_cff
@@ -48,7 +48,7 @@ SimL1EmulatorCore = cms.Sequence(SimL1EmulatorCoreTask)
 SimL1EmulatorTask = cms.Task(SimL1EmulatorCoreTask)
 SimL1Emulator = cms.Sequence( SimL1EmulatorTask )
 
-# 
+#
 # Emulators are configured from DB (GlobalTags)
 #
 
