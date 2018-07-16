@@ -124,6 +124,11 @@ namespace
     edm::Wrapper<l1t::L1TkMuonParticleCollection> w_trkmuColl;
     l1t::L1TkMuonParticleRef reftrkMu ;
     
+    // L1TkGlbMuonParticle
+    l1t::L1TkGlbMuonParticleCollection trkglbmuColl ;
+    edm::Wrapper<l1t::L1TkGlbMuonParticleCollection> w_trkglbmuColl;
+    l1t::L1TkGlbMuonParticleRef reftrkGlbMu ;
+    
     // L1TkTauParticle
     l1t::L1TkTauParticleCollection trktauColl ;
     edm::Wrapper<l1t::L1TkTauParticleCollection> w_trktauColl;
