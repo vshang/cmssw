@@ -38,6 +38,9 @@ Implementation:
 #include "HepMC/GenVertex.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 
+#include "DataFormats/METReco/interface/GenMET.h"
+#include "DataFormats/METReco/interface/GenMETFwd.h"
+
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
 // ROOT output stuff
@@ -75,6 +78,8 @@ private:
 
   // EDM input tags
   edm::EDGetTokenT<reco::GenJetCollection> genJetToken_;
+  edm::EDGetTokenT<reco::GenMETCollection> genMETTrueToken_;
+  edm::EDGetTokenT<reco::GenMETCollection> genMETCaloToken_;
   edm::EDGetTokenT<reco::GenParticleCollection> genParticleToken_;
   edm::EDGetTokenT<std::vector<PileupSummaryInfo>> pileupInfoToken_;
   edm::EDGetTokenT<GenEventInfoProduct> genInfoToken_;
@@ -132,6 +137,33 @@ void L1GenTreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup&
   } else {
     edm::LogWarning("MissingProduct") << "Gen jets not found. Branch will not be filled" << std::endl;
   }
+
+  edm::Handle<reco::GenMETCollection> genMetsTrue;
+  iEvent.getByToken(genMETTrueToken_, genMetsTrue);
+
+  if (genMetsTrue.isValid()){
+
+      l1GenData_->genMetTrue = genMetsTrue->at(0).pt();
+
+  } else {
+    edm::LogWarning("MissingProduct") << "Gen Met True not found. Branch will not be filled" << std::endl;
+  }
+
+  edm::Handle<reco::GenMETCollection> genMetsCalo;
+  iEvent.getByToken(genMETCaloToken_, genMetsCalo);
+
+  //std::cout<< genMetsCalo->at(0).pt()<<std::endl;
+
+  if (genMetsCalo.isValid()){
+
+      l1GenData_->genMetCalo = genMetsCalo->at(0).pt();
+
+  } else {
+    edm::LogWarning("MissingProduct") << "Gen Met Calo not found. Branch will not be filled" << std::endl;
+  }
+
+
+
 
   edm::Handle<reco::GenParticleCollection> genParticles;
   iEvent.getByToken(genParticleToken_, genParticles);
