@@ -295,6 +295,20 @@ void L1TPFCaloProducer::readHcalHGCTowers_(edm::Event &iEvent, const edm::EventS
   }
 }
 
+void
+L1TPFCaloProducer::readHcalHGCTowers_(edm::Event& iEvent, const edm::EventSetup& iSetup) {
+    edm::Handle<l1t::HGCalTowerBxCollection> hgcTowers;
+
+    for (const auto & token : hcalHGCTowers_) {
+        iEvent.getByToken(token, hgcTowers);
+        for(auto it = hgcTowers->begin(0), ed = hgcTowers->end(0); it != ed; ++it) {
+            float et = hcalHGCTowersHadOnly_ ? it->etHad() : it->pt();
+            hcalClusterer_.add(et, it->eta(), it->phi());
+        }
+    }
+}
+
+
 //define this as a plug-in
 #include "FWCore/Framework/interface/MakerMacros.h"
 DEFINE_FWK_MODULE(L1TPFCaloProducer);
