@@ -302,6 +302,7 @@ L1TPFCaloProducer::readHcalHGCTowers_(edm::Event& iEvent, const edm::EventSetup&
     for (const auto & token : hcalHGCTowers_) {
         iEvent.getByToken(token, hgcTowers);
         for(auto it = hgcTowers->begin(0), ed = hgcTowers->end(0); it != ed; ++it) {
+            if (debug_) std::cout << "L1TPFCaloProducer: adding HGC Tower hadEt " << it->etHad() << ", emEt " << it->etEm() << ", pt " << it->pt() << ", eta " << it->eta() << ", phi " << it->phi() << std::endl;
             hcalClusterer_.add(it->etHad(), it->eta(), it->phi());
             if (!hcalHGCTowersHadOnly_) ecalClusterer_.add(it->etEm(), it->eta(), it->phi());
         }
