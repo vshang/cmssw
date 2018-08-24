@@ -424,6 +424,8 @@ void L1TkMuonProducer::runOnMTFCollection_v1(const edm::Handle<RegionalMuonCandB
 
       nTracksMatch++;
 
+      nTracksMatch++;
+
       const PropState& pstate = propagateToGMT(l1tk);
       if (!pstate.valid)
         continue;
