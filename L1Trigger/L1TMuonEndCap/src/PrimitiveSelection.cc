@@ -71,7 +71,7 @@ void PrimitiveSelection::process(emtf::CSCTag tag,
                                  << tp_err.getCSCData().cscID << ": strip " << tp_err.getStrip() << ", wire "
                                  << tp_err.getWire();
         }
-        LogDebug("L1T") << "************************* ONLY KEEP FIRST TWO *************************\n\n";
+        edm::LogWarning("L1T") << "************************* ONLY KEEP FIRST TWO *************************\n\n";
       }
 
     }  // End conditional: if (selected_csc >= 0)
