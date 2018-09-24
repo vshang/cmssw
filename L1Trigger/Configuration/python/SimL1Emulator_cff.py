@@ -161,6 +161,14 @@ _phase2_siml1emulator.add(L1TkPhotonsHGC)
 _phase2_siml1emulator.add( L1TkMuons )
 
 
+# PFTaus(HPS)
+# ########################################################################
+from L1Trigger.Phase2L1Taus.L1PFTauProducer_cff import L1PFTauProducer
+l1pfTauProducer = L1PFTauProducer.clone()
+l1pfTauProducer.L1PFObjects = cms.InputTag("l1pfProducer","PF")
+l1pfTauProducer.L1Neutrals = cms.InputTag("l1pfProducer")
+phase2_SimL1Emulator += l1pfTauProducer
+
 from Configuration.Eras.Modifier_phase2_trigger_cff import phase2_trigger
 from Configuration.Eras.Modifier_phase2_trackerV14_cff import phase2_trackerV14
 (phase2_trigger & phase2_trackerV14).toReplaceWith( SimL1EmulatorTask , _phase2_siml1emulator)
