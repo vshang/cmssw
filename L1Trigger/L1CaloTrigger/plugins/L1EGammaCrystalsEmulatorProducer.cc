@@ -1202,4 +1202,3 @@ bool L1EGCrystalClusterEmulatorProducer::passes_looseTkss(float pt, float ss) {
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(L1EGCrystalClusterEmulatorProducer);
-
