@@ -714,7 +714,7 @@ std::string SiPixelStatusHarvester::substructure(int detid) {
   return substructure;
 }
 
-//--------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------
 double SiPixelStatusHarvester::perLayerRingAverage(int detid, SiPixelDetectorStatus tmpSiPixelStatus) {
 
           unsigned long int ave(0);
