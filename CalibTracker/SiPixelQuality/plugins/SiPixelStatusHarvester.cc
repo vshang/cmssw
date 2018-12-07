@@ -714,4 +714,30 @@ std::string SiPixelStatusHarvester::substructure(int detid) {
   return substructure;
 }
 
+double SiPixelStatusHarvester::perLayerRingAverage(int detid, SiPixelDetectorStatus tmpSiPixelStatus) {
+
+          unsigned long int ave(0);
+          int nrocs(0);
+
+          int layer = coord_.layer(DetId(detid));
+          int ring = coord_.ring(DetId(detid));
+
+          std::map<int, SiPixelModuleStatus> detectorStatus = tmpSiPixelStatus.getDetectorStatus();
+          std::map<int, SiPixelModuleStatus>::iterator itModEnd = detectorStatus.end();
+          for (std::map<int, SiPixelModuleStatus>::iterator itMod = detectorStatus.begin(); itMod != itModEnd; ++itMod) {
+
+               if( layer != coord_.layer(DetId(itMod->first)) ) continue;
+               if( ring != coord_.ring(DetId(itMod->first)) ) continue;
+                
+               unsigned long int inc = itMod->second.digiOccMOD();
+               ave += inc;
+               nrocs += itMod->second.nrocs();
+          }
+
+          if(nrocs>0)
+            return ave*1.0/nrocs;
+          else return 0.0;
+
+}     
+
 DEFINE_FWK_MODULE(SiPixelStatusHarvester);
