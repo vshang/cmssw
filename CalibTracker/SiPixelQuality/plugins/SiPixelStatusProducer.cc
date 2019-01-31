@@ -405,4 +405,21 @@ void SiPixelStatusProducer::fillDescriptions(edm::ConfigurationDescriptions& des
   descriptions.add("siPixelStatusProducer", desc);
 }
 
+//--------------------------------------------------------------------------------------------------
+void SiPixelStatusProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions){
+
+     edm::ParameterSetDescription desc;
+
+     std::vector<edm::InputTag> badPixelFEDChannelCollections;
+
+     badPixelFEDChannelCollections.push_back(edm::InputTag("siPixelDigis"));
+     desc.add<std::vector<edm::InputTag>>("badPixelFEDChannelCollections",badPixelFEDChannelCollections);
+     desc.add<edm::InputTag>("pixelClusterLabel",edm::InputTag("siPixelClusters::RECO"));
+     desc.add<int>("resetEveryNLumi",1);
+
+     descriptions.add("siPixelStatusProducer",desc);
+
+}
+
+
 DEFINE_FWK_MODULE(SiPixelStatusProducer);
