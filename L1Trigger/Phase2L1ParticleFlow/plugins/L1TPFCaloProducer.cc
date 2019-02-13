@@ -26,6 +26,8 @@
 #include "L1Trigger/Phase2L1ParticleFlow/src/corrector.h"
 #include "L1Trigger/Phase2L1ParticleFlow/interface/ParametricResolution.h"
 #include "L1Trigger/Phase2L1ParticleFlow/interface/CaloClusterer.h"
+#include "DataFormats/ForwardDetId/interface/ForwardSubdetector.h"
+#include "DataFormats/HcalDetId/interface/HcalSubdetector.h"
 
 //--------------------------------------------------------------------------------------------------
 class L1TPFCaloProducer : public edm::stream::EDProducer<> {
