@@ -66,6 +66,9 @@ void L1EGammaEEProducer::produce(edm::Event &iEvent, const edm::EventSetup &iSet
   std::vector<const l1t::HGCalMulticluster *> selected_multiclusters;
   std::map<std::pair<int, int>, std::vector<const l1t::HGCalMulticluster *>> etaphi_bins;
 
+  std::vector<const l1t::HGCalMulticluster *> selected_multiclusters;
+  std::map<std::pair<int, int>, std::vector<const l1t::HGCalMulticluster *>> etaphi_bins;
+
   // here we loop on the TPGs
   for (auto cl3d = multiclusters.begin(0); cl3d != multiclusters.end(0); cl3d++) {
     if (cl3d->hwQual()) {
