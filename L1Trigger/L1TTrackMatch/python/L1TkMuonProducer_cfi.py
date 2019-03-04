@@ -74,6 +74,4 @@ L1TkMuonsTP = L1TkMuons.clone(
     useTPMatchWindows = True
 )
 
-L1TkMuonsDynamicWindows = L1TkMuons.Clone(emtfMatchAlgoVersion='DynamicWindows')
-
-L1TkMuons = cms.Sequence(L1TkMuons * L1TkMuonsDynamicWindows)
+L1TkMuonsDynamicWindows = L1TkMuons.clone(emtfMatchAlgoVersion='DynamicWindows')
