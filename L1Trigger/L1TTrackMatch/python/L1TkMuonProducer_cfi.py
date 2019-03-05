@@ -74,4 +74,7 @@ L1TkMuonsTP = L1TkMuons.clone(
     useTPMatchWindows = True
 )
 
-L1TkMuonsDynamicWindows = L1TkMuons.clone(emtfMatchAlgoVersion='DynamicWindows')
+L1TkMuonsTP = L1TkMuons.clone(
+    emtfMatchAlgoVersion='TP',
+    useTPMatchWindows = True
+)
