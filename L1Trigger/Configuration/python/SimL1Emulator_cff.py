@@ -165,8 +165,8 @@ _phase2_siml1emulator.add( L1TkMuons )
 # ########################################################################
 from L1Trigger.Phase2L1Taus.L1PFTauProducer_cff import L1PFTauProducer
 l1pfTauProducer = L1PFTauProducer.clone()
-l1pfTauProducer.L1PFObjects = cms.InputTag("l1pfProducer","PF")
-l1pfTauProducer.L1Neutrals = cms.InputTag("l1pfProducer")
+l1pfTauProducer.L1PFObjects = cms.InputTag("l1pfCandidates","PF")
+l1pfTauProducer.L1Neutrals = cms.InputTag("l1pfCandidates")
 phase2_SimL1Emulator += l1pfTauProducer
 
 from Configuration.Eras.Modifier_phase2_trigger_cff import phase2_trigger
