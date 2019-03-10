@@ -119,7 +119,9 @@ void L1GenTreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup&
   if (genInfo.isValid()) {
     l1GenData_->weight = genInfo->weight();
     l1GenData_->pthat = genInfo->hasBinningValues() ? (genInfo->binningValues())[0] : 0.0;
+     // std::cout<<genInfo->signalProcessID()<<std::endl;
   }
+
 
   edm::Handle<reco::GenJetCollection> genJets;
   iEvent.getByToken(genJetToken_, genJets);
@@ -161,8 +163,6 @@ void L1GenTreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup&
   } else {
     edm::LogWarning("MissingProduct") << "Gen Met Calo not found. Branch will not be filled" << std::endl;
   }
-
-
 
 
   edm::Handle<reco::GenParticleCollection> genParticles;
