@@ -31,6 +31,8 @@
 #include "DataFormats/L1TCorrelator/interface/TkMuon.h"
 #include "DataFormats/L1TCorrelator/interface/TkMuonFwd.h"
 
+#include "DataFormats/L1TrackTrigger/interface/L1TkMuonParticle.h"    
+#include "DataFormats/L1TrackTrigger/interface/L1TkMuonParticleFwd.h" 
 //--------------------------------------------------------------------------------------------------
 class L1TPFProducer : public edm::stream::EDProducer<> {
 public:
