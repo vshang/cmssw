@@ -22,6 +22,8 @@ std::vector<AlgoMuon> GhostBusterPreferRefDt::select(std::vector<AlgoMuon> muons
     // protect against access violation
     if (a.getRefLayer() == -1 || b.getRefLayer() == -1)
       return false;
+    }
+
     int aRefLayerLogicNum = omtfConfig->getRefToLogicNumber()[a.getRefLayer()];
     int bRefLayerLogicNum = omtfConfig->getRefToLogicNumber()[b.getRefLayer()];
     if (a.getQ() > b.getQ())
