@@ -36,19 +36,21 @@ void HGCalVFESummationImpl::triggerCellSums(const HGCalTriggerGeometryBase& geom
     uint32_t value = frame.second;
 
     // Apply noise threshold before summing into trigger cells
-    if (triggerTools_.isSilicon(cellid)) {
+    if(triggerTools_.isSilicon(cellid))
+    {
       int thickness = triggerTools_.thicknessIndex(cellid);
       double threshold = thresholds_silicon_.at(thickness);
-      value = (value * lsb_silicon_fC_ > threshold ? value : 0);
-    } else if (triggerTools_.isScintillator(cellid)) {
-      value = (value * lsb_scintillator_MIP_ > threshold_scintillator_ ? value : 0);
+      value = ( value*LSB_silicon_fC_ > threshold ? value : 0 );
     }
-    if (value == 0)
-      continue;
+    else if(triggerTools_.isScintillator(cellid))
+    {
+      value = ( value*LSB_scintillator_MIP_ > threshold_scintillator_ ? value : 0 );
+    }
+    if(value==0) continue;
 
     // find trigger cell associated to cell
     uint32_t tcid = geometry.getTriggerCellFromCell(cellid);
-    payload.emplace(tcid, 0);  // do nothing if key exists already
+    payload.emplace(tcid, 0); // do nothing if key exists already
 
     // equalize value among cell thicknesses for Silicon parts
     if (triggerTools_.isSilicon(cellid) && !triggerTools_.isNose(cellid)) {
