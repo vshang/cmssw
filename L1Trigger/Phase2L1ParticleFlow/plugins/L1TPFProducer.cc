@@ -397,6 +397,10 @@ void L1TPFProducer::addUInt(unsigned int value, std::string iLabel, edm::Event& 
   iEvent.put(std::make_unique<unsigned>(value), iLabel);
 }
 
+void L1TPFProducer::addUInt(unsigned int value,std::string iLabel,edm::Event& iEvent) { 
+  iEvent.put(std::make_unique<unsigned>(value), iLabel);
+}
+
 //define this as a plug-in
 #include "FWCore/Framework/interface/MakerMacros.h"
 DEFINE_FWK_MODULE(L1TPFProducer);
