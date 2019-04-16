@@ -32,7 +32,8 @@ def custom_triggercellselect_threshold(process,
 def custom_triggercellselect_bestchoice(process,
                                         triggercells=best_conc_proc.NData
                                         ):
-    parameters = best_conc_proc.clone(NData = triggercells)
+    parameters = best_conc_proc.clone()
+    parameters.NData = triggercells
     process.hgcalConcentratorProducer.ProcessorParameters = parameters
     return process
 
