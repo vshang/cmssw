@@ -895,19 +895,6 @@ public:
 
   static void globalEndJob(const deep_tau::DeepTauCache* cache_) { return DeepTauBase::globalEndJob(cache_); }
 
-    // static const auto getBestObj = [&](CellObjectType type, size_t& n_total, size_t& best_idx) {
-            // const auto& index_set = cell[type];
-            // n_total = index_set.size();
-            // double max_pt = std::numeric_limits<double>::lowest();
-            // for(size_t index : index_set) {
-            //     const double pt = getPt(type, index);
-            //     if(pt > max_pt) {
-            //         max_pt = pt;
-            //         best_idx = index;
-            //     }
-            // }
-    // };
-
 private:
   static constexpr float pi = M_PI;
 
