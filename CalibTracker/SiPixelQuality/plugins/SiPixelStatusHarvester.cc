@@ -720,8 +720,9 @@ double SiPixelStatusHarvester::perLayerRingAverage(int detid, SiPixelDetectorSta
           unsigned long int ave(0);
           int nrocs(0);
 
-          int layer = coord_.layer(DetId(detid));
-          int ring = coord_.ring(DetId(detid));
+          int layer  = coord_.layer(DetId(detid));
+          int ring   = coord_.ring(DetId(detid));
+          int module = coord_.module(DetId(detid)); 
 
           std::map<int, SiPixelModuleStatus> detectorStatus = tmpSiPixelStatus.getDetectorStatus();
           std::map<int, SiPixelModuleStatus>::iterator itModEnd = detectorStatus.end();
@@ -729,7 +730,9 @@ double SiPixelStatusHarvester::perLayerRingAverage(int detid, SiPixelDetectorSta
 
                if( layer != coord_.layer(DetId(itMod->first)) ) continue;
                if( ring != coord_.ring(DetId(itMod->first)) ) continue;
-                
+               if( layer==1 ){
+                 if( module != coord_.ring(DetId(itMod->first))) continue;                  
+               }
                unsigned long int inc = itMod->second.digiOccMOD();
                ave += inc;
                nrocs += itMod->second.nrocs();
@@ -740,5 +743,32 @@ double SiPixelStatusHarvester::perLayerRingAverage(int detid, SiPixelDetectorSta
           else return 0.0;
 
 }     
+
+std::string SiPixelStatusHarvester::substructure(int detid){     
+     
+       std::string substructure = "";
+       int layer = coord_.layer(DetId(detid));
+
+       if(layer>0){
+         std::string L = std::to_string(layer);
+         substructure = "BpixLYR";
+         substructure += L;
+         if(layer==1){
+           int mod   = abs(coord_.signed_module(DetId(detid)));
+           std::string M = std::to_string(mod);
+           substructure += "MOD";
+           substructure += M;
+         }
+       }  
+       else{
+         substructure = "FpixRNG";
+         int ring  = coord_.ring(DetId(detid));
+         std::string R = std::to_string(ring);
+         substructure += R; 
+       }
+
+       return substructure;
+}
+
 
 DEFINE_FWK_MODULE(SiPixelStatusHarvester);

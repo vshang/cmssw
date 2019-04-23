@@ -94,6 +94,7 @@ private:
   std::string substructure(int detid);
 
   double perLayerRingAverage(int detid, SiPixelDetectorStatus tmpSiPixelStatus);
+  std::string substructure(int detid);
 
   // "step function" for IOV
   edm::LuminosityBlockNumber_t stepIOV(edm::LuminosityBlockNumber_t pin,
