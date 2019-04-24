@@ -176,6 +176,10 @@ void SiPixelStatusHarvester::dqmEndRun(const edm::Run& iRun, const edm::EventSet
 
   if (poolDbService.isAvailable()) {  // if(poolDbService.isAvailable() )
 
+    // file to host hists for threshold checking
+    std::string runString = std::to_string(iRun.run());
+    histoFile = new TFile("PixelDigiHisto_Run"+TString(runString)+".root","RECREATE");
+
     // start producing tag for permanent component removed
     SiPixelQuality* siPixelQualityPermBad = new SiPixelQuality();
     const std::vector<SiPixelQuality::disabledModuleType> badComponentList = badPixelInfo_->getBadComponentList();
