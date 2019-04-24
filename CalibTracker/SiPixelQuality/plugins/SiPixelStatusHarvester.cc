@@ -722,7 +722,7 @@ double SiPixelStatusHarvester::perLayerRingAverage(int detid, SiPixelDetectorSta
 
           int layer  = coord_.layer(DetId(detid));
           int ring   = coord_.ring(DetId(detid));
-          int module = coord_.module(DetId(detid)); 
+          int module = abs(coord_.signed_module(DetId(detid)));
 
           std::map<int, SiPixelModuleStatus> detectorStatus = tmpSiPixelStatus.getDetectorStatus();
           std::map<int, SiPixelModuleStatus>::iterator itModEnd = detectorStatus.end();
@@ -731,7 +731,7 @@ double SiPixelStatusHarvester::perLayerRingAverage(int detid, SiPixelDetectorSta
                if( layer != coord_.layer(DetId(itMod->first)) ) continue;
                if( ring != coord_.ring(DetId(itMod->first)) ) continue;
                if( layer==1 ){
-                 if( module != coord_.ring(DetId(itMod->first))) continue;                  
+                 if( module != abs(coord_.signed_module(DetId(itMod->first)))) continue;                  
                }
                unsigned long int inc = itMod->second.digiOccMOD();
                ave += inc;
