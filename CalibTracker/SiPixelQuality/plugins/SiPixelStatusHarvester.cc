@@ -176,10 +176,6 @@ void SiPixelStatusHarvester::dqmEndRun(const edm::Run& iRun, const edm::EventSet
 
   if (poolDbService.isAvailable()) {  // if(poolDbService.isAvailable() )
 
-    // file to host hists for threshold checking
-    std::string runString = std::to_string(iRun.run());
-    histoFile = new TFile("PixelDigiHisto_Run"+TString(runString)+".root","RECREATE");
-
     // start producing tag for permanent component removed
     SiPixelQuality* siPixelQualityPermBad = new SiPixelQuality();
     const std::vector<SiPixelQuality::disabledModuleType> badComponentList = badPixelInfo_->getBadComponentList();
@@ -726,7 +722,6 @@ double SiPixelStatusHarvester::perLayerRingAverage(int detid, SiPixelDetectorSta
 
           int layer  = coord_.layer(DetId(detid));
           int ring   = coord_.ring(DetId(detid));
-          int module = abs(coord_.signed_module(DetId(detid)));
 
           std::map<int, SiPixelModuleStatus> detectorStatus = tmpSiPixelStatus.getDetectorStatus();
           std::map<int, SiPixelModuleStatus>::iterator itModEnd = detectorStatus.end();
@@ -734,9 +729,6 @@ double SiPixelStatusHarvester::perLayerRingAverage(int detid, SiPixelDetectorSta
 
                if( layer != coord_.layer(DetId(itMod->first)) ) continue;
                if( ring != coord_.ring(DetId(itMod->first)) ) continue;
-               if( layer==1 ){
-                 if( module != abs(coord_.signed_module(DetId(itMod->first)))) continue;                  
-               }
                unsigned long int inc = itMod->second.digiOccMOD();
                ave += inc;
                nrocs += itMod->second.nrocs();
@@ -757,12 +749,6 @@ std::string SiPixelStatusHarvester::substructure(int detid){
          std::string L = std::to_string(layer);
          substructure = "BpixLYR";
          substructure += L;
-         if(layer==1){
-           int mod   = abs(coord_.signed_module(DetId(detid)));
-           std::string M = std::to_string(mod);
-           substructure += "MOD";
-           substructure += M;
-         }
        }  
        else{
          substructure = "FpixRNG";
