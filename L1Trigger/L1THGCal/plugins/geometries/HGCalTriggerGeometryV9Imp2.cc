@@ -542,6 +542,43 @@ unsigned HGCalTriggerGeometryV9Imp2::getModuleSize(const unsigned module_id) con
   return nWafers;
 }
 
+unsigned HGCalTriggerGeometryV9Imp2::getLinksInModule(const unsigned module_id) const {
+  DetId module_det_id(module_id);
+  unsigned links = 0;
+  // Scintillator
+  if (module_det_id.det() == DetId::HGCalHSc) {
+    links = 1;
+  }
+  // Silicon
+  else {
+    HGCalDetId module_det_id_si(module_id);
+    unsigned module = module_det_id_si.wafer();
+    unsigned layer = layerWithOffset(module_id);
+    const unsigned sector0_mask = 0x1F;
+    module = (module & sector0_mask);
+    links = links_per_module_.at(packLayerModuleId(layer, module));
+  }
+  return links;
+}
+
+unsigned HGCalTriggerGeometryV9Imp2::getModuleSize(const unsigned module_id) const {
+  DetId module_det_id(module_id);
+  const unsigned scintillatorDummySize = 3;
+  unsigned nWafers = 1;
+  // Scintillator
+  if (module_det_id.det() == DetId::HGCalHSc) {
+    nWafers = scintillatorDummySize;
+  }
+  // Silicon
+  else {
+    HGCalDetId module_det_id_si(module_id);
+    unsigned module = module_det_id_si.wafer();
+    unsigned layer = layerWithOffset(module_id);
+    nWafers = module_to_wafers_.count(packLayerModuleId(layer, module));
+  }
+  return nWafers;
+}
+
 GlobalPoint HGCalTriggerGeometryV9Imp2::getTriggerCellPosition(const unsigned trigger_cell_det_id) const {
   unsigned det = DetId(trigger_cell_det_id).det();
   // Position: barycenter of the trigger cell.
