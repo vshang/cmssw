@@ -3,6 +3,7 @@
 #include "L1Trigger/L1THGCal/interface/HGCalTriggerGeometryBase.h"
 #include "L1Trigger/L1THGCalUtilities/interface/HGCalTriggerNtupleBase.h"
 #include "L1Trigger/L1THGCal/interface/backend/HGCalTriggerClusterIdentificationBase.h"
+#include "L1Trigger/L1THGCal/interface/HGCalTriggerTools.h"
 
 class HGCalTriggerNtupleHGCMulticlusters : public HGCalTriggerNtupleBase {
 public:
@@ -20,6 +21,8 @@ private:
   bool fill_interpretation_info_;
 
   std::unique_ptr<HGCalTriggerClusterIdentificationBase> id_;
+
+  HGCalTriggerTools triggerTools_;
 
   int cl3d_n_;
   std::vector<uint32_t> cl3d_id_;
@@ -129,6 +132,8 @@ void HGCalTriggerNtupleHGCMulticlusters::fill(const edm::Event& e, const edm::Ev
   edm::ESHandle<HGCalTriggerGeometryBase> geometry;
   es.get<CaloGeometryRecord>().get(geometry);
 
+  triggerTools_.eventSetup(es);
+
   clear();
   for (auto cl3d_itr = multiclusters.begin(0); cl3d_itr != multiclusters.end(0); cl3d_itr++) {
     cl3d_n_++;
@@ -182,6 +187,15 @@ void HGCalTriggerNtupleHGCMulticlusters::fill(const edm::Event& e, const edm::Ev
       }
       cl3d_layer_pt_.emplace_back(layer_pt);
     }
+
+    //Per layer cluster information
+    int nlayers = triggerTools_.lastLayerBH();
+    std::vector<float> layer_pt(nlayers, 0.0);
+    for (const auto& cl_ptr : cl3d_itr->constituents()) {
+      unsigned layer = triggerTools_.layerWithOffset(cl_ptr.second->detId());
+      layer_pt[layer] += cl_ptr.second->pt();
+    }
+    cl3d_layer_pt_.emplace_back(layer_pt);
 
     // Retrieve indices of trigger cells inside cluster
     cl3d_clusters_id_.emplace_back(cl3d_itr->constituents().size());
