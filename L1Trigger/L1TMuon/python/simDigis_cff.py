@@ -76,18 +76,18 @@ SimL1TMuon = cms.Sequence(SimL1TMuonTask)
 #
 # Stage-2 Trigger
 #
-if (stage2L1Trigger.isChosen() or phase2_trigger.isChosen()):
-    from L1Trigger.L1TTwinMux.simTwinMuxDigis_cfi import *
-    from L1Trigger.L1TMuonBarrel.simBmtfDigis_cfi import *
-    from L1Trigger.L1TMuonEndCap.simEmtfDigis_cfi import *
-    from L1Trigger.L1TMuonOverlap.simOmtfDigis_cfi import *
-    from L1Trigger.L1TMuon.simGmtCaloSumDigis_cfi import *
-    from L1Trigger.L1TMuon.simGmtStage2Digis_cfi import *
-    from L1Trigger.L1TMuonBarrel.simKBmtfStubs_cfi import *
-    from L1Trigger.L1TMuonBarrel.simKBmtfDigis_cfi import *
+from L1Trigger.L1TTwinMux.simTwinMuxDigis_cfi import *
+from L1Trigger.L1TMuonBarrel.simBmtfDigis_cfi import *
+from L1Trigger.L1TMuonEndCap.simEmtfDigis_cfi import *
+from L1Trigger.L1TMuonOverlap.simOmtfDigis_cfi import *
+from L1Trigger.L1TMuon.simGmtCaloSumDigis_cfi import *
+from L1Trigger.L1TMuon.simGmtStage2Digis_cfi import *
+from L1Trigger.L1TMuonBarrel.simKBmtfStubs_cfi import *
+from L1Trigger.L1TMuonBarrel.simKBmtfDigis_cfi import *
+from Configuration.Eras.Modifier_stage2L1Trigger_cff import stage2L1Trigger
 #
 #
-    SimL1TMuon = cms.Sequence(SimL1TMuonCommon + simTwinMuxDigis + simBmtfDigis + simKBmtfStubs + simKBmtfDigis + simEmtfDigis + simOmtfDigis + simGmtCaloSumDigis + simGmtStage2Digis)
+stage2L1Trigger.toReplaceWith(SimL1TMuon, cms.Sequence(SimL1TMuonCommon + simTwinMuxDigis + simBmtfDigis + simKBmtfStubs + simKBmtfDigis + simEmtfDigis + simOmtfDigis + simGmtCaloSumDigis + simGmtStage2Digis))
 
 #
 # Phase-2 Trigger
