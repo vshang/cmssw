@@ -895,6 +895,16 @@ public:
 
   static void globalEndJob(const deep_tau::DeepTauCache* cache_) { return DeepTauBase::globalEndJob(cache_); }
 
+    void isNaN (tensorflow::Tensor& inputs)
+    {
+        if(debug){
+            for(int k = 0; k < dnn_inputs_2017_v2::NumberOfOutputs; ++k) {
+                const float input = inputs.flat<float>()(k);
+                if(std::isnan(input))
+                    throw cms::Exception("DeepTauId") << "invalid input = " << input << ", input_index = " << k;
+            }
+        }
+    }
 private:
   static constexpr float pi = M_PI;
 
