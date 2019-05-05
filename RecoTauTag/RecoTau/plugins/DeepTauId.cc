@@ -895,13 +895,13 @@ public:
 
   static void globalEndJob(const deep_tau::DeepTauCache* cache_) { return DeepTauBase::globalEndJob(cache_); }
 
-    void isNaN (tensorflow::Tensor& inputs)
+    static inline void checkForNaNs(tensorflow::Tensor& inputs, int n_inputs, std::string block_name, const bool debug)
     {
         if(debug){
-            for(int k = 0; k < dnn_inputs_2017_v2::NumberOfOutputs; ++k) {
+            for(int k = 0; k < n_inputs; ++k) {
                 const float input = inputs.flat<float>()(k);
                 if(std::isnan(input))
-                    throw cms::Exception("DeepTauId") << "invalid input = " << input << ", input_index = " << k;
+                    throw cms::Exception("DeepTauId") << "in the " << block_name << ", invalid input = " << input << ", input_index = " << k;
             }
         }
     }
