@@ -37,7 +37,7 @@ tauIdEmbedder = tauIdConfig.TauIDEmbedder(process, debug = False,
                                "deepTau2017v2p1",
                                # "DPFTau_2016_v0",
                                # "DPFTau_2016_v1",
-                                "againstEle2018",
+                               "againstEle2018",
                                ])
 tauIdEmbedder.runTauID()
 

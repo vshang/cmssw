@@ -895,26 +895,20 @@ public:
 
   static void globalEndJob(const deep_tau::DeepTauCache* cache_) { return DeepTauBase::globalEndJob(cache_); }
 
-    inline const void checkInputs(const tensorflow::Tensor& inputs, std::string block_name, int n_inputs, int n_eta = 1,
-                                  int n_phi = 1)
+    inline void checkInputs(const tensorflow::Tensor& inputs, const char* block_name, int n_inputs, int n_eta = 1,
+                            int n_phi = 1) const
     {
-        if(debug >= 1){
-            for(int k = 0; k < n_inputs; ++k) {
-                const float input = inputs.flat<float>()(k);
-                if(std::isnan(input))
-                    throw cms::Exception("DeepTauId") << "in the " << block_name << ", invalid input = " << input << ", input_index = " << k;
-            }
-        }
-        else if(debug >= 2){
-            float input;
+        if(debug_level >= 1){
             for(int eta = 0; eta < n_eta; ++eta){
                 for(int phi = 0; phi < n_phi; phi++){
                     for(int k = 0; k < n_inputs; ++k) {
-                        if(n_eta == 1 && n_phi == 1)
-                            input = inputs.matrix<float>()(0, k);
-                        else
-                            input = inputs.tensor<float,4>()(0, eta, phi, k);
-                        std::cout << block_name << "," << eta << ","<< phi << "," << k << "," << std::setprecision(6) << input << '\n';
+                        const float input = n_eta == 1 && n_phi == 1
+                                          ? inputs.matrix<float>()(0, k) : inputs.tensor<float,4>()(0, eta, phi, k);
+                        if(std::isnan(input))
+                            throw cms::Exception("DeepTauId") << "in the " << block_name << ", input is NaN for eta_index = "
+                                                              << n_eta << ", phi_index = " << n_phi << ", input_index = " << k;
+                        if(debug_level >= 2)
+                            std::cout << block_name << "," << eta << ","<< phi << "," << k << "," << std::setprecision(6) << input << '\n';
                     }
                 }
             }
