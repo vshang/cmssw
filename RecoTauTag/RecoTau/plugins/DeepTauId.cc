@@ -895,9 +895,9 @@ public:
 
   static void globalEndJob(const deep_tau::DeepTauCache* cache_) { return DeepTauBase::globalEndJob(cache_); }
 
-    static inline void checkForNaNs(tensorflow::Tensor& inputs, int n_inputs, std::string block_name, const bool debug)
+    static inline void checkForNaNs(const tensorflow::Tensor& inputs, int n_inputs, std::string block_name, const int debug_value)
     {
-        if(debug){
+        if(debug_value >= 1){
             for(int k = 0; k < n_inputs; ++k) {
                 const float input = inputs.flat<float>()(k);
                 if(std::isnan(input))
@@ -905,6 +905,26 @@ public:
             }
         }
     }
+
+    static inline void printInputs(tensorflow::Tensor& inputs, std::string block_name, int n_inputs, int n_eta = 1,
+                                    int n_phi = 1, const int debug_value = 1, bool is_tau = false)
+    {
+        if(debug_value >= 2){
+            float input;
+            for(int eta = 0; eta < n_eta; ++eta){
+                for(int phi = 0; phi < n_phi; phi++){
+                    for(int k = 0; k < n_inputs; ++k) {
+                        if(is_tau)
+                            input = inputs.matrix<float>()(0, k);
+                        else
+                            input = inputs.tensor<float,4>()(0, eta, phi, k);
+                        std::cout << block_name << "," << eta << ","<< phi << "," << k << "," << std::setprecision(6) << input << '\n';
+                    }
+                }
+            }
+        }
+    }
+
 private:
   static constexpr float pi = M_PI;
 
