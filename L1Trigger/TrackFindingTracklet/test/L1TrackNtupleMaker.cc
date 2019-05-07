@@ -483,19 +483,19 @@ void L1TrackNtupleMaker::beginJob() {
     eventTree->Branch("allstub_y", &m_allstub_y);
     eventTree->Branch("allstub_z", &m_allstub_z);
 
-    eventTree->Branch("allstub_isBarrel", &m_allstub_isBarrel);
-    eventTree->Branch("allstub_layer", &m_allstub_layer);
+    eventTree->Branch("allstub_isBarrel",   &m_allstub_isBarrel);
+    eventTree->Branch("allstub_layer",      &m_allstub_layer);
     eventTree->Branch("allstub_isPSmodule", &m_allstub_isPSmodule);
 
     eventTree->Branch("allstub_trigDisplace", &m_allstub_trigDisplace);
-    eventTree->Branch("allstub_trigOffset", &m_allstub_trigOffset);
-    eventTree->Branch("allstub_trigPos", &m_allstub_trigPos);
-    eventTree->Branch("allstub_trigBend", &m_allstub_trigBend);
+    eventTree->Branch("allstub_trigOffset",   &m_allstub_trigOffset);
+    eventTree->Branch("allstub_trigPos",      &m_allstub_trigPos);
+    eventTree->Branch("allstub_trigBend",     &m_allstub_trigBend);
 
     eventTree->Branch("allstub_matchTP_pdgid", &m_allstub_matchTP_pdgid);
-    eventTree->Branch("allstub_matchTP_pt", &m_allstub_matchTP_pt);
-    eventTree->Branch("allstub_matchTP_eta", &m_allstub_matchTP_eta);
-    eventTree->Branch("allstub_matchTP_phi", &m_allstub_matchTP_phi);
+    eventTree->Branch("allstub_matchTP_pt",    &m_allstub_matchTP_pt);
+    eventTree->Branch("allstub_matchTP_eta",   &m_allstub_matchTP_eta);
+    eventTree->Branch("allstub_matchTP_phi",   &m_allstub_matchTP_phi);
 
     eventTree->Branch("allstub_genuine", &m_allstub_genuine);
   }
@@ -571,6 +571,7 @@ void L1TrackNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
   m_tp_z0_prod->clear();
   m_tp_pdgid->clear();
   m_tp_nmatch->clear();
+  m_tp_nloosematch->clear();
   m_tp_nstub->clear();
   m_tp_eventid->clear();
   m_tp_charge->clear();
@@ -911,6 +912,7 @@ void L1TrackNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
 
         }  //end loop over stubs
       }
+
       // ----------------------------------------------------------------------------------------------
 
       int tmp_trk_genuine = 0;
@@ -1217,8 +1219,13 @@ void L1TrackNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
         MCTruthTTTrackHandle->findTTTrackPtrs(tp_ptr);
 
     int nMatch = 0;
+    int nLooseMatch = 0;
     int i_track = -1;
+    int i_loosetrack = -1;
     float i_chi2dof = 99999;
+    float i_loosechi2dof = 99999;
+
+    if (matchedTracks.size() > 0) {
 
     if (!matchedTracks.empty()) {
       if (DebugMode && (matchedTracks.size() > 1))
@@ -1391,6 +1398,7 @@ void L1TrackNtupleMaker::analyze(const edm::Event& iEvent, const edm::EventSetup
     m_tp_d0_prod->push_back(tmp_tp_d0_prod);
     m_tp_pdgid->push_back(tmp_tp_pdgid);
     m_tp_nmatch->push_back(nMatch);
+    m_tp_nloosematch->push_back(nLooseMatch);
     m_tp_nstub->push_back(nStubTP);
     m_tp_eventid->push_back(tmp_eventid);
     m_tp_charge->push_back(tmp_tp_charge);

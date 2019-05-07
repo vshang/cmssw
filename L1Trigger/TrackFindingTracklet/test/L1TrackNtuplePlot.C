@@ -100,6 +100,11 @@ void L1TrackNtuplePlot(TString type,
   // tracklet variables
   int L1Tk_seed = 0;
 
+  // tracklet variables
+  bool ReadTracklet = false;
+  int L1Tk_seed=0;
+
+
   //some counters for integrated efficiencies
   int n_all_eta2p5 = 0;
   int n_all_eta1p75 = 0;
@@ -468,6 +473,9 @@ void L1TrackNtuplePlot(TString type,
   const int nRANGE_L = 12;
   TString ptrange_L[nRANGE] = {
       "2-2.5", "2.5-3", "3-3.5", "3.5-4", "4-4.5", "4.5-5", "5-5.5", "5.5-6", "6-6.5", "6.5-7", "7-7.5", "7.5-8"};
+
+  const int nRANGE_L = 12;
+  TString ptrange_L[nRANGE] = {"2-2.5", "2.5-3", "3-3.5", "3.5-4", "4-4.5", "4.5-5", "5-5.5", "5.5-6", "6-6.5", "6.5-7", "7-7.5", "7.5-8" };
 
   TH1F* h_absResVsPt_pt[nRANGE];
   TH1F* h_absResVsPt_ptRel[nRANGE];
@@ -1146,7 +1154,9 @@ void L1TrackNtuplePlot(TString type,
           h_trk_tracklet_hits->Fill(std::abs(trk_eta->at(it)), layer);  // ...fill this bin with the layer of the track.
         }
       }
+
     }
+
 
     h_ntrk_pt2->Fill(ntrkevt_pt2);
     h_ntrk_pt3->Fill(ntrkevt_pt3);
@@ -1284,6 +1294,13 @@ void L1TrackNtuplePlot(TString type,
         thisseed = thisseed - 20;
       if ((L1Tk_seed != 0) && (thisseed != L1Tk_seed))
         continue;
+
+      if (ReadTracklet) {
+	int thisseed=matchtrk_seed->at(it);
+	if (thisseed>25) thisseed = thisseed-20;
+	if ((L1Tk_seed != 0) && (thisseed != L1Tk_seed)) continue;
+      }
+
 
       // ----------------------------------------------------------------------------------------------------------------
       // fill matchtrk chi2 & chi2/dof histograms before making chi2 cut
@@ -2597,6 +2614,12 @@ void L1TrackNtuplePlot(TString type,
   h2_resVsEta_eta_68->Draw("p");
   c.SaveAs(DIR + type + "_resVsEta_eta_68.pdf");
 
+  h2_resVsEta_eta_68->SetMinimum(0);
+  h2_resVsEta_eta_68->SetMarkerStyle(20);
+  h2_resVsEta_eta_68->Draw("p");
+  c.SaveAs(DIR+type+"_resVsEta_eta_68.pdf");
+  c.SaveAs(DIR+type+"_resVsEta_eta_68.png");
+
   if (doDetailedPlots) {
     h2_resVsEta_eta_L_90->Draw("p");
     sprintf(ctxt, "p_{T} < 8 GeV");
@@ -2618,6 +2641,12 @@ void L1TrackNtuplePlot(TString type,
   h2_resVsEta_z0_68->SetMarkerStyle(20);
   h2_resVsEta_z0_68->Draw("p");
   c.SaveAs(DIR + type + "_resVsEta_z0_68.pdf");
+
+  h2_resVsEta_z0_68->SetMinimum(0);
+  h2_resVsEta_z0_68->SetMarkerStyle(20);
+  h2_resVsEta_z0_68->Draw("p");
+  c.SaveAs(DIR+type+"_resVsEta_z0_68.pdf");
+  c.SaveAs(DIR+type+"_resVsEta_z0_68.png");
 
   if (doDetailedPlots) {
     h2_resVsEta_z0_L_90->Draw();
@@ -2656,6 +2685,12 @@ void L1TrackNtuplePlot(TString type,
   h2_resVsEta_phi_68->Draw("p");
   c.SaveAs(DIR + type + "_resVsEta_phi_68.pdf");
 
+  h2_resVsEta_phi_68->SetMinimum(0);
+  h2_resVsEta_phi_68->SetMarkerStyle(20);
+  h2_resVsEta_phi_68->Draw("p");
+  c.SaveAs(DIR+type+"_resVsEta_phi_68.pdf");
+  c.SaveAs(DIR+type+"_resVsEta_phi_68.png");
+
   if (doDetailedPlots) {
     h2_resVsEta_phi_L_90->Draw();
     sprintf(ctxt, "p_{T} < 8 GeV");
@@ -2677,6 +2712,12 @@ void L1TrackNtuplePlot(TString type,
   h2_resVsEta_ptRel_68->SetMarkerStyle(20);
   h2_resVsEta_ptRel_68->Draw("p");
   c.SaveAs(DIR + type + "_resVsEta_ptRel_68.pdf");
+
+  h2_resVsEta_ptRel_68->SetMinimum(0);
+  h2_resVsEta_ptRel_68->SetMarkerStyle(20);
+  h2_resVsEta_ptRel_68->Draw("p");
+  c.SaveAs(DIR+type+"_resVsEta_ptRel_68.pdf");
+  c.SaveAs(DIR+type+"_resVsEta_ptRel_68.png");
 
   if (doDetailedPlots) {
     h2_resVsEta_ptRel_L_90->Draw();
@@ -3402,6 +3443,7 @@ void L1TrackNtuplePlot(TString type,
   h_trk_duplicate_vspt->Scale(1.0 / nevt);
   h_tp_vspt->Scale(1.0 / nevt);
 
+
   h_tp_vspt->GetYaxis()->SetTitle("Tracks / event");
   h_tp_vspt->GetXaxis()->SetTitle("Track p_{T} [GeV]");
   h_tp_vspt->SetLineColor(4);
@@ -3541,6 +3583,14 @@ void L1TrackNtuplePlot(TString type,
   h_ntrk_genuine_pt3->Write();
   h_ntrk_genuine_pt10->Write();
 
+  h_ntrk_pt2->Write();
+  h_ntrk_pt3->Write();
+  h_ntrk_pt10->Write();
+
+  h_ntrk_genuine_pt2->Write();
+  h_ntrk_genuine_pt3->Write();
+  h_ntrk_genuine_pt10->Write();
+    
   if (doDetailedPlots) {
     h_ntrk_pt2->Draw();
     c.SaveAs(DIR + type + "_trackrate_pt2_perevt.pdf");
