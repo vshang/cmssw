@@ -895,26 +895,22 @@ public:
 
   static void globalEndJob(const deep_tau::DeepTauCache* cache_) { return DeepTauBase::globalEndJob(cache_); }
 
-    static inline void checkForNaNs(const tensorflow::Tensor& inputs, int n_inputs, std::string block_name, const int debug_value)
+    inline const void checkInputs(const tensorflow::Tensor& inputs, std::string block_name, int n_inputs, int n_eta = 1,
+                                  int n_phi = 1)
     {
-        if(debug_value >= 1){
+        if(debug >= 1){
             for(int k = 0; k < n_inputs; ++k) {
                 const float input = inputs.flat<float>()(k);
                 if(std::isnan(input))
                     throw cms::Exception("DeepTauId") << "in the " << block_name << ", invalid input = " << input << ", input_index = " << k;
             }
         }
-    }
-
-    static inline void printInputs(tensorflow::Tensor& inputs, std::string block_name, int n_inputs, int n_eta = 1,
-                                    int n_phi = 1, const int debug_value = 1, bool is_tau = false)
-    {
-        if(debug_value >= 2){
+        else if(debug >= 2){
             float input;
             for(int eta = 0; eta < n_eta; ++eta){
                 for(int phi = 0; phi < n_phi; phi++){
                     for(int k = 0; k < n_inputs; ++k) {
-                        if(is_tau)
+                        if(n_eta == 1 && n_phi == 1)
                             input = inputs.matrix<float>()(0, k);
                         else
                             input = inputs.tensor<float,4>()(0, eta, phi, k);
