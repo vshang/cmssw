@@ -908,7 +908,7 @@ public:
                             throw cms::Exception("DeepTauId") << "in the " << block_name << ", input is NaN for eta_index = "
                                                               << n_eta << ", phi_index = " << n_phi << ", input_index = " << k;
                         if(debug_level >= 2)
-                            std::cout << block_name << "," << eta << ","<< phi << "," << k << "," << std::setprecision(6) << input << '\n';
+                            std::cout << block_name << "," << eta << ","<< phi << "," << k << "," << std::setprecision(5) << std::fixed << input << '\n';
                     }
                 }
             }
