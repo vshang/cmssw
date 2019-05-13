@@ -294,7 +294,6 @@ float L1TkElectronTrackProducer::isolation(const edm::Handle<L1TTTrackCollection
   edm::Ptr<L1TTTrackType> matchedTrkPtr(trkHandle, match_index);
   L1TTTrackCollectionType::const_iterator trackIter;
 
-  if(debug) std::cout << "# of tracks: " << trkHandle->size() << " matched idx: " << match_index << std::endl;
   float sumPt = 0.0;
   int itr = 0;
 
