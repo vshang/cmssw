@@ -16,7 +16,7 @@ MuonPathFilter::MuonPathFilter(const ParameterSet& pset) {
 
 
 MuonPathFilter::~MuonPathFilter() {
-  if (debug) cout <<"MuonPathFilter: destructor" << endl;
+    if (debug) cout <<"MuonPathFilter: destructor" << endl;
 }
 
 
