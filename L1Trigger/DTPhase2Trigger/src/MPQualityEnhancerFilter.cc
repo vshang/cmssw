@@ -141,7 +141,7 @@ void MPQualityEnhancerFilter::finish() {
 void MPQualityEnhancerFilter::printmP(metaPrimitive mP){
     DTSuperLayerId slId(mP.rawId);
     std::cout<<slId<<"\t"
-	     <<" "<<setw(2)<<left<<mP.wi1
+             <<" "<<setw(2)<<left<<mP.wi1
 	     <<" "<<setw(2)<<left<<mP.wi2
 	     <<" "<<setw(2)<<left<<mP.wi3
 	     <<" "<<setw(2)<<left<<mP.wi4
