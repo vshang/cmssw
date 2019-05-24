@@ -149,10 +149,19 @@ namespace
     edm::Wrapper<l1t::L1TkTauParticleCollection> w_trktauColl;
     l1t::L1TkTauParticleRef reftrkTau ;
 
+    // L1TkPhiCandidate
+    l1t::L1TkPhiCandidateCollection trkPhiColl;
+    edm::Wrapper<l1t::L1TkPhiCandidateCollection> w_trkPhiColl;
+    l1t::L1TkPhiCandidateRef reftrkPhi;
+    //l1t::L1TkPhiCandidateRefProd refTkProdPhi;
+
+    // L1TkBsCandidate
+    l1t::L1TkBsCandidateCollection trkBsColl;
+    edm::Wrapper<l1t::L1TkBsCandidateCollection> w_trkBsColl;
+    l1t::L1TkBsCandidateRef reftrkBs;
+    //l1t::L1TkBsCandidateRefProd refTkProdBs;
     
   };
-
-
 }
 
 #endif
