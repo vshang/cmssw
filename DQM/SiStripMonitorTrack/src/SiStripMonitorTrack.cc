@@ -1244,6 +1244,7 @@ void SiStripMonitorTrack::RecHitInfo(const T* tkrecHit,
   } else {
     edm::LogError("SiStripMonitorTrack") << "NULL hit" << std::endl;
   }
+  
 }
 
 //------------------------------------------------------------------------
@@ -1498,12 +1499,14 @@ bool SiStripMonitorTrack::clusterInfos(SiStripClusterInfo* cluster,
     LogDebug("SiStripMonitorTrack") << "\n\t cosRZ " << cosRZ << std::endl;
   }
 
+
   // Filling SubDet/Layer Plots (on Track + off Track)
   float StoN = cluster->signalOverNoise();
   float noise = cluster->noiseRescaledByGain();
   uint16_t charge = cluster->charge();
   uint16_t width = cluster->width();
   float position = cluster->baryStrip();
+
 
   // Getting raw charge with strip gain.
   double chargeraw = 0;
