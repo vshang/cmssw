@@ -297,34 +297,32 @@ void PseudoBayesGrouping::RecognisePatterns(std::vector<DTPrimitive> digisinLDow
 void PseudoBayesGrouping::FillDigisByLayer(DTDigiCollection *digis) {
   //First we need to have separated lists of digis by layer
   if(debug) cout << "PseudoBayesGrouping::FillDigisByLayer Classifying digis by layer" << endl;
-  for (DTDigiCollection::DigiRangeIterator dtDigi_It=digis->begin(); dtDigi_It!=digis->end(); ++dtDigi_It) {
+  for (DTDigiCollection::DigiRangeIterator dtDigi_It=digis->begin(); dtDigi_It!=digis->end(); dtDigi_It++) {
     const DTLayerId dtLId = (*dtDigi_It).first;
     //Skip digis in SL theta which we are not interested on for the grouping
-    if (dtLId.superlayer() == 2) continue;
-
-    //This is needed because somehow everything is a dictionary of dictionaries
-    DTDigiCollection::const_iterator digiIt = ((*dtDigi_It).second).first;
-    //Need to change notation slightly here 
-    Int_t layer    = dtLId.layer() - 1;
-    if (dtLId.superlayer()==3) layer += 4;
-
-    //Use the same format as for InitialGrouping to avoid tons of replicating classes, we will have some not used variables
-    DTPrimitive dtpAux = DTPrimitive();
-    dtpAux.setTDCTime(digiIt->time());
-    dtpAux.setChannelId(digiIt->wire()-1); 
-    dtpAux.setLayerId(layer);   
-    dtpAux.setSuperLayerId(dtLId.superlayer());        
-    dtpAux.setCameraId(dtLId.rawId());
-    if (debug) cout << "Hit in L " << layer << " SL " << dtLId.superlayer() << " WIRE " << digiIt->wire() -1 << endl;
-    if      (layer == 0) digisinL0.push_back(dtpAux);
-    else if (layer == 1) digisinL1.push_back(dtpAux);
-    else if (layer == 2) digisinL2.push_back(dtpAux);
-    else if (layer == 3) digisinL3.push_back(dtpAux);
-    else if (layer == 4) digisinL4.push_back(dtpAux);
-    else if (layer == 5) digisinL5.push_back(dtpAux);
-    else if (layer == 6) digisinL6.push_back(dtpAux);
-    else if (layer == 7) digisinL7.push_back(dtpAux);
-    alldigis.push_back(dtpAux);
+    for (DTDigiCollection::const_iterator  digiIt = ((*dtDigi_It).second).first; digiIt != ((*dtDigi_It).second).second; digiIt++) {
+      //Need to change notation slightly here 
+      if (dtLId.superlayer() == 2) continue;
+      Int_t layer    = dtLId.layer() - 1;
+      if (dtLId.superlayer()==3) layer += 4;
+      //Use the same format as for InitialGrouping to avoid tons of replicating classes, we will have some not used variables
+      DTPrimitive dtpAux = DTPrimitive();
+      dtpAux.setTDCTime(digiIt->time());
+      dtpAux.setChannelId(digiIt->wire()-1); 
+      dtpAux.setLayerId(layer);   
+      dtpAux.setSuperLayerId(dtLId.superlayer());        
+      dtpAux.setCameraId(dtLId.rawId());
+      if (debug) cout << "Hit in L " << layer << " SL " << dtLId.superlayer() << " WIRE " << digiIt->wire() -1 << endl;
+      if      (layer == 0) digisinL0.push_back(dtpAux);
+      else if (layer == 1) digisinL1.push_back(dtpAux);
+      else if (layer == 2) digisinL2.push_back(dtpAux);
+      else if (layer == 3) digisinL3.push_back(dtpAux);
+      else if (layer == 4) digisinL4.push_back(dtpAux);
+      else if (layer == 5) digisinL5.push_back(dtpAux);
+      else if (layer == 6) digisinL6.push_back(dtpAux);
+      else if (layer == 7) digisinL7.push_back(dtpAux);
+      alldigis.push_back(dtpAux);
+    }
   }  
 }
 
