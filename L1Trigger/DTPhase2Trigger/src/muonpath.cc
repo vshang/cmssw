@@ -1,5 +1,27 @@
 #include "L1Trigger/DTPhase2Trigger/interface/muonpath.h"
 
+MuonPath::MuonPath() {
+  //    std::cout<<"Creando un 'MuonPath'"<<std::endl;
+    
+    quality       = NOPATH;
+    baseChannelId = -1;
+
+    for (int i = 0; i <= 8; i++) {
+      prim[i] = new DTPrimitive();     
+    }
+    
+    nprimitives = 8;
+    bxTimeValue = -1;
+    bxNumId     = -1;
+    tanPhi      = 0;
+    horizPos    = 0;
+    chiSquare   = 0;
+    for (int i = 0; i <= 8; i++) {
+      lateralComb[i] = LEFT;
+      setXCoorCell     ( 0, i );
+      setDriftDistance ( 0, i );
+    }
+}
 
 MuonPath::MuonPath(DTPrimitive *ptrPrimitive[4]) {
   //    std::cout<<"Creando un 'MuonPath'"<<std::endl;

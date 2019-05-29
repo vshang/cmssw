@@ -13,6 +13,7 @@
 class MuonPath {
 
   public:
+    MuonPath();
     MuonPath(DTPrimitive *ptrPrimitive[4]);
     MuonPath(DTPrimitive *ptrPrimitive[8], int nprimUp, int nprimDown);
     MuonPath(MuonPath *ptr);
