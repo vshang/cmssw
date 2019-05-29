@@ -163,6 +163,7 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath,std::vector<metaPrimitive>
 	evaluatePathQuality(mPath);
     }else{
 	if(debug) std::cout<<"DTp2:analyze \t\t\t\t\t no it is NOT analyzable "<<mPath->isAnalyzable()<<std::endl;
+	return;
     }
   
     int wi[8],tdc[8],lat[8];

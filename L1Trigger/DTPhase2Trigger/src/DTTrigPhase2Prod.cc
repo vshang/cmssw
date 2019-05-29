@@ -163,10 +163,10 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     if(debug) std::cout <<"\t Getting the RPC RecHits"<<std::endl;
     Handle<RPCRecHitCollection> rpcHits;
     iEvent.getByToken(rpcRecHitsLabel,rpcHits);
-
-  
-    //Santi's code
-    // GROUPING BEGIN
+    
+    ///////////////////////////////////
+    // GROUPING CODE: 
+    ////////////////////////////////
     DTDigiMap digiMap;
     DTDigiCollection::DigiRangeIterator detUnitIt;
     for (detUnitIt=dtdigis->begin(); detUnitIt!=dtdigis->end(); ++detUnitIt) {
@@ -184,21 +184,29 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
         DTDigiMap_iterator dmit = digiMap.find(chid);
         
         if (dmit !=digiMap.end()) grouping_obj->run(iEvent, iEventSetup, (*dmit).second, &muonpaths);
-    }
-    
+    }   
     digiMap.clear();
+       
     
-    
-    if ((grcode != 0)) {
-        if (debug) cout << "DTTrigPhase2Prod::produce - WARNING: non-standard grouping chosen. Further execution still not functioning." << endl;
-        return;
+    if (dump) {
+      for (unsigned int i=0; i<muonpaths.size(); i++){
+	cout << iEvent.id().event() << "      mpath " << i << ": ";
+	for (int lay=0; lay<muonpaths.at(i)->getNPrimitives(); lay++)
+	  cout << muonpaths.at(i)->getPrimitive(lay)->getChannelId() << " ";
+	for (int lay=0; lay<muonpaths.at(i)->getNPrimitives(); lay++)
+	  cout << muonpaths.at(i)->getPrimitive(lay)->getTDCTime() << " ";
+	cout << endl;	
+      }
+      cout << endl;
     }
-  
+
     // FILTER GROUPING
     std::vector<MuonPath*> filteredmuonpaths;
-    if (grcode == 0) 
+    if (grcode==0) {
       mpathredundantfilter->run(iEvent, iEventSetup, muonpaths,filteredmuonpaths);   
-    // GROUPING ENDS
+    }
+    
+    
     
     ///////////////////////////////////////////
     /// FITTING SECTION; 
@@ -247,8 +255,9 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     filteredmuonpaths.clear();
     
     
-    //FILTER SECTIONS:
-    
+    /////////////////////////////////////
+    //  FILTER SECTIONS:
+    ////////////////////////////////////
     //filtro de duplicados puro popdr'ia ir ac'a mpredundantfilter.cpp primos?
     //filtro en |tanPhi|<~1.?
 
@@ -271,7 +280,9 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     if(debug) std::cout<<"DTp2 in event:"<<iEvent.id().event()<<" we found "<<filteredMetaPrimitives.size()<<" filteredMetaPrimitives (superlayer)"<<std::endl;
     if(debug) std::cout<<"filteredMetaPrimitives: starting correlations"<<std::endl;    
     
+    /////////////////////////////////////
     //// CORRELATION: 
+    /////////////////////////////////////
     std::vector<metaPrimitive> correlatedMetaPrimitives;
     if (grcode==0) mpathassociator->run(iEvent, iEventSetup, dtdigis, filteredMetaPrimitives, correlatedMetaPrimitives);  
     else {
