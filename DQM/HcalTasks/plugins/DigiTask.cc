@@ -1296,6 +1296,7 @@ DigiTask::DigiTask(edm::ParameterSet const& ps) : DQTask(ps) {
     //if (!_filter_QIE1011.filter(did)) {
     _cSumQ_SubdetPM_QIE1011.fill(did, sumQ);
     //}
+    
     _cOccupancy_depth.fill(did);
     if (_ptype == fOnline) {
       _xNChs.get(eid)++;
