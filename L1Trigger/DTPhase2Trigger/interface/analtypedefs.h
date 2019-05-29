@@ -3,14 +3,20 @@
 #include "constants.h"
 #include <stdint.h>
 
-/* Posibles calidades de la trayectoria:
-   NOPATH => No es una trayectoria válida
-   LOWQGHOST => Igual que LOWQ con múltiples casos simultáneos
-   LOWQ   => Es una potencial trayectoria pero sólo formada por 3 puntos
-   HIGHQGHOST => Igual que HIGHQ con múltiples casos simultáneos
-   HIGHQ  => Es una trayectoria válida con 4 puntos alineados (4 celdas)
+/* Quality of the trayectories:
+   NOPATH => Not valid trayectory
+   LOWQGHOST => 3h (multiple lateralities)
+   LOWQ   => 3h
+   HIGHQGHOST => 4h (multiple lateralities)
+   HIGHQ  => 4h
+   CLOWQ  => 3h + 2h/1h
+   LOWLOWQ => 3h + 3h
+   CHIGHQ => 4h + 2h/1h
+   HIGHLOWQ => 4h + 3h
+   HIGHHIGHQ => 4h + 4h
 */
-typedef enum {NOPATH = 0, LOWQGHOST, LOWQ, HIGHQGHOST, HIGHQ} MP_QUALITY;
+typedef enum {NOPATH = 0, LOWQGHOST, LOWQ, HIGHQGHOST, HIGHQ, CLOWQ, LOWLOWQ, CHIGHQ, HIGHLOWQ, HIGHHIGHQ} MP_QUALITY;
+
 // Tipos de lateralidad de traza de partícula al pasar por una celda
 typedef enum {LEFT=0, RIGHT, NONE} LATERAL_CASES;
 struct metaPrimitive

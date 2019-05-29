@@ -1,37 +1,11 @@
 #include "L1Trigger/DTPhase2Trigger/interface/muonpath.h"
 
-#include <cstring>  // Para función "memcpy"
-#include "math.h"
-#include <iostream>
-
-MuonPath::MuonPath() {
-  //    std::cout<<"Creando un 'MuonPath'"<<std::endl;
-    
-    quality[0]       = NOPATH;
-    baseChannelId[0] = -1;
-
-    for (int i = 0; i <= 3; i++) {
-      prim[i] = new DTPrimitive();     
-    }
-    
-    nprimitives = 4;
-    bxTimeValue[0] = -1;
-    bxNumId[0]     = -1;
-    tanPhi[0]      = 0;
-    horizPos[0]    = 0;
-    chiSquare[0]   = 0;
-    for (int i = 0; i <= 3; i++) {
-      lateralComb[0][i] = LEFT;
-      setXCoorCell     ( 0, i );
-      setDriftDistance ( 0, i );
-    }
-}
 
 MuonPath::MuonPath(DTPrimitive *ptrPrimitive[4]) {
   //    std::cout<<"Creando un 'MuonPath'"<<std::endl;
   
-  quality[0]       = NOPATH;
-  baseChannelId[0] = -1;
+  quality       = NOPATH;
+  baseChannelId = -1;
 
   for (int i = 0; i <= 3; i++) {
     if ( (prim[i] = ptrPrimitive[i]) == NULL )
@@ -42,16 +16,16 @@ MuonPath::MuonPath(DTPrimitive *ptrPrimitive[4]) {
   //Dummy values
   nprimitivesUp = 0;
   nprimitivesDown = 0;
-  bxTimeValue[0] = -1;
-  bxNumId[0]     = -1;
-  tanPhi[0]      = 0;
-  horizPos[0]    = 0;
-  chiSquare[0]   = 0;
-  Phi[0]         = 0;
-  PhiB[0]        = 0;
+  bxTimeValue = -1;
+  bxNumId     = -1;
+  tanPhi      = 0;
+  horizPos    = 0;
+  chiSquare   = 0;
+  Phi         = 0;
+  PhiB        = 0;
   rawId          = 0;
   for (int i = 0; i <= 3; i++) {
-    lateralComb[0][i] = LEFT;
+    lateralComb[i] = LEFT;
     setXCoorCell     ( 0, i );
     setDriftDistance ( 0, i );
   }
@@ -63,19 +37,18 @@ MuonPath::MuonPath(DTPrimitive *ptrPrimitive[8], int nprimUp, int nprimDown) {
   nprimitivesUp   = nprimUp;
   nprimitivesDown = nprimDown;
   rawId           = 0;
-  for (int i=1; i<=2; i++){
-    quality[i]       = NOPATH;
-    baseChannelId[i] = -1;
-    bxTimeValue[i] = -1;
-    bxNumId[i]     = -1;
-    tanPhi[i]      = 0;
-    horizPos[i]    = 0;
-    chiSquare[i]   = 0;
-    Phi[i]         = 0;
-    PhiB[i]        = 0;
-    for (int l = 0; l <= 3; l++) {
-      lateralComb[i][l] = LEFT;
-    }
+
+  quality       = NOPATH;
+  baseChannelId = -1;
+  bxTimeValue = -1;
+  bxNumId     = -1;
+  tanPhi      = 0;
+  horizPos    = 0;
+  chiSquare   = 0;
+  Phi         = 0;
+  PhiB        = 0;
+  for (int l = 0; l <= 3; l++) {
+    lateralComb[l] = LEFT;
   }
   for (short i = 0; i < nprimitives; i++) {
     if ( (prim[i] = ptrPrimitive[i]) == NULL ){
@@ -88,22 +61,28 @@ MuonPath::MuonPath(DTPrimitive *ptrPrimitive[8], int nprimUp, int nprimDown) {
 }
 
 MuonPath::MuonPath(MuonPath *ptr) {
-  //  std::cout<<"Clonando un 'MuonPath'"<<std::endl;
+  //  std::cout<<"Clonando un 'MuonPath'"<<std::endl;  
+
+  setNPrimitives         ( ptr->getNPrimitives()          );
+  setNPrimitivesUp       ( ptr->getNPrimitivesUp()        );
+  setNPrimitivesDown     ( ptr->getNPrimitivesDown()      );
+  
   setQuality             ( ptr->getQuality()              );
   setBaseChannelId       ( ptr->getBaseChannelId()        );
   setCellHorizontalLayout( ptr->getCellHorizontalLayout() );
-  setNPrimitives         ( ptr->getNPrimitives()          );
-
-  for (int i = 0; i < ptr->getNPrimitives(); i++)
-    setPrimitive( new DTPrimitive(ptr->getPrimitive(i)), i );
-
+  
   setLateralComb ( ptr->getLateralComb() );
   setBxTimeValue ( ptr->getBxTimeValue() );
   setTanPhi      ( ptr->getTanPhi()      );
   setHorizPos    ( ptr->getHorizPos()    );
   setChiSq       ( ptr->getChiSq()       );
+  setPhi         ( ptr->getPhi()         );
+  setPhiB        ( ptr->getPhiB()        );
+  setRawId       ( ptr->getRawId()       ); 
 
-  for (int i = 0; i <  ptr->getNPrimitives(); i++) {
+  for (int i = 0; i < ptr->getNPrimitives(); i++){ 
+    setPrimitive( new DTPrimitive(ptr->getPrimitive(i)), i );
+    
     setXCoorCell     ( ptr->getXCoorCell(i), i     );
     setDriftDistance ( ptr->getDriftDistance(i), i );
   }
@@ -129,81 +108,31 @@ void MuonPath::setPrimitive(DTPrimitive *ptr, int layer){
 
 DTPrimitive *MuonPath::getPrimitive(int layer) { return prim[layer]; }
 
-void MuonPath::setCellHorizontalLayout(int layout[4]){
+void MuonPath::setCellHorizontalLayout(int layout[8]){
   //  std::cout << "setCellHorizontalLayout" << std::endl;
-  for (int i=0; i<=3; i++)
-    cellLayout[0][i] = layout[i];
+  for (int i=0; i<nprimitives; i++)
+    cellLayout[i] = layout[i];
 }
 
 void MuonPath::setCellHorizontalLayout(const int *layout){
   //  std::cout << "setCellHorizontalLayout2" << std::endl;
-  for (int i=0; i<=3; i++)
-    cellLayout[0][i] = layout[i];
+  for (int i=0; i<nprimitives; i++)
+    cellLayout[i] = layout[i];
 }
 
-void MuonPath::setCellHorizontalLayout(int layout[4], short sl){
-  int idx=0;
-  if      (sl==0) idx=1; 
-  else if (sl==2) idx=2; 
-  
-  for (int i=0; i<=3; i++)
-    cellLayout[idx][i] = layout[i];
-}
-
-void MuonPath::setCellHorizontalLayout(const int *layout, short sl){
-  int idx=0;
-  if      (sl==0) idx=1; 
-  else if (sl==2) idx=2; 
-  
-  for (int i=0; i<=3; i++)
-    cellLayout[idx][i] = layout[i];
-}
-
-const int* MuonPath::getCellHorizontalLayout(void) { return (cellLayout[0]); }
-const int* MuonPath::getCellHorizontalLayout(short sl) { 
-  if (sl==0) return (cellLayout[1]); 
-  if (sl==2) return (cellLayout[2]); 
-
-  return  getCellHorizontalLayout();
-}
+const int* MuonPath::getCellHorizontalLayout(void) { return (cellLayout); }
 
 /**
  * Devuelve el identificador del canal que está en la base del BTI (en la capa
  * inferior del MuonPath)
  */
-int MuonPath::getBaseChannelId(void) { return baseChannelId[0]; }
-void MuonPath::setBaseChannelId(int bch) { baseChannelId[0] = bch; }
+int MuonPath::getBaseChannelId(void) { return baseChannelId; }
+void MuonPath::setBaseChannelId(int bch) { baseChannelId = bch; }
 
-int MuonPath::getBaseChannelId(short sl) { 
-  if (sl==0) return baseChannelId[1]; 
-  if (sl==2) return baseChannelId[2]; 
-  return getBaseChannelId();
-}
-void MuonPath::setBaseChannelId(int bch, short sl) { 
-  if (sl==0) baseChannelId[1] = bch; 
-  if (sl==2) baseChannelId[2] = bch; 
-  setBaseChannelId(bch);
-}
 
-void MuonPath::setQuality(MP_QUALITY qty) { quality[0] = qty; }
-MP_QUALITY MuonPath::getQuality(void) { return quality[0]; }
+void MuonPath::setQuality(MP_QUALITY qty) { quality = qty; }
+MP_QUALITY MuonPath::getQuality(void) { return quality; }
 
-void MuonPath::setQuality(MP_QUALITY qty, short sl) { 
-  // SL values are 0, 1 or 2
-  if      (sl==0) quality[1] = qty;
-  else if (sl==2) quality[2] = qty;
-  else {
-    setQuality(qty);
-  }
-}
-
-MP_QUALITY MuonPath::getQuality(short sl) { 
-  if      (sl==0) return quality[1];
-  else if (sl==2) return quality[2];
-  else {
-    return getQuality();
-  }
-}
 
 /**
  * Devuelve TRUE si el objeto apuntado por "ptr" tiene los mismos valores de
@@ -225,32 +154,32 @@ bool MuonPath::isEqualTo(MuonPath *ptr) {
      * haya cambiado la lateralidad.
      */
   for (int i = 0; i < ptr->getNPrimitives(); i++) {
-	/* Ambas válidas: comprobamos diferencias entre 'hits' */
-	if (this->getPrimitive(i)->isValidTime() && ptr->getPrimitive(i)->isValidTime() )
-	    {
-		if (ptr->getPrimitive(i)->getSuperLayerId() != this->getPrimitive(i)->getSuperLayerId() ||
-        
-		    ptr->getPrimitive(i)->getChannelId() != this->getPrimitive(i)->getChannelId()    ||
-
-		    ptr->getPrimitive(i)->getTDCTime() != this->getPrimitive(i)->getTDCTime()      ||
-
-		    /* Esta condición no debería cumplirse nunca ya que en un 'Segment'
-		     * no tendrían que aparecer jamás 'hits' de distintar orbitas.
-		     * En ese caso habría un error en el mixer.
-		     */
-		    ptr->getPrimitive(i)->getOrbit() !=  this->getPrimitive(i)->getOrbit() || (ptr->getLateralComb())[i] != (this->getLateralComb())[i]
-		    ) 
-		    return false;
-	    }
-	else {
-	    /* Ambas inválidas: pasamos al siguiente hit */
-	    if (!this->getPrimitive(i)->isValidTime() && 
-		!ptr->getPrimitive(i)->isValidTime()) continue;
-	    /* Una válida y la otra no: son diferentes por definición */
-	    else
-		return false;
-	}
+    /* Ambas válidas: comprobamos diferencias entre 'hits' */
+    if (this->getPrimitive(i)->isValidTime() && ptr->getPrimitive(i)->isValidTime() )
+      {
+	if (ptr->getPrimitive(i)->getSuperLayerId() != this->getPrimitive(i)->getSuperLayerId() ||
+	    
+	    ptr->getPrimitive(i)->getChannelId() != this->getPrimitive(i)->getChannelId()    ||
+	    
+	    ptr->getPrimitive(i)->getTDCTime() != this->getPrimitive(i)->getTDCTime()      ||
+	    
+	    /* Esta condición no debería cumplirse nunca ya que en un 'Segment'
+	     * no tendrían que aparecer jamás 'hits' de distintar orbitas.
+	     * En ese caso habría un error en el mixer.
+	     */
+	    ptr->getPrimitive(i)->getOrbit() !=  this->getPrimitive(i)->getOrbit() || (ptr->getLateralComb())[i] != (this->getLateralComb())[i]
+	    ) 
+	  return false;
+      }
+    else {
+      /* Ambas inválidas: pasamos al siguiente hit */
+      if (!this->getPrimitive(i)->isValidTime() && 
+	  !ptr->getPrimitive(i)->isValidTime()) continue;
+      /* Una válida y la otra no: son diferentes por definición */
+      else
+	return false;
     }
+  }
     /*
      * Si se parte de los mismos valores de TDC en las mismas celdas, y se somete
      * al mismo análisis, han de arrojar idénticos resultados.
@@ -267,7 +196,7 @@ bool MuonPath::isEqualTo(MuonPath *ptr) {
      */
     // if ( ptr->getBaseChannelId() != this->getBaseChannelId() ) return false;
 
-    return true;
+  return true;
 }
 
 /** Este método indica si, al menos, 3 primitivas tienen valor válido, por lo
@@ -277,209 +206,106 @@ bool MuonPath::isEqualTo(MuonPath *ptr) {
  * implementación con lógica combinacional que tendría en la FPGA.
  */
 bool MuonPath::isAnalyzable(void) {
-    return (
-	    (prim[0]->isValidTime() && prim[1]->isValidTime() &&
-	     prim[2]->isValidTime()) ||
-	    (prim[0]->isValidTime() && prim[1]->isValidTime() &&
-	     prim[3]->isValidTime()) ||
-	    (prim[0]->isValidTime() && prim[2]->isValidTime() &&
-	     prim[3]->isValidTime()) ||
-	    (prim[1]->isValidTime() && prim[2]->isValidTime() &&
-	     prim[3]->isValidTime())
-	    );
+
+  short countValidHits(0);
+  for (int i=0; i<nprimitives; i++) {
+    if (this->getPrimitive(i)->isValidTime())      countValidHits++;
+  }
+  
+  return ( (countValidHits>=3  && nprimitives <= 4) ||
+	   (countValidHits>=4  && nprimitives >  4));
 }
 
-bool MuonPath::isAnalyzable(short sl) {
-  if (sl==0) {
-    return (
-	    (prim[0]->isValidTime() && prim[1]->isValidTime() &&  prim[2]->isValidTime()) ||
-	    (prim[0]->isValidTime() && prim[1]->isValidTime() &&  prim[3]->isValidTime()) ||
-	    (prim[0]->isValidTime() && prim[2]->isValidTime() &&  prim[3]->isValidTime()) ||
-	    (prim[1]->isValidTime() && prim[2]->isValidTime() &&  prim[3]->isValidTime()) 
-	    );
-  }
-  else if (sl==2){
-    return (
-	    (prim[4]->isValidTime() && prim[5]->isValidTime() &&  prim[6]->isValidTime()) ||
-	    (prim[4]->isValidTime() && prim[5]->isValidTime() &&  prim[7]->isValidTime()) ||
-	    (prim[4]->isValidTime() && prim[6]->isValidTime() &&  prim[7]->isValidTime()) ||
-	    (prim[5]->isValidTime() && prim[6]->isValidTime() &&  prim[7]->isValidTime()) 
-	    );
-  }
-  else 
-    return isAnalyzable();
-}
 /**
  * Informa si las 4 DTPrimitives que formas el MuonPath tiene un 'TimeStamp'
  * válido.
  *
  */
 bool MuonPath::completeMP(void) {
-    return (prim[0]->isValidTime() && prim[1]->isValidTime() &&
-	    prim[2]->isValidTime() && prim[3]->isValidTime());
+  short countValidHits(0);
+  for (int i=0; i<nprimitives; i++) {
+    if (prim[i]->isValidTime())      countValidHits++;
+  }
+  
+  return (countValidHits==8 || (countValidHits==4 && nprimitives==4));
+  
 }
 
-bool MuonPath::completeMP(short sl) {
-  if (sl==0) 
-    return (prim[0]->isValidTime() && prim[1]->isValidTime() &&
-	    prim[2]->isValidTime() && prim[3]->isValidTime());
-  if (sl==2) 
-    return (prim[4]->isValidTime() && prim[5]->isValidTime() &&
-	    prim[6]->isValidTime() && prim[7]->isValidTime());
-  
-  return completeMP();
-}
 
 void MuonPath::setBxTimeValue(int time) {
-    bxTimeValue[0] = time;
+    bxTimeValue = time;
 
     float auxBxId = float(time) / LHC_CLK_FREQ;
-    bxNumId[0] = int(auxBxId);
-    if ( (auxBxId - int(auxBxId)) >= 0.5 ) bxNumId[0] = int(bxNumId[0] + 1);
+    bxNumId = int(auxBxId);
+    if ( (auxBxId - int(auxBxId)) >= 0.5 ) bxNumId = int(bxNumId + 1);
 }
 
-void MuonPath::setBxTimeValue(int time, short sl) {
-  int idx=0; 
-  if (sl==0) idx=1;
-  if (sl==2) idx=2;
-  
-  bxTimeValue[idx] = time;
-  float auxBxId = float(time) / LHC_CLK_FREQ;
-  bxNumId[idx] = int(auxBxId);
-  if ( (auxBxId - int(auxBxId)) >= 0.5 ) bxNumId[idx] = int(bxNumId[idx] + 1);
-}
 
-int MuonPath::getBxTimeValue(void) { return bxTimeValue[0]; }
-int MuonPath::getBxNumId(void) { return bxNumId[0]; }
+int MuonPath::getBxTimeValue(void) { return bxTimeValue; }
+int MuonPath::getBxNumId(void) { return bxNumId; }
 
-int MuonPath::getBxTimeValue(short sl) { 
-  if (sl==0) return bxTimeValue[1]; 
-  if (sl==2) return bxTimeValue[2]; 
-  return getBxTimeValue();
-}
-int MuonPath::getBxNumId(short sl) { 
-  if (sl==0) return bxNumId[1]; 
-  if (sl==2) return bxNumId[2]; 
-  return getBxNumId();
-}
 
 /* Este método será invocado por el analizador para rellenar la información
    sobre la combinación de lateralidad que ha dado lugar a una trayectoria
    válida. Antes de ese momento, no tiene utilidad alguna */
 
 void MuonPath::setLateralCombFromPrimitives(void) {
+  
   for (int i=0; i<nprimitives; i++){
-    if (!this->getPrimitive(i)->isValidTime()) continue;
-    
-    if (i<4)  lateralComb[1][i]             = this->getPrimitive(i)->getLaterality();
-    if (i>=4) lateralComb[2][nprimitives-i] = this->getPrimitive(i)->getLaterality();
+    if (this->getPrimitive(i)->isValidTime()) { 
+      lateralComb[i] = this->getPrimitive(i)->getLaterality();      
+    }
+    else { 
+      lateralComb[i] = NONE;
+    }
   }
 }
 
-void MuonPath::setLateralComb(LATERAL_CASES latComb[4]) {
-  for (int i=0; i<=3; i++)
-    lateralComb[0][i] = latComb[i];
+void MuonPath::setLateralComb(LATERAL_CASES latComb[8]) {
+  for (int i=0; i<nprimitives; i++)
+    lateralComb[i] = latComb[i];
 }
 
 void MuonPath::setLateralComb(const LATERAL_CASES *latComb) {
-  for (int i=0; i<=3; i++)
-    lateralComb[0][i] = latComb[i];
+  for (int i=0; i<nprimitives; i++)
+    lateralComb[i] = latComb[i];
 }
 
 const LATERAL_CASES* MuonPath::getLateralComb(void) { 
-    return (lateralComb[0]); 
+    return (lateralComb); 
 }
 
-void MuonPath::setLateralComb(LATERAL_CASES latComb[4],short sl) {
-  if (sl==0)      memcpy(lateralComb[1], latComb, 4 * sizeof(LATERAL_CASES));
-  else if (sl==2) memcpy(lateralComb[2], latComb, 4 * sizeof(LATERAL_CASES));
-  else            memcpy(lateralComb[0], latComb, 4 * sizeof(LATERAL_CASES)); 
-    
-}
 
-void MuonPath::setLateralComb(const LATERAL_CASES *latComb, short sl) {
-  if (sl==0)      memcpy(lateralComb[1], latComb, 4 * sizeof(LATERAL_CASES));
-  else if (sl==2) memcpy(lateralComb[2], latComb, 4 * sizeof(LATERAL_CASES));
-  else            memcpy(lateralComb[0], latComb, 4 * sizeof(LATERAL_CASES)); 
-}
 
-const LATERAL_CASES* MuonPath::getLateralComb(short sl) { 
-  if (sl==0) return (lateralComb[1]); 
-  if (sl==2) return (lateralComb[2]); 
-  return getLateralComb();
-}
+void  MuonPath::setHorizPos(float pos) { horizPos = pos; }
+float MuonPath::getHorizPos(void) { return horizPos; }
 
-void  MuonPath::setHorizPos(float pos) { horizPos[0] = pos; }
-float MuonPath::getHorizPos(void) { return horizPos[0]; }
 
-void  MuonPath::setHorizPos(float pos, short sl) { 
-  if      (sl==0) horizPos[1] = pos; 
-  else if (sl==2) horizPos[2] = pos; 
-  else            horizPos[0] = pos; 
-}
-float MuonPath::getHorizPos(short sl) { 
-  if (sl==0) return horizPos[1];
-  if (sl==2) return horizPos[2];
-  return getHorizPos();
-}
+void  MuonPath::setTanPhi(float tanPhi) { this->tanPhi = tanPhi; }
+float MuonPath::getTanPhi(void) { return tanPhi; }
 
-void  MuonPath::setTanPhi(float tanPhi) { this->tanPhi[0] = tanPhi; }
-float MuonPath::getTanPhi(void) { return tanPhi[0]; }
 
-void  MuonPath::setTanPhi(float tanPhi, short sl) { 
-  if      (sl==0) this->tanPhi[1] = tanPhi;
-  else if (sl==2) this->tanPhi[2] = tanPhi;
-  else            this->tanPhi[0] = tanPhi;
-}
-float MuonPath::getTanPhi(short sl) { 
-  if (sl==0) return tanPhi[1];
-  if (sl==2) return tanPhi[2];
-  return getTanPhi();
-}
+void  MuonPath::setChiSq(float chi) { chiSquare = chi;  }
+float MuonPath::getChiSq(void)      { return chiSquare; }
 
-void  MuonPath::setChiSq(float chi) { chiSquare[0] = chi;  }
-float MuonPath::getChiSq(void)      { return chiSquare[0]; }
+void  MuonPath::setPhi(float phi) { Phi = phi;  }
+float MuonPath::getPhi(void)      { return Phi; }
 
-void  MuonPath::setChiSq(float chi, short sl) {
-  if      (sl==0) chiSquare[1] = chi;
-  else if (sl==2) chiSquare[2] = chi;
-  else            chiSquare[0] = chi;
-}
-float MuonPath::getChiSq(short sl)      { 
-  if (sl==0) return chiSquare[1];
-  if (sl==2) return chiSquare[2];
-  return getChiSq();
-}
-void  MuonPath::setPhi(float phi) { Phi[0] = phi;  }
-float MuonPath::getPhi(void)      { return Phi[0]; }
 
-void  MuonPath::setPhi(float phi, short sl) {
-  if      (sl==0) Phi[1] = phi;
-  else if (sl==2) Phi[2] = phi;
-  else            Phi[0] = phi;
-}
-float MuonPath::getPhi(short sl)      { 
-  if (sl==0) return Phi[1];
-  if (sl==2) return Phi[2];
-  return getPhi();
-}
+void  MuonPath::setPhiB(float phib) { PhiB = phib;  }
+float MuonPath::getPhiB(void)      { return PhiB; }
 
-void  MuonPath::setPhiB(float phib) { PhiB[0] = phib;  }
-float MuonPath::getPhiB(void)      { return PhiB[0]; }
-
-void  MuonPath::setPhiB(float phib, short sl) {
-  if      (sl==0) PhiB[1] = phib;
-  else if (sl==2) PhiB[2] = phib;
-  else            PhiB[0] = phib;
-}
-float MuonPath::getPhiB(short sl)      { 
-  if (sl==0) return PhiB[1];
-  if (sl==2) return PhiB[2];
-  return getPhiB();
-}
 
 void  MuonPath::setXCoorCell(float x, int cell) { xCoorCell[cell] = x;    }
 float MuonPath::getXCoorCell(int cell)          { return xCoorCell[cell]; }
+
+void  MuonPath::setXWirePos(float x, int cell) { xWirePos[cell] = x;    }
+float MuonPath::getXWirePos(int cell)          { return xWirePos[cell]; }
+void  MuonPath::setZWirePos(float z, int cell) { zWirePos[cell] = z;    }
+float MuonPath::getZWirePos(int cell)          { return zWirePos[cell]; }
+void  MuonPath::settWireTDC(float t, int cell) { tWireTDC[cell] = t;    }
+float MuonPath::gettWireTDC(int cell)          { return tWireTDC[cell]; }
+
 
 void  MuonPath::setDriftDistance(float dx, int cell) {
     xDriftDistance[cell] = dx;
