@@ -13,6 +13,10 @@ namespace deep_tau {
   constexpr int NumberOfOutputs = 4;
 }
 
+namespace deep_tau {
+    constexpr int NumberOfOutputs = 4;
+}
+
 namespace {
 
   struct dnn_inputs_2017v1 {

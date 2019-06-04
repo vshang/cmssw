@@ -24,7 +24,6 @@
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
 #include "FWCore/ParameterSet/interface/ParameterSetDescription.h"
 #include <TF1.h>
-#include <boost/math/constants/constants.hpp>
 
 namespace deep_tau {
 
