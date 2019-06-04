@@ -13,8 +13,8 @@ MuonPathAnalyzerInChamber::MuonPathAnalyzerInChamber(const ParameterSet& pset) :
   MuonPathAnalyzer(pset),
   debug(pset.getUntrackedParameter<Bool_t>("debug")),
   chi2Th(pset.getUntrackedParameter<double>("chi2Th")),    
-  z_filename(pset.getUntrackedParameter<std::string>("z_filename")),
-  shift_filename(pset.getUntrackedParameter<std::string>("shift_filename")),  
+  z_filename(pset.getParameter<edm::FileInPath>("z_filename")),
+  shift_filename(pset.getParameter<edm::FileInPath>("shift_filename")),  
   bxTolerance(30),
   minQuality(LOWQGHOST),
   chiSquareThreshold(50)
@@ -68,6 +68,7 @@ void MuonPathAnalyzerInChamber::initialise(const edm::EventSetup& iEventSetup) {
 }
 
 void MuonPathAnalyzerInChamber::run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &muonpaths, std::vector<MuonPath*> &outmuonpaths) {
+  debug=true;
   if (debug) cout <<"MuonPathAnalyzerInChamber: run" << endl;
   
   // fit per SL (need to allow for multiple outputs for a single mpath)

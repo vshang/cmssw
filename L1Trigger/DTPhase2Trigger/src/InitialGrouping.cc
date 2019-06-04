@@ -17,7 +17,6 @@ InitialGrouping::InitialGrouping(const ParameterSet& pset):
   debug         = pset.getUntrackedParameter<Bool_t>("debug");
   if (debug) cout <<"InitialGrouping: constructor" << endl;
   
-  txt_ttrig_bc0 = pset.getUntrackedParameter<Bool_t>("apply_txt_ttrig_bc0");
   
   // Initialisation of channelIn array
   for (Int_t lay = 0; lay < NUM_LAYERS; lay++) {
@@ -26,18 +25,7 @@ InitialGrouping::InitialGrouping(const ParameterSet& pset):
       channelIn[lay][ch].clear();
     }
   }
-  
-  // Initialisation of ttriginfo array
-  if (txt_ttrig_bc0) {
-    Int_t rawId;
-    ttrig_filename = pset.getUntrackedParameter<std::string>("ttrig_filename");
-    std::ifstream ifin(ttrig_filename.c_str());
-    Float_t ttrig;
-    while (ifin.good()) {
-      ifin >> rawId >> ttrig;
-      ttriginfo[rawId] = ttrig;
-    }
-  }
+ 
 }
 
 
@@ -130,9 +118,7 @@ void InitialGrouping::setInChannels(DTDigiCollection *digis, Int_t sl) {
       Int_t layer    = dtLId.layer() - 1;
       Int_t wire     = (*digiIt).wire() - 1;
       Int_t digiTIME = (*digiIt).time();
-      //if(txt_ttrig_bc0) digiTIME = digiTIME -ttriginfo[thisWireId.rawId()];
       Int_t digiTIMEPhase2 =  digiTIME;
-      //if(txt_ttrig_bc0) digiTIMEPhase2 = digiTIMEPhase2 + bx25;//correction done in previous step to be updated!
 
       // if (debug) cout << "DTp2::setInChannels --> reading digis in L"<<layer << " Ch" << wire << endl;
       
