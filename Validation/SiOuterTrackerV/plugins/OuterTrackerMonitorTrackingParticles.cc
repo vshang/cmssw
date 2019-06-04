@@ -95,7 +95,7 @@ void OuterTrackerMonitorTrackingParticles::analyze(const edm::Event &iEvent, con
     this_tp++;
 
     int tmp_eventid = iterTP.eventId().event();
-    float tmp_tp_pt = iterTP.pt();
+    float tmp_tp_pt  = iterTP.pt();
     float tmp_tp_phi = iterTP.phi();
     float tmp_tp_eta = iterTP.eta();
 
