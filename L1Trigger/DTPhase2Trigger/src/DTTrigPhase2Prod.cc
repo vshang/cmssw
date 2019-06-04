@@ -95,7 +95,12 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset){
         grouping_obj = new InitialGrouping(pset);
     }
     
-    mpathanalyzer        = new MuonPathAnalyzerPerSL(pset);
+    if (grcode==0)     
+      mpathanalyzer        = new MuonPathAnalyzerPerSL(pset);
+    else 
+      mpathanalyzer        = new MuonPathAnalyzerInChamber(pset);      
+    
+    
     mpathqualityenhancer = new MPQualityEnhancerFilter(pset);
     mpathredundantfilter = new MPRedundantFilter(pset);
     mpathassociator      = new MuonPathAssociator(pset);
@@ -186,7 +191,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
         if (dmit !=digiMap.end()) grouping_obj->run(iEvent, iEventSetup, (*dmit).second, &muonpaths);
     }   
     digiMap.clear();
-       
+    
     
     if (dump) {
       for (unsigned int i=0; i<muonpaths.size(); i++){
@@ -206,20 +211,33 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
       mpathredundantfilter->run(iEvent, iEventSetup, muonpaths,filteredmuonpaths);   
     }
     
+    if (dump) {
+      for (unsigned int i=0; i<filteredmuonpaths.size(); i++){
+	cout << iEvent.id().event() << "filt. mpath " << i << ": ";
+	for (int lay=0; lay<filteredmuonpaths.at(i)->getNPrimitives(); lay++)
+	  cout << filteredmuonpaths.at(i)->getPrimitive(lay)->getChannelId() << " ";
+	for (int lay=0; lay<filteredmuonpaths.at(i)->getNPrimitives(); lay++)
+	  cout << filteredmuonpaths.at(i)->getPrimitive(lay)->getTDCTime() << " ";
+	cout << endl;	
+      }
+      cout << endl;
+    }
     
     
     ///////////////////////////////////////////
     /// FITTING SECTION; 
     ///////////////////////////////////////////
-    if(debug) cout << "MUON PATHS found: " << filteredmuonpaths.size() <<" in event"<<iEvent.id().event()<<endl;
+    if(debug) cout << "MUON PATHS found: " << muonpaths.size() << " ("<< filteredmuonpaths.size() <<") in event "<< iEvent.id().event()<<endl;
     if(debug) std::cout<<"filling NmetaPrimtives"<<std::endl;
     std::vector<metaPrimitive> metaPrimitives;
     std::vector<MuonPath*> outmpaths;
-    if (grcode == 0 ) {
+    if (grcode==0) {
+      if (debug) cout << "Fitting 1SL " << endl;      
       mpathanalyzer->run(iEvent, iEventSetup,  filteredmuonpaths, metaPrimitives);  
     }
-    else              {
+    else   {
       // implementation for advanced (2SL) grouping, no filter required..
+      if (debug) cout << "Fitting 2SL at once " << endl;
       mpathanalyzer->run(iEvent, iEventSetup,  muonpaths, outmpaths);   
     }
       

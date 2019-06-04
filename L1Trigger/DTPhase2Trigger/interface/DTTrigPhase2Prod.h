@@ -23,6 +23,7 @@
 #include "L1Trigger/DTPhase2Trigger/interface/PseudoBayesGrouping.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzer.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzerPerSL.h"
+#include "L1Trigger/DTPhase2Trigger/interface/MuonPathAnalyzerInChamber.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MuonPathAssociator.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MuonPathFilter.h"
 #include "L1Trigger/DTPhase2Trigger/interface/MPQualityEnhancerFilter.h"

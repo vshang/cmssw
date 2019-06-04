@@ -72,19 +72,15 @@ class MuonPathAnalyzerInChamber : public MuonPathAnalyzer {
   edm::ESHandle<DTGeometry> dtGeo;
 
   //ttrig
-  std::string ttrig_filename;
   std::map<int,float> ttriginfo;
   
   //z 
-  std::string z_filename;
   std::map<int,float> zinfo;
   
   //shift
-  std::string shift_filename;
   std::map<int,float> shiftinfo;
-  
-  int chosen_sl;
-  
+ 
+ 
  private:
   
   // Private methods
@@ -128,6 +124,8 @@ class MuonPathAnalyzerInChamber : public MuonPathAnalyzer {
 
   Bool_t debug;
   double chi2Th;
+  edm::FileInPath z_filename;
+  edm::FileInPath shift_filename;
   int bxTolerance;
   MP_QUALITY minQuality;
   float chiSquareThreshold;

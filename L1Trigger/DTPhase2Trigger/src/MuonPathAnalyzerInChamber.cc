@@ -11,42 +11,46 @@ using namespace std;
 // ============================================================================
 MuonPathAnalyzerInChamber::MuonPathAnalyzerInChamber(const ParameterSet& pset) :
   MuonPathAnalyzer(pset),
+  debug(pset.getUntrackedParameter<Bool_t>("debug")),
+  chi2Th(pset.getUntrackedParameter<double>("chi2Th")),    
+  z_filename(pset.getUntrackedParameter<std::string>("z_filename")),
+  shift_filename(pset.getUntrackedParameter<std::string>("shift_filename")),  
   bxTolerance(30),
   minQuality(LOWQGHOST),
   chiSquareThreshold(50)
 {
   // Obtention of parameters
-  debug         = pset.getUntrackedParameter<Bool_t>("debug");
+  
   if (debug) cout <<"MuonPathAnalyzer: constructor" << endl;
 
-  chi2Th = pset.getUntrackedParameter<double>("chi2Th");  
+  
   setChiSquareThreshold(chi2Th*100.); 
 
   //z
   int rawId;
-  z_filename = pset.getUntrackedParameter<std::string>("z_filename");
-  std::ifstream ifin2(z_filename.c_str());
+  std::ifstream ifin2(z_filename.fullPath());
   double z;
+  if (ifin2.fail()) {
+      throw cms::Exception("Missing Input File")
+        << "MuonPathAnalyzerInChamber::MuonPathAnalyzerInChamber() -  Cannot find " << z_filename.fullPath();
+  }
   while (ifin2.good()){
     ifin2 >> rawId >> z;
     zinfo[rawId]=z;
   }
 
   //shift
-  shift_filename = pset.getUntrackedParameter<std::string>("shift_filename");
-  std::ifstream ifin3(shift_filename.c_str());
+  std::ifstream ifin3(shift_filename.fullPath());
   double shift;
+  if (ifin3.fail()) {
+    throw cms::Exception("Missing Input File")
+      << "MuonPathAnalyzerInChamber::MuonPathAnalyzerInChamber() -  Cannot find " << shift_filename.fullPath();
+  }
   while (ifin3.good()){
     ifin3 >> rawId >> shift;
     shiftinfo[rawId]=shift;
   }
 
-  chosen_sl = pset.getUntrackedParameter<int>("trigger_with_sl");
-
-  if(chosen_sl!=1 && chosen_sl!=3 && chosen_sl!=4){
-    std::cout<<"chosen sl must be 1,3 or 4(both superlayers)"<<std::endl;
-    assert(chosen_sl!=1 && chosen_sl!=3 && chosen_sl!=4); //4 means run using the two superlayers
-  }
 }
 
 MuonPathAnalyzerInChamber::~MuonPathAnalyzerInChamber() {
@@ -65,7 +69,7 @@ void MuonPathAnalyzerInChamber::initialise(const edm::EventSetup& iEventSetup) {
 
 void MuonPathAnalyzerInChamber::run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &muonpaths, std::vector<MuonPath*> &outmuonpaths) {
   if (debug) cout <<"MuonPathAnalyzerInChamber: run" << endl;
-
+  
   // fit per SL (need to allow for multiple outputs for a single mpath)
   for(auto muonpath = muonpaths.begin();muonpath!=muonpaths.end();++muonpath) {
     analyze(*muonpath, outmuonpaths);

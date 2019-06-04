@@ -15,6 +15,7 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                p2_df = cms.untracked.int32(2), #0 for phase-1, 1 for slice-test, 2 for phase-2 carlo-federica
                                                filter_cousins = cms.untracked.bool(True),
                                                apply_txt_ttrig_bc0 = cms.untracked.bool(False),
+
                                                ttrig_filename = cms.FileInPath('L1Trigger/DTPhase2Trigger/data/wire_rawId_ttrig.txt'),
                                                z_filename = cms.FileInPath('L1Trigger/DTPhase2Trigger/data/wire_rawId_z.txt'),
                                                shift_filename = cms.FileInPath('L1Trigger/DTPhase2Trigger/data/wire_rawId_x.txt'),
