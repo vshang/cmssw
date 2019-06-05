@@ -200,6 +200,8 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 	  cout << muonpaths.at(i)->getPrimitive(lay)->getChannelId() << " ";
 	for (int lay=0; lay<muonpaths.at(i)->getNPrimitives(); lay++)
 	  cout << muonpaths.at(i)->getPrimitive(lay)->getTDCTime() << " ";
+	for (int lay=0; lay<muonpaths.at(i)->getNPrimitives(); lay++)
+	  cout << muonpaths.at(i)->getPrimitive(lay)->getLaterality() << " ";
 	cout << endl;	
       }
       cout << endl;

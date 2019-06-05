@@ -173,7 +173,7 @@ void PseudoBayesGrouping::FillMuonPaths(std::vector<MuonPath*> *mpaths){
       //Get the predicted laterality
       if (setLateralities){
         int predLat = (*itCand)->getPattern()->LatHitIn(layerHit, itDTP->getChannelId(), allowedVariance); 
-        if (predLat == -10 || predLat == 0 || !(allowDuplicates)){
+        if (predLat == -10 || predLat == 0 ){
           itDTP->setLaterality(NONE);
         }
         else if (predLat == -1){

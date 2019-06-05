@@ -116,9 +116,9 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
   MuonPath *mPath = new MuonPath(*inMPath);
   
   if (debug) {
+    std::cout << "DTp2::analyze, looking at mPath: " << std::endl;
     for (int i=0; i<mPath->getNPrimitives(); i++) 
-      std::cout << "DTp2::analyze, looking at mPath: " 
-		<< mPath->getPrimitive(i)->getLayerId() << " , " 
+      std::cout << mPath->getPrimitive(i)->getLayerId() << " , " 
 		<< mPath->getPrimitive(i)->getSuperLayerId() << " , " 
 		<< mPath->getPrimitive(i)->getChannelId() << " , " 
 		<< mPath->getPrimitive(i)->getLaterality() << std::endl;
