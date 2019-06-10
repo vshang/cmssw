@@ -29,12 +29,15 @@ public:
                          const edm::EDGetToken& token2,
                          TriggerPrimitiveCollection& out) const;
 
+  // For 2 input collections
   template<typename T>
-  void extractTTPrimitives(
+  void extractPrimitives(
     T tag,
+    const GeometryTranslator* tp_geom,
     const edm::Event& iEvent,
-    const edm::EDGetToken& token,
-    TTTriggerPrimitiveCollection& out
+    const edm::EDGetToken& token1,
+    const edm::EDGetToken& token2,
+    TriggerPrimitiveCollection& out
   ) const;
 
   // RPC functions

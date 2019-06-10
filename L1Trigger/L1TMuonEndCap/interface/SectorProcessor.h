@@ -13,7 +13,6 @@
 
 #include "L1Trigger/L1TMuonEndCap/interface/PrimitiveSelection.h"
 #include "L1Trigger/L1TMuonEndCap/interface/PrimitiveConversion.h"
-#include "L1Trigger/L1TMuonEndCap/interface/TTPrimitiveConversion.h"
 #include "L1Trigger/L1TMuonEndCap/interface/PatternRecognition.h"
 #include "L1Trigger/L1TMuonEndCap/interface/PrimitiveMatching.h"
 #include "L1Trigger/L1TMuonEndCap/interface/AngleCalculation.h"
@@ -34,7 +33,6 @@ public:
       // Input
       const edm::EventID& event_id,
       const TriggerPrimitiveCollection& muon_primitives,
-      const TTTriggerPrimitiveCollection& ttmuon_primitives,
       // Output
       EMTFHitCollection& out_hits,
       EMTFTrackCollection& out_tracks) const;
@@ -43,7 +41,6 @@ public:
       // Input
       int bx,
       const TriggerPrimitiveCollection& muon_primitives,
-      const TTTriggerPrimitiveCollection& ttmuon_primitives,
       // Output
       EMTFHitCollection& out_hits,
       EMTFTrackCollection& out_tracks,

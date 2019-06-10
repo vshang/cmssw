@@ -21,6 +21,7 @@ void SectorProcessor::process(const edm::EventID& event_id,
                               EMTFTrackCollection& out_tracks) const {
   auto cfg = setup_->getVersionControl();
 
+  // ___________________________________________________________________________
   // List of converted hits, extended from previous BXs
   // deque (double-ended queue) is similar to a vector, but allows insertion or deletion of elements at both beginning and end
   std::deque<EMTFHitCollection> extended_conv_hits;
@@ -54,6 +55,26 @@ void SectorProcessor::process(const edm::EventID& event_id,
                                       extended_best_track_cands.end());  // pop_back
     }
   }  // end loop over bx
+
+
+  // ___________________________________________________________________________
+  // Debug
+  bool dump_emtf_hits = false;
+
+  if (dump_emtf_hits && endcap_ == 2 && sector_ == 6) {
+    int i = 0;
+    const char subsystem_names[][4] = {"DT","CSC","RPC","GEM","ME0"};
+    for (const auto& h : out_hits) {
+      std::cout << "conv_hit #" << i++ << " [" << subsystem_names[h.Subsystem()] << "]: BX " << h.BX()
+        << ", endcap " << h.Endcap() << ", sector " << h.PC_sector()
+        << ", station " << h.Station() << ", ring " << h.Ring()
+        << ", chamber " << h.Chamber() << ", roll " << h.Roll()
+        << ", subsector " << h.Subsector() << ", CSC ID " << h.CSC_ID()
+        << ", strip " << h.Strip() << ", wire " << h.Wire() << ", pattern " << h.Pattern() << ", bend " << h.Bend() << ", quality " << h.Quality()
+        << ", phi_fp " << h.Phi_fp() << ", theta_fp " << h.Theta_fp() << ", phi_sim " << h.Phi_sim() << ", theta_sim " << h.Theta_sim()
+        << std::endl;
+    }
+  }
 
   return;
 }
@@ -105,12 +126,6 @@ void SectorProcessor::process_single_bx(int bx,
                       cfg.useNewZones_,
                       cfg.fixME11Edges_,
                       cfg.bugME11Dupes_);
-
-  TTPrimitiveConversion ttprim_conv;
-  ttprim_conv.configure(
-      tp_ttgeom_, lut_,
-      verbose_, endcap_, sector_, bx
-  );
 
   PatternRecognition patt_recog;
   patt_recog.configure(verbose_,
@@ -205,6 +220,7 @@ void SectorProcessor::process_single_bx(int bx,
   // A converted hit consists of integer representations of phi, theta, and zones
   // From src/PrimitiveConversion.cc
 #ifdef PHASE_TWO_TRIGGER
+  // Exclude Phase 2 trigger primitives before running the rest of EMTF
   prim_conv.process(selected_prim_map, conv_hits);
   EMTFHitCollection tmp_conv_hits;
   for (const auto& conv_hit : conv_hits) {

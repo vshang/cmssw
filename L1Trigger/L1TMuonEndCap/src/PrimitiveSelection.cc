@@ -89,12 +89,14 @@ void PrimitiveSelection::process(emtf::CSCTag tag,
       TriggerPrimitiveCollection& tmp_primitives = map_tp_it->second;  // pass by reference
 
       if (tmp_primitives.size() >= 4) {
-        edm::LogWarning("L1T") << "EMTF found 4 or more CSC LCTs in one chamber: keeping only two";
+        const TriggerPrimitive& tmp_tp = tmp_primitives.front();
+        edm::LogWarning("L1T") << "EMTF found 4 or more CSC LCTs in one chamber: keeping only two (station " << tmp_tp.detId<CSCDetId>().station() << " ring " << tmp_tp.detId<CSCDetId>().ring() << " CSC ID " << tmp_tp.getCSCData().cscID << ")";
         tmp_primitives.erase(tmp_primitives.begin() + 4, tmp_primitives.end());  // erase 5th element++
         tmp_primitives.erase(tmp_primitives.begin() + 2);                        // erase 3rd element
         tmp_primitives.erase(tmp_primitives.begin() + 1);                        // erase 2nd element
       } else if (tmp_primitives.size() == 3) {
-        edm::LogWarning("L1T") << "EMTF found 3 CSC LCTs in one chamber: keeping only two";
+        const TriggerPrimitive& tmp_tp = tmp_primitives.front();
+        edm::LogWarning("L1T") << "EMTF found 3 CSC LCTs in one chamber: keeping only two (station " << tmp_tp.detId<CSCDetId>().station() << " ring " << tmp_tp.detId<CSCDetId>().ring() << " CSC ID " << tmp_tp.getCSCData().cscID << ")";
         tmp_primitives.erase(tmp_primitives.begin() + 2);  // erase 3rd element
       }
       emtf_assert(tmp_primitives.size() <= 2);  // at most 2 hits
