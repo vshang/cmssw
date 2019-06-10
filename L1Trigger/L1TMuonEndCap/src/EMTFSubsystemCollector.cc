@@ -677,7 +677,7 @@ void EMTFSubsystemCollector::make_copad_gem(TriggerPrimitiveCollection& declus_m
           continue;
 
         has_copad = true;
-        if (std::abs(bend) > deltaPad) {
+        if (static_cast<unsigned int>(std::abs(bend)) > deltaPad) {
           if (co_p->getGEMData().pad >= p->getGEMData().pad)
             bend = deltaPad;
           else
