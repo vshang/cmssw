@@ -106,6 +106,12 @@ void SectorProcessor::process_single_bx(int bx,
                       cfg.fixME11Edges_,
                       cfg.bugME11Dupes_);
 
+  TTPrimitiveConversion ttprim_conv;
+  ttprim_conv.configure(
+      tp_ttgeom_, lut_,
+      verbose_, endcap_, sector_, bx
+  );
+
   PatternRecognition patt_recog;
   patt_recog.configure(verbose_,
                        endcap_,
@@ -198,8 +204,19 @@ void SectorProcessor::process_single_bx(int bx,
   // Convert trigger primitives into "converted" hits
   // A converted hit consists of integer representations of phi, theta, and zones
   // From src/PrimitiveConversion.cc
+#ifdef PHASE_TWO_TRIGGER
+  prim_conv.process(selected_prim_map, conv_hits);
+  EMTFHitCollection tmp_conv_hits;
+  for (const auto& conv_hit : conv_hits) {
+    if (prim_conv.is_valid_for_run2(conv_hit)) {
+      tmp_conv_hits.push_back(conv_hit);
+    }
+  }
+  extended_conv_hits.push_back(tmp_conv_hits);
+#else
   prim_conv.process(selected_prim_map, conv_hits);
   extended_conv_hits.push_back(conv_hits);
+#endif
 
   {
     // Keep all the converted hits for the use of data-emulator comparisons.
@@ -240,7 +257,11 @@ void SectorProcessor::process_single_bx(int bx,
 
   // Insert single LCTs from station 1 as tracks
   // From src/SingleHitTracks.cc
+#ifdef PHASE_TWO_TRIGGER
+  // Do not make single-hit tracks
+#else
   single_hit.process(conv_hits, best_tracks);
+#endif
 
   // Construct pT address, assign pT, calculate other GMT quantities
   // From src/PtAssignment.cc

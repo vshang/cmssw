@@ -49,6 +49,7 @@ void TrackFinder::process(const edm::Event& iEvent,
   // Extract all trigger primitives
 
   TriggerPrimitiveCollection muon_primitives;
+  TTTriggerPrimitiveCollection ttmuon_primitives;
 
   EMTFSubsystemCollector collector;
 

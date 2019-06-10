@@ -243,7 +243,7 @@ void AngleCalculation::calculate_angles(EMTFTrack& track, const int izone) const
       0b0110, 0b0101, 0b0101, 0b0101, 0b0101, 0b1001, 0b1001, 0b0110, 0b0110, 0b1101, 0b1101, 0b0101, 0b0101,
       0b1001, 0b1001, 0b1010, 0b1100, 0b0101, 0b0101, 0b0101, 0b0101, 0b1001, 0b1001, 0b1010, 0b0000};
 
-  if (not bugAmbigThetaWin_) {  // Fixed at the beginning of 2018
+  if (!bugAmbigThetaWin_) {  // Fixed at the beginning of 2018
     // construct bad delta word
     // dth_bad = {12,23,34,13,14,24}
     unsigned dth_bad = 0b111111;  // "1" is bad. if valid, change to "0" (good)

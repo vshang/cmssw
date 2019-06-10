@@ -10,7 +10,7 @@ public:
   explicit SectorProcessorLUT();
   ~SectorProcessorLUT();
 
-  void read(bool pc_lut_data, int pc_lut_version);
+  void read(bool is_data, int pc_lut_version);
 
   uint32_t get_ph_init(int fw_endcap, int fw_sector, int pc_lut_id) const;
 

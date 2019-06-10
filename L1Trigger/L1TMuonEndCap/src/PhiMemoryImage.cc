@@ -1,5 +1,4 @@
 #include "L1Trigger/L1TMuonEndCap/interface/PhiMemoryImage.h"
-#include "FWCore/MessageLogger/interface/MessageLogger.h"
 
 #include <stdexcept>
 #include <iostream>

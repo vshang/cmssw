@@ -9,9 +9,9 @@
 #include "DataFormats/L1TMuon/interface/EMTFRoad.h"
 #include "DataFormats/L1TMuon/interface/EMTFTrack.h"
 
-#include "L1Trigger/L1TMuon/interface/GeometryTranslator.h"
-#include "L1Trigger/L1TMuon/interface/MuonTriggerPrimitive.h"
-#include "L1Trigger/L1TMuon/interface/MuonTriggerPrimitiveFwd.h"
+#include "L1Trigger/L1TMuonEndCap/interface/GeometryTranslator.h"
+#include "L1Trigger/L1TMuonEndCap/interface/MuonTriggerPrimitive.h"
+#include "L1Trigger/L1TMuonEndCap/interface/MuonTriggerPrimitiveFwd.h"
 
 #include "L1Trigger/L1TMuonEndCap/interface/EMTFSubsystemTag.h"
 #include "L1Trigger/L1TMuonEndCap/interface/TrackTools.h"

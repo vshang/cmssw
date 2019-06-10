@@ -1,5 +1,4 @@
 #include "L1Trigger/L1TMuonEndCap/interface/PtLUTWriter.h"
-#include "FWCore/MessageLogger/interface/MessageLogger.h"
 
 #include <fstream>
 #include <iostream>

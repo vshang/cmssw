@@ -389,6 +389,8 @@ void PatternRecognition::process_single_zone(int zone,
         } else {
           // Use 2nd earliest
           auto patt_ins = ins.first;  // iterator of patt_lifetime_map pointing to this pattern
+
+          // The bx_shifter keeps track of a number of booleans from BX 0, 1, ..., drift_time.
           int bx_shifter = patt_ins->second;
           int bx2 = bool(bx_shifter & (1 << 2));
           int bx1 = bool(bx_shifter & (1 << 1));

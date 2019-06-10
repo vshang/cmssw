@@ -622,6 +622,12 @@ void PrimitiveConversion::convert_rpc_details(EMTFHit& conv_hit, bool isCPPF) co
   // Do coordinate conversion using the CPPF LUTs. Not needed if the received digis are CPPF digis.
   bool use_cppf_lut = !isCPPF;
 
+  // Do coordinate conversion using the CPPF LUTs. Not needed if the received digis are CPPF digis.
+  bool use_cppf_lut = !isCPPF;
+#ifdef PHASE_TWO_TRIGGER
+  use_cppf_lut = false;  // The CPPF LUTs fail for Phase 2 geometry
+#endif
+
   if (use_cppf_lut) {
     int halfstrip = (conv_hit.Strip_low() + conv_hit.Strip_hi() - 1);
     emtf_assert(1 <= halfstrip && halfstrip <= 64);
