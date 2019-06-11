@@ -91,7 +91,8 @@ class MuonPathAnalyzerInChamber : public MuonPathAnalyzer {
   void buildLateralities(MuonPath *mpath);
   void setLateralitiesInMP(MuonPath *mpath,TLateralities lat);
   void setWirePosAndTimeInMP(MuonPath *mpath);
-  void calculateFitParameters(MuonPath *mpath, TLateralities lat);
+  void calculateFitParameters(MuonPath *mpath, TLateralities lat, int present_layer[8]);
+  //void calculateFitParameters(MuonPath *mpath, TLateralities lat);
  
   /* Determina si los valores de 4 primitivas forman una trayectoria
      Los valores tienen que ir dispuestos en el orden de capa:

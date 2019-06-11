@@ -137,7 +137,26 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
   int bestI = -1; 
   float best_chi2=99999.;
   for (int i = 0; i < totalNumValLateralities; i++) {// LOOP for all lateralities:   
-    calculateFitParameters(mPath,lateralities[i]);
+    if (debug) cout << "DTp2:analyze \t\t\t\t\t Start with combination " << i << endl; 
+    int NTotalHits=8;
+    float xwire[8];
+    int present_layer[8];
+    for (int ii=0; ii<8; ii++){ 
+      xwire[ii]      = mPath->getXWirePos(ii); 
+      if (xwire[ii]==0) { 
+        present_layer[ii]=0;
+        NTotalHits--;      
+      } else {            
+        present_layer[ii]=1;
+      }
+    }
+    const int minHits = 4; 
+    while (NTotalHits > minHits){
+      mPath->setChiSq(0); 
+      calculateFitParameters(mPath,lateralities[i], present_layer);
+      if (mPath->getChiSq() != 0) break;
+      NTotalHits--;
+    }
     if ( mPath->getChiSq() > chiSquareThreshold ) continue;
     
 
@@ -359,24 +378,16 @@ void MuonPathAnalyzerInChamber::setWirePosAndTimeInMP(MuonPath *mpath){
   }
   if (debug) cout << endl;
 }
-void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateralities laterality) {
+void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateralities laterality, int present_layer[8]) {
   
   // First prepare mpath for fit: 
-  int NMissingHits=0;
   float xwire[8],zwire[8],tTDCvdrift[8];
-  int present_layer[8];
   double b[8];
   for (int i=0; i<8; i++){ 
     xwire[i]      = mpath->getXWirePos(i); 
     zwire[i]      = mpath->getZWirePos(i);
     tTDCvdrift[i] = mpath->gettWireTDC(i);
     b[i]          = 1;
-    if (xwire[i]==0) { 
-      present_layer[i]=0;
-      NMissingHits++;      
-    }
-    else             
-      present_layer[i]=1;
   }
   
   //// NOW Start FITTING:  
@@ -479,17 +490,34 @@ void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateral
   int sign_tdriftvdrift={0};    
   int incell_tdriftvdrift={0};    
   int physical_slope={0}; 
-  
+
+  // Select the worst hit in order to get rid of it
+  double maxDif = -1; 
+  int maxInt = -1; 
+    
   for  (int lay=0; lay<8; lay++){
     if (present_layer[lay]==0) continue;
     rectdriftvdrift[lay]= tTDCvdrift[lay]- rect0vdrift/1000;
     if (debug) cout << rectdriftvdrift[lay] << endl; 
     recres[lay]=xhit[lay]-zwire[lay]*recslope-b[lay]*recpos-(-1+2*laterality[lay])*rect0vdrift;
     // if (debug) cout << recres[lay] << endl;  
-    if ((present_layer[lay]==1)&&(rectdriftvdrift[lay] <-0.1)) sign_tdriftvdrift=-1;		  
-    if ((present_layer[lay]==1)&&(abs(rectdriftvdrift[lay]) >21.1)) incell_tdriftvdrift=-1; //Changed to 2.11 to account for resolution effects		  
+    if ((present_layer[lay]==1)&&(rectdriftvdrift[lay] <-0.1)){
+      sign_tdriftvdrift=-1;
+      if (-0.1 - rectdriftvdrift[lay] > maxDif) {
+        maxDif = -0.1 - rectdriftvdrift[lay];
+        maxInt = lay; 
+      }
+    }		  
+    if ((present_layer[lay]==1)&&(abs(rectdriftvdrift[lay]) >21.1)){
+      incell_tdriftvdrift=-1; //Changed to 2.11 to account for resolution effects
+      if (rectdriftvdrift[lay] - 21.1 > maxDif) {
+        maxDif = rectdriftvdrift[lay] - 21.1;
+        maxInt = lay; 
+      }
+    }		  
   }
-  if (fabs(recslope/10)>1)  physical_slope=-1;
+
+  if (fabs(recslope/10)>1.3)  physical_slope=-1;
   
   if (physical_slope==-1 && debug)  cout << "Combination with UNPHYSICAL slope " <<endl;
   if (sign_tdriftvdrift==-1 && debug) cout << "Combination with negative tdrift-vdrift " <<endl;
@@ -500,6 +528,12 @@ void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateral
     recchi2=recres[lay]*recres[lay] + recchi2;
   }
   if(debug) cout << "In fitPerLat Chi2 " << recchi2 << " with sign " << sign_tdriftvdrift << " within cell " << incell_tdriftvdrift << " physical_slope "<< physical_slope << endl;
+  
+  //LATERALITY IS NOT VALID
+  if (true && maxInt!=-1)  { 
+    present_layer[maxInt] = 0; 
+    if(debug) cout << "We get rid of hit in layer " << maxInt << endl; 
+  }  
   
   // LATERALITY IS VALID... 
   if(!(sign_tdriftvdrift==-1) && !(incell_tdriftvdrift==-1) && !(physical_slope==-1)){
