@@ -313,7 +313,6 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
       else {
       //for(auto muonpath = muonpaths.begin();muonpath!=muonpaths.end();++muonpath) {
       for(auto muonpath = outmpaths.begin();muonpath!=outmpaths.end();++muonpath) {
-	if (debug) cout << (*muonpath)->getRawId() << endl; 	
 	correlatedMetaPrimitives.push_back(metaPrimitive({(*muonpath)->getRawId(),(double)(*muonpath)->getBxTimeValue(),
 		(*muonpath)->getHorizPos(), (*muonpath)->getTanPhi(),
 		(*muonpath)->getPhi(), 	    (*muonpath)->getPhiB(),
