@@ -184,6 +184,7 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
       }
     }
     DTLayerId thisLId(selected_Id);
+    
     DTSuperLayerId MuonPathSLId(thisLId.wheel(),thisLId.station(),thisLId.sector(),thisLId.superLayer());
     GlobalPoint jm_x_cmssw_global = dtGeo->chamber(MuonPathSLId)->toGlobal(LocalPoint(jm_x,0.,z));//jm_x is already extrapolated to the middle of the SL
     int thisec = MuonPathSLId.sector();
@@ -328,6 +329,10 @@ void MuonPathAnalyzerInChamber::setWirePosAndTimeInMP(MuonPath *mpath){
     }
   }
   DTLayerId thisLId(selected_Id);
+  DTChamberId chId(thisLId.wheel(),thisLId.station(),thisLId.sector());
+  if (debug) cout << "Id " << chId.rawId() << " Wh " << chId.wheel() << " St " << chId.station() << " Se " << chId.sector() <<  endl; 
+  mpath->setRawId(chId.rawId());
+  
   DTSuperLayerId MuonPathSLId1(thisLId.wheel(),thisLId.station(),thisLId.sector(),1);
   DTSuperLayerId MuonPathSLId3(thisLId.wheel(),thisLId.station(),thisLId.sector(),3);
   DTWireId wireId1(MuonPathSLId1,2,1);
@@ -478,8 +483,9 @@ void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateral
   for  (int lay=0; lay<8; lay++){
     if (present_layer[lay]==0) continue;
     rectdriftvdrift[lay]= tTDCvdrift[lay]- rect0vdrift/1000;
+    if (debug) cout << rectdriftvdrift[lay] << endl; 
     recres[lay]=xhit[lay]-zwire[lay]*recslope-b[lay]*recpos-(-1+2*laterality[lay])*rect0vdrift;
-    
+    // if (debug) cout << recres[lay] << endl;  
     if ((present_layer[lay]==1)&&(rectdriftvdrift[lay] <-0.1)) sign_tdriftvdrift=-1;		  
     if ((present_layer[lay]==1)&&(abs(rectdriftvdrift[lay]) >21.1)) incell_tdriftvdrift=-1; //Changed to 2.11 to account for resolution effects		  
   }
@@ -497,13 +503,13 @@ void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateral
   
   // LATERALITY IS VALID... 
   if(!(sign_tdriftvdrift==-1) && !(incell_tdriftvdrift==-1) && !(physical_slope==-1)){
-    mpath->setBxTimeValue(rect0vdrift/DRIFT_SPEED);
+    mpath->setBxTimeValue((rect0vdrift/DRIFT_SPEED)/1000);
     mpath->setTanPhi(recslope/10);
     mpath->setHorizPos(recpos/10000);
     mpath->setChiSq(recchi2/100000000);
     setLateralitiesInMP(mpath,laterality);
     
-    if(debug) cout << "In fitPerLat " << "t0 " <<  mpath->getBxTimeValue() <<" slope " << mpath->getTanPhi() <<" pos "<< mpath->getHorizPos() <<" chi2 "<< mpath->getChiSq() << endl;
+    if(debug) cout << "In fitPerLat " << "t0 " <<  mpath->getBxTimeValue() <<" slope " << mpath->getTanPhi() <<" pos "<< mpath->getHorizPos() <<" chi2 "<< mpath->getChiSq() << " rawId " << mpath->getRawId() << endl;
   }
   
 }

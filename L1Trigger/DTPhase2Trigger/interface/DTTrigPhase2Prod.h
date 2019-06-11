@@ -81,6 +81,7 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
     bool outer(metaPrimitive mp);
     bool inner(metaPrimitive mp);
     void printmP(metaPrimitive mP);
+    void printmPC(metaPrimitive mP);
 
     double trigPos(metaPrimitive mP);
     double trigDir(metaPrimitive mp);
