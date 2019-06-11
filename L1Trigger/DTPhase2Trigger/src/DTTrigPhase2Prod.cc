@@ -262,7 +262,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
       }
       for (unsigned int i=0; i<metaPrimitives.size(); i++){
 	    cout << iEvent.id().event() << " mp " << i << ": ";
-	   // printmP(metaPrimitives.at(i));
+	    printmP(metaPrimitives.at(i));
 	    cout<<endl;
 	}
     }
