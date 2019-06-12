@@ -1,7 +1,8 @@
 import FWCore.ParameterSet.Config as cms
 
 from L1TriggerConfig.DTTPGConfigProducers.L1DTTPGConfigFromDB_cff import *
-from L1Trigger.DTPhase2Trigger.PseudoBayesGrouping_cfi import PseudoBayesPattern
+from L1Trigger.DTPhase2Trigger.HoughGrouping_cfi                  import HoughGrouping
+from L1Trigger.DTPhase2Trigger.PseudoBayesGrouping_cfi            import PseudoBayesPattern
 
 dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                digiTag = cms.InputTag("CalibratedDigis"),
@@ -30,4 +31,5 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                useRPC = cms.untracked.bool(False)
                                                )
 
+dtTriggerPhase2PrimitiveDigis.HoughGrouping      = HoughGrouping
 dtTriggerPhase2PrimitiveDigis.PseudoBayesPattern = PseudoBayesPattern

@@ -167,14 +167,16 @@ class HoughGrouping : public MotherGrouping {
     
     
     // Private attributes
-    Bool_t debug;
+    Bool_t   debug, allowUncorrelatedPatterns;
+    UShort_t minNLayerHits, minSingleSLHitsMax, minSingleSLHitsMin, minUncorrelatedHits, UpperNumber, LowerNumber;
+    Double_t angletan, anglebinwidth, posbinwidth, maxdeltaAngDeg, maxdeltaPos, MaxDistanceToWire;
     
     edm::ESHandle<DTGeometry> dtGeomH;
     DTChamberId TheChambId;
     
-    Double_t maxrads, minangle;
-    Double_t posbinwidth, anglebinwidth, oneanglebin;
+    Double_t maxrads, minangle, oneanglebin;
     Double_t xlowlim, xhighlim, zlowlim, zhighlim;
+    Double_t maxdeltaAng;
     
     UShort_t anglebins, halfanglebins, spacebins;
     UShort_t idigi, nhits;

@@ -9,8 +9,29 @@ using namespace cms;
 // ============================================================================
 HoughGrouping::HoughGrouping(const ParameterSet& pset): MotherGrouping(pset) {
   // Obtention of parameters
-  debug         = pset.getUntrackedParameter<Bool_t>("debug");
+  debug                     = pset.getUntrackedParameter<Bool_t>("debug");
   if (debug) cout <<"HoughGrouping: constructor" << endl;
+  
+  // HOUGH TRANSFORM CONFIGURATION
+  angletan                  = pset.getUntrackedParameter<Double_t>("angletan");
+  anglebinwidth             = pset.getUntrackedParameter<Double_t>("anglebinwidth");
+  posbinwidth               = pset.getUntrackedParameter<Double_t>("posbinwidth");
+  
+  // MAXIMA SEARCH CONFIGURATION
+  maxdeltaAngDeg            = pset.getUntrackedParameter<Double_t>("maxdeltaAngDeg");
+  maxdeltaPos               = pset.getUntrackedParameter<Double_t>("maxdeltaPos");
+  UpperNumber               = (UShort_t)pset.getUntrackedParameter<Int_t>("UpperNumber");
+  LowerNumber               = (UShort_t)pset.getUntrackedParameter<Int_t>("LowerNumber");
+  
+  // HITS ASSOCIATION CONFIGURATION
+  MaxDistanceToWire         = pset.getUntrackedParameter<Double_t>("MaxDistanceToWire");
+  
+  // CANDIDATE QUALITY CONFIGURATION
+  minNLayerHits             = (UShort_t)pset.getUntrackedParameter<Int_t>("minNLayerHits");
+  minSingleSLHitsMax        = (UShort_t)pset.getUntrackedParameter<Int_t>("minSingleSLHitsMax");
+  minSingleSLHitsMin        = (UShort_t)pset.getUntrackedParameter<Int_t>("minSingleSLHitsMin");
+  allowUncorrelatedPatterns = pset.getUntrackedParameter<Bool_t>("allowUncorrelatedPatterns");
+  minUncorrelatedHits       = (UShort_t)pset.getUntrackedParameter<Int_t>("minUncorrelatedHits");
 }
 
 
@@ -28,14 +49,13 @@ void HoughGrouping::initialise(const edm::EventSetup& iEventSetup) {
   
   ResetAttributes();
   
-  maxrads       = TMath::PiOver2() - TMath::ATan(0.3);
-  anglebinwidth = 1; // in deg.
+  maxrads       = TMath::PiOver2() - TMath::ATan(angletan);
   minangle      = anglebinwidth * TMath::TwoPi() / 360;
   halfanglebins = TMath::Nint(maxrads / minangle + 1);
   anglebins     = (UShort_t) 2 * halfanglebins;
   oneanglebin   = maxrads / halfanglebins;
-  posbinwidth   = 2.1;
-//   posbinwidth   = 4.2;
+  
+  maxdeltaAng   = maxdeltaAngDeg * TMath::TwoPi() / 360;
   
   // Initialisation of anglemap. Posmap depends on the size of the chamber.
   Double_t phi = 0; anglemap = {};
@@ -50,19 +70,17 @@ void HoughGrouping::initialise(const edm::EventSetup& iEventSetup) {
     phi           += oneanglebin;
   }
   
-  
   linespace = new UShort_t*[anglebins];
-  
   
   if (debug) {
     cout << "\nHoughGrouping::ResetAttributes - Information from the initialisation of HoughGrouping:" << endl;
-    cout << "HoughGrouping::ResetAttributes - maxrads: " << maxrads << endl;
+    cout << "HoughGrouping::ResetAttributes - maxrads: "       << maxrads       << endl;
     cout << "HoughGrouping::ResetAttributes - anglebinwidth: " << anglebinwidth << endl;
-    cout << "HoughGrouping::ResetAttributes - minangle: " << minangle << endl;
+    cout << "HoughGrouping::ResetAttributes - minangle: "      << minangle      << endl;
     cout << "HoughGrouping::ResetAttributes - halfanglebins: " << halfanglebins << endl;
-    cout << "HoughGrouping::ResetAttributes - anglebins: " << anglebins << endl;
-    cout << "HoughGrouping::ResetAttributes - oneanglebin: " << oneanglebin << endl;
-    cout << "HoughGrouping::ResetAttributes - posbinwidth: " << posbinwidth << endl;
+    cout << "HoughGrouping::ResetAttributes - anglebins: "     << anglebins     << endl;
+    cout << "HoughGrouping::ResetAttributes - oneanglebin: "   << oneanglebin   << endl;
+    cout << "HoughGrouping::ResetAttributes - posbinwidth: "   << posbinwidth   << endl;
   }
 }
 
@@ -137,20 +155,17 @@ void HoughGrouping::run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, 
       hitvec.push_back( {wirePosInChamber.x() + 1.05, wirePosInChamber.z()} );
       nhits += 2;
       
-//       hitvec.push_back( {wirePosInChamber.x(), wirePosInChamber.z()} );
-//       nhits += 1;
-      
       idigi++;
     }
   }
   
   if (debug) {
-    cout << "\nHoughGrouping::run - nhits nesti evento: "     << nhits << endl;
-    cout << "HoughGrouping::run - nseldigis nesti evento: " << idigi << endl;
+    cout << "\nHoughGrouping::run - nhits: " << nhits << endl;
+    cout << "HoughGrouping::run - idigi: "   << idigi << endl;
   }
   
   if (hitvec.size() == 0) {
-    if (debug) cout << "HoughGrouping::run - No digis present in this chamber: " << nhits << endl;
+    if (debug) cout << "HoughGrouping::run - No digis present in this chamber." << endl;
     return;
   }
   
@@ -161,6 +176,7 @@ void HoughGrouping::run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, 
   maxima = GetMaximaVector();
   
   if (maxima.size() == 0) {
+    if (debug) cout << "HoughGrouping::run - No good maxima found in this event." << endl;
     return;
   }
   
@@ -168,7 +184,7 @@ void HoughGrouping::run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, 
   const DTChamber* TheChamb = dtGeom->chamber(TheChambId);
   
   for (UShort_t ican = 0; ican < maxima.size(); ican++) {
-    if (debug) cout << "\nHoughGrouping::run - candidate number: " << ican << endl;
+    if (debug) cout << "\nHoughGrouping::run - Candidate number: " << ican << endl;
     cands.push_back( AssociateHits(TheChamb, maxima.at(ican).first, maxima.at(ican).second) );
   }
   
@@ -297,8 +313,6 @@ void HoughGrouping::DoHoughTransform() {
       }
     }
   }
-  
-  return;
 }
 
 
@@ -306,18 +320,16 @@ std::vector<std::pair<Double_t, Double_t>> HoughGrouping::GetMaximaVector() {
   if (debug) cout << "HoughGrouping::GetMaximaVector" << endl;
   std::vector<std::tuple<Double_t, Double_t, UShort_t>> tmpvec; tmpvec.clear();
   
-  for (UShort_t ab = 0; ab < anglebins; ab++) {
-    for (UShort_t sb = 0; sb < spacebins; sb++) {
-      if (linespace[ab][sb] >= 6) tmpvec.push_back({anglemap[ab], posmap[sb], linespace[ab][sb]});
-    }
-  }
+  Bool_t flagsearched = false; UShort_t numbertolookat = UpperNumber;
   
-  if (tmpvec.size() == 0) {
+  while (!flagsearched) {
     for (UShort_t ab = 0; ab < anglebins; ab++) {
       for (UShort_t sb = 0; sb < spacebins; sb++) {
-        if (linespace[ab][sb] >= 4) tmpvec.push_back({anglemap[ab], posmap[sb], linespace[ab][sb]});
+        if (linespace[ab][sb] >= numbertolookat) tmpvec.push_back({anglemap[ab], posmap[sb], linespace[ab][sb]});
       }
     }
+    if (((numbertolookat - 1) < LowerNumber) || (tmpvec.size() > 0)) flagsearched = true;
+    else                                                             numbertolookat--;
   }
   
   if (tmpvec.size() == 0) {
@@ -352,8 +364,6 @@ std::vector<std::pair<Double_t, Double_t>> HoughGrouping::FindTheMaxima(std::vec
   if (debug) cout << "HoughGrouping::FindTheMaxima" << endl;
   Bool_t   fullyreduced = false;
   UShort_t ind          = 0;
-  Double_t maxdeltaPos  = 10;
-  Double_t maxdeltaAng  = 10 * TMath::TwoPi() / 360;
   
   std::vector<UShort_t> chosenvec; chosenvec.clear();
   std::vector<std::pair<Double_t, Double_t>> resultvec; resultvec.clear();
@@ -494,7 +504,8 @@ std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*> HoughG
         tmpGlobal  = thechamb->superLayer(sl)->layer(l)->toGlobal(tmpLocal);
         tmpLocalCh = thechamb->toLocal(tmpGlobal);
         
-        if (TMath::Abs(tmpLocalCh.x() - thepoint.x()) >= 1.05/3) {
+        if (TMath::Abs(tmpLocalCh.x() - thepoint.x()) >= MaxDistanceToWire) {
+          // The distance where lateralities are not put is 0.03 cm, which is a conservative threshold for the resolution of the cells.
           if   ((tmpLocalCh.x() - thepoint.x()) > 0) lat = LEFT;
           else                                       lat = RIGHT;
         }
@@ -576,10 +587,16 @@ std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*> HoughG
   if (debug) {
     cout << "HoughGrouping::AssociateHits - Finishing with the candidate. We have found the following of it:" << endl;
     cout << "HoughGrouping::AssociateHits - # of layers with hits: "               << get<0>(returntuple) << endl;
-    cout << "HoughGrouping::AssociateHits - # of HQ hits: "                        << get<1>(returntuple) << endl;
-    cout << "HoughGrouping::AssociateHits - # of LQ hits: "                        << get<2>(returntuple) << endl;
+    for (UShort_t lay = 0; lay < 8; lay++) {
+      cout << "HoughGrouping::AssociateHits - For absolute layer: "                  << lay << endl;
+      cout << "HoughGrouping::AssociateHits - # of HQ hits: "                        << get<1>(returntuple)[lay] << endl;
+      cout << "HoughGrouping::AssociateHits - # of LQ hits: "                        << get<2>(returntuple)[lay] << endl;
+    }
     cout << "HoughGrouping::AssociateHits - Abs. diff. between SL1 and SL3 hits: " << get<3>(returntuple) << endl;
-    cout << "HoughGrouping::AssociateHits - Abs. distance to digis: "              << get<4>(returntuple) << endl;
+    for (UShort_t lay = 0; lay < 8; lay++) {
+      cout << "HoughGrouping::AssociateHits - For absolute layer: "                  << lay << endl;
+      cout << "HoughGrouping::AssociateHits - Abs. distance to digi: "               << get<4>(returntuple)[lay] << endl;
+    }
   }
   return returntuple;
 }
@@ -597,8 +614,6 @@ void HoughGrouping::SetDifferenceBetweenSL(std::tuple<UShort_t, Bool_t*, Bool_t*
   
   if (absres >= 0) get<3>(tupl) = absres;
   else             get<3>(tupl) = (UShort_t) (-absres);
-  
-  return;
 }
 
 
@@ -653,7 +668,7 @@ void HoughGrouping::OrderAndFilter(std::vector<std::tuple<UShort_t, Bool_t*, Boo
     ind++;
   }
   
-  // Ultimate filter: if the remaining do not fill the requirements (3+0 || 0+3 || 3+2 || 2+3), they are removed also.
+  // Ultimate filter: if the remaining do not fill the requirements (configurable through pset arguments), they are removed also.
   for (UShort_t el = 0; el < invector.size(); el++) {
     if (! AreThereEnoughHits(invector.at(el))) invector.erase(invector.begin() + el);
   }
@@ -704,6 +719,23 @@ Bool_t HoughGrouping::AreThereEnoughHits(std::tuple<UShort_t, Bool_t*, Bool_t*, 
   
   if (debug) cout << "HoughGrouping::AreThereEnoughHits - Hits in SL1: " << numhitssl1 << endl;
   if (debug) cout << "HoughGrouping::AreThereEnoughHits - Hits in SL3: " << numhitssl3 << endl;
-  if (debug) cout << "HoughGrouping::AreThereEnoughHits - Result: " << (UShort_t)((numhitssl1 >= 3) ||  (numhitssl3 >= 3) || (numhitssl1 + numhitssl3 >= 5)) << endl;
-  return ((numhitssl1 >= 3) ||  (numhitssl3 >= 3) || (numhitssl1 + numhitssl3 >= 5));
+  
+  if ((numhitssl1 != 0) && (numhitssl3 != 0)) { // Correlated candidates
+    if ((numhitssl1 + numhitssl3) >= minNLayerHits) {
+      if      (numhitssl1 > numhitssl3) {
+        return ((numhitssl1 >= minSingleSLHitsMax) && (numhitssl3 >= minSingleSLHitsMin));
+      }
+      else if (numhitssl3 > numhitssl1) {
+        return ((numhitssl3 >= minSingleSLHitsMax) && (numhitssl1 >= minSingleSLHitsMin));
+      }
+      else return true;
+    }
+  }
+  else if (allowUncorrelatedPatterns) {         // Uncorrelated candidates
+    return ((numhitssl1 + numhitssl3) >= minNLayerHits);
+  }
+  else {
+    return false;
+  }
+  return false;
 }
