@@ -51,7 +51,7 @@ int MPQualityEnhancerFilter::rango(metaPrimitive primera) {
 
 void MPQualityEnhancerFilter::run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, 
 			 std::vector<metaPrimitive> &inMPaths, 
-			 std::vector<metaPrimitive> &outMPaths) 
+			 std::vector<metaPrimitive> &outMPaths)
 {
   
   if (debug) cout <<"MPQualityEnhancerFilter: run" << endl;  
@@ -155,4 +155,5 @@ void MPQualityEnhancerFilter::printmP(metaPrimitive mP){
 	     <<" "<<setw(13)<<left<<mP.chi2
 	     <<" r:"<<rango(mP);
 }
+
 
