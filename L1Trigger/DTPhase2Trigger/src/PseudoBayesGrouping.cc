@@ -288,7 +288,9 @@ void PseudoBayesGrouping::RecognisePatterns(std::vector<DTPrimitive> digisinLDow
           pidx++;
           cand->setCandId(pidx);
           prelimMatches->push_back(cand);
+          allMatches->push_back(cand);
         }
+        else delete cand;
       }
     }
   }
