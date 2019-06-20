@@ -61,6 +61,9 @@ class MuonPathAnalyzerInChamber : public MuonPathAnalyzer {
   void setBXTolerance(int t);
   int getBXTolerance(void);
   
+  void setMinHits4Fit(int h) { minHits4Fit = h;}; 
+  int getMinHits4Fit(void) { return minHits4Fit; }
+
   void setChiSquareThreshold(float ch2Thr);
   
   void setMinimumQuality(MP_QUALITY q);
@@ -130,6 +133,7 @@ class MuonPathAnalyzerInChamber : public MuonPathAnalyzer {
   int bxTolerance;
   MP_QUALITY minQuality;
   float chiSquareThreshold;
+  short minHits4Fit;
   int cellLayout[8];
   
 };

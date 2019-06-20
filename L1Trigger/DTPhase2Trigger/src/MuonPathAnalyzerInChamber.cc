@@ -17,7 +17,8 @@ MuonPathAnalyzerInChamber::MuonPathAnalyzerInChamber(const ParameterSet& pset) :
   shift_filename(pset.getParameter<edm::FileInPath>("shift_filename")),  
   bxTolerance(30),
   minQuality(LOWQGHOST),
-  chiSquareThreshold(50)
+  chiSquareThreshold(50),
+  minHits4Fit(pset.getUntrackedParameter<int>("minHits4Fit"))
 {
   // Obtention of parameters
   
@@ -68,7 +69,7 @@ void MuonPathAnalyzerInChamber::initialise(const edm::EventSetup& iEventSetup) {
 }
 
 void MuonPathAnalyzerInChamber::run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, std::vector<MuonPath*> &muonpaths, std::vector<MuonPath*> &outmuonpaths) {
-  debug=true;
+
   if (debug) cout <<"MuonPathAnalyzerInChamber: run" << endl;
   
   // fit per SL (need to allow for multiple outputs for a single mpath)
@@ -150,8 +151,8 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
         present_layer[ii]=1;
       }
     }
-    const int minHits = 4; 
-    while (NTotalHits > minHits){
+
+    while (NTotalHits > minHits4Fit){
       mPath->setChiSq(0); 
       calculateFitParameters(mPath,lateralities[i], present_layer);
       if (mPath->getChiSq() != 0) break;
@@ -300,15 +301,16 @@ void MuonPathAnalyzerInChamber::buildLateralities(MuonPath *mpath) {
   } // Iterate over input array
   
   totalNumValLateralities = (int) lateralities.size(); 
-  for (unsigned int iall=0; iall<lateralities.size(); iall++) {
+  /*
+    for (unsigned int iall=0; iall<lateralities.size(); iall++) {
     latQuality.push_back(LATQ_TYPE());
 
     latQuality[iall].valid            = false;
     latQuality[iall].bxValue          = 0;
     latQuality[iall].quality          = NOPATH;
     latQuality[iall].invalidateHitIdx = -1;
-  }
-
+    }
+  */
   if (totalNumValLateralities>33) {
     // ADD PROTECTION!
     cout << "[WARNING]: TOO MANY LATERALITIES TO CHECK !!" << endl;

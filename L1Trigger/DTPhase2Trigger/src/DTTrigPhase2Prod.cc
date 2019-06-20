@@ -220,7 +220,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     
     if (dump) {
       for (unsigned int i=0; i<filteredmuonpaths.size(); i++){
-	cout << iEvent.id().event() << "filt. mpath " << i << ": ";
+	cout << iEvent.id().event() << " filt. mpath " << i << ": ";
 	for (int lay=0; lay<filteredmuonpaths.at(i)->getNPrimitives(); lay++)
 	  cout << filteredmuonpaths.at(i)->getPrimitive(lay)->getChannelId() << " ";
 	for (int lay=0; lay<filteredmuonpaths.at(i)->getNPrimitives(); lay++)
@@ -310,21 +310,21 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     /////////////////////////////////////
     std::vector<metaPrimitive> correlatedMetaPrimitives;
     if (grcode==0) mpathassociator->run(iEvent, iEventSetup, dtdigis, filteredMetaPrimitives, correlatedMetaPrimitives);  
-      else {
+    else {
       //for(auto muonpath = muonpaths.begin();muonpath!=muonpaths.end();++muonpath) {
       for(auto muonpath = outmpaths.begin();muonpath!=outmpaths.end();++muonpath) {
 	correlatedMetaPrimitives.push_back(metaPrimitive({(*muonpath)->getRawId(),(double)(*muonpath)->getBxTimeValue(),
 		(*muonpath)->getHorizPos(), (*muonpath)->getTanPhi(),
 		(*muonpath)->getPhi(), 	    (*muonpath)->getPhiB(),
 		(*muonpath)->getChiSq(),    (int)(*muonpath)->getQuality(),
-		(*muonpath)->getPrimitive(0)->getChannelId(),   (*muonpath)->getPrimitive(0)->getTDCTime(),
-		(*muonpath)->getPrimitive(1)->getChannelId(),   (*muonpath)->getPrimitive(1)->getTDCTime(),
-		(*muonpath)->getPrimitive(2)->getChannelId(),   (*muonpath)->getPrimitive(2)->getTDCTime(),
-		(*muonpath)->getPrimitive(3)->getChannelId(),   (*muonpath)->getPrimitive(3)->getTDCTime(),
-		(*muonpath)->getPrimitive(4)->getChannelId(),   (*muonpath)->getPrimitive(4)->getTDCTime(),
-		(*muonpath)->getPrimitive(5)->getChannelId(),   (*muonpath)->getPrimitive(5)->getTDCTime(),
-		(*muonpath)->getPrimitive(6)->getChannelId(),   (*muonpath)->getPrimitive(6)->getTDCTime(),
-		(*muonpath)->getPrimitive(7)->getChannelId(),   (*muonpath)->getPrimitive(7)->getTDCTime(),
+		(*muonpath)->getPrimitive(0)->getChannelId(), (*muonpath)->getPrimitive(0)->getTDCTime(), (*muonpath)->getPrimitive(0)->getLaterality(),
+		(*muonpath)->getPrimitive(1)->getChannelId(), (*muonpath)->getPrimitive(1)->getTDCTime(), (*muonpath)->getPrimitive(1)->getLaterality(),
+		(*muonpath)->getPrimitive(2)->getChannelId(), (*muonpath)->getPrimitive(2)->getTDCTime(), (*muonpath)->getPrimitive(2)->getLaterality(),
+		(*muonpath)->getPrimitive(3)->getChannelId(), (*muonpath)->getPrimitive(3)->getTDCTime(), (*muonpath)->getPrimitive(3)->getLaterality(),
+		(*muonpath)->getPrimitive(4)->getChannelId(), (*muonpath)->getPrimitive(4)->getTDCTime(), (*muonpath)->getPrimitive(4)->getLaterality(),
+		(*muonpath)->getPrimitive(5)->getChannelId(), (*muonpath)->getPrimitive(5)->getTDCTime(), (*muonpath)->getPrimitive(5)->getLaterality(),
+		(*muonpath)->getPrimitive(6)->getChannelId(), (*muonpath)->getPrimitive(6)->getTDCTime(), (*muonpath)->getPrimitive(6)->getLaterality(),
+		(*muonpath)->getPrimitive(7)->getChannelId(), (*muonpath)->getPrimitive(7)->getTDCTime(), (*muonpath)->getPrimitive(7)->getLaterality(),
 		}));
       }
     } 
@@ -405,9 +405,9 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 					       sectorTP,   // usc (m_sector)    // FIXME: It is not clear who provides this?
 					       chId.station(),   // ust (m_station)
 					       sl,   // ust (m_station)
-					     (int)round((*metaPrimitiveIt).phi*65536./0.8), // uphi (_phiAngle)
+					       (int)round((*metaPrimitiveIt).phi*65536./0.8), // uphi (_phiAngle)
 					       (int)round((*metaPrimitiveIt).phiB*2048./1.4), // uphib (m_phiBending)
-					     (*metaPrimitiveIt).quality,  // uqua (m_qualityCode)
+					       (*metaPrimitiveIt).quality,  // uqua (m_qualityCode)
 					       (*metaPrimitiveIt).index,  // uind (m_segmentIndex)
 					       (int)round((*metaPrimitiveIt).t0)-shift_back*25,  // ut0 (m_t0Segment)
 					       (int)round((*metaPrimitiveIt).chi2*1000000),  // uchi2 (m_chi2Segment)
@@ -597,7 +597,7 @@ void DTTrigPhase2Prod::printmPC(metaPrimitive mP){
 int DTTrigPhase2Prod::rango(metaPrimitive mp) {
     if(mp.quality==1 or mp.quality==2) return 3;
     if(mp.quality==3 or mp.quality==4) return 4;
-    return 0;
+    return mp.quality;
 }
 
 GlobalPoint DTTrigPhase2Prod::getRPCGlobalPosition(RPCDetId rpcId, const RPCRecHit& rpcIt) const{

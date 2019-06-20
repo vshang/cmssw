@@ -23,6 +23,7 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                grouping_code = cms.untracked.int32(0),       # 0 = initial grouping, 1 = Hough transform, 2 = PseudoBayes Approach
                                                min_phinhits_match_segment = cms.untracked.int32(8),
                                                min_dT0_match_segment = cms.untracked.double(12.5),
+                                               minHits4Fit = cms.untracked.int32(4),
                                                #debugging
                                                debug = cms.untracked.bool(False),
                                                dump  = cms.untracked.bool(False),
