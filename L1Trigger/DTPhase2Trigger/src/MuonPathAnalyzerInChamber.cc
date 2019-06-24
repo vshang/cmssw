@@ -204,7 +204,9 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
       }
     }
     DTLayerId thisLId(selected_Id);
-    
+    if(thisLId.station()>=3)z=1.8;   
+
+ 
     DTSuperLayerId MuonPathSLId(thisLId.wheel(),thisLId.station(),thisLId.sector(),thisLId.superLayer());
     GlobalPoint jm_x_cmssw_global = dtGeo->chamber(MuonPathSLId)->toGlobal(LocalPoint(jm_x,0.,z));//jm_x is already extrapolated to the middle of the SL
     int thisec = MuonPathSLId.sector();
