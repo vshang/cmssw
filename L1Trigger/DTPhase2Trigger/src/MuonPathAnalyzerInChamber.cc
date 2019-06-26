@@ -312,7 +312,7 @@ void MuonPathAnalyzerInChamber::buildLateralities(MuonPath *mpath) {
     latQuality[iall].invalidateHitIdx = -1;
     }
   */
-  if (totalNumValLateralities>33) {
+  if (totalNumValLateralities>128) {
     // ADD PROTECTION!
     cout << "[WARNING]: TOO MANY LATERALITIES TO CHECK !!" << endl;
     cout << "[WARNING]: skipping this muon" << endl;
@@ -541,7 +541,7 @@ void MuonPathAnalyzerInChamber::calculateFitParameters(MuonPath *mpath, TLateral
   // LATERALITY IS VALID... 
   if(!(sign_tdriftvdrift==-1) && !(incell_tdriftvdrift==-1) && !(physical_slope==-1)){
     mpath->setBxTimeValue((rect0vdrift/DRIFT_SPEED)/1000);
-    mpath->setTanPhi(recslope/10);
+    mpath->setTanPhi(-1*recslope/10);
     mpath->setHorizPos(recpos/10000);
     mpath->setChiSq(recchi2/100000000);
     setLateralitiesInMP(mpath,laterality);
