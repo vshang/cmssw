@@ -102,6 +102,13 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset){
       if (debug) cout << "DTp2:constructor: JM analyzer" << endl;
       mpathanalyzer        = new MuonPathAnalyzerPerSL(pset);
     } else {
+      cout << "++++++++++++++++++++++++++++++++++++++++++++++" <<endl;
+      cout << "               WARNING!!!!!                   " <<endl;
+      cout << "++++++++++++++++++++++++++++++++++++++++++++++" <<endl;
+      cout << " This grouping option is not fully supported  " <<endl;
+      cout << " yet.                                         " <<endl;
+      cout << " USE IT AT YOUR OWN RISK!                     " <<endl;
+      cout << "++++++++++++++++++++++++++++++++++++++++++++++" <<endl;      
       if (debug) cout << "DTp2:constructor: Full chamber analyzer" << endl;  
       mpathanalyzer        = new MuonPathAnalyzerInChamber(pset);      
     } 
