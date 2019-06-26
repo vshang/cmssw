@@ -152,7 +152,7 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
       }
     }
 
-    while (NTotalHits > minHits4Fit){
+    while (NTotalHits >= minHits4Fit){
       mPath->setChiSq(0); 
       calculateFitParameters(mPath,lateralities[i], present_layer);
       if (mPath->getChiSq() != 0) break;
