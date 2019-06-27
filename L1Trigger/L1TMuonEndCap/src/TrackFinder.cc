@@ -102,7 +102,7 @@ void TrackFinder::process(const edm::Event& iEvent,
       sector_processors_.at(es).configure(&setup_, verbose_, endcap, sector);
       sector_processors_.at(es).process(iEvent.id(), muon_primitives, out_hits, out_tracks);
     }
-  }
+  }  // era_ != "Phase2_timing"
 
   // ___________________________________________________________________________
   // Check emulator input and output. They are printed as raw text that is
