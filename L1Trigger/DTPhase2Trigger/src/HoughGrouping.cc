@@ -89,7 +89,6 @@ void HoughGrouping::run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, 
   if (debug) cout << "\nHoughGrouping::run" << endl;
 
   ResetAttributes();
-  if (spacebins != 0) ResetPosElementsOfLinespace();
   
   iEventSetup.get<MuonGeometryRecord>().get(dtGeomH);
   const DTGeometry* dtGeom = dtGeomH.product();
@@ -171,26 +170,40 @@ void HoughGrouping::run(edm::Event& iEvent, const edm::EventSetup& iEventSetup, 
   
   // Perform the Hough transform of the inputs.
   DoHoughTransform();
-  
+
   // Obtain the maxima
   maxima = GetMaximaVector();
-  
+  ResetPosElementsOfLinespace();
+
   if (maxima.size() == 0) {
     if (debug) cout << "HoughGrouping::run - No good maxima found in this event." << endl;
     return;
   }
-  
+
   DTChamberId TheChambId(thewheel, thestation, thesector);
   const DTChamber* TheChamb = dtGeom->chamber(TheChambId);
-  
+  std::vector<std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*>> cands;
+
   for (UShort_t ican = 0; ican < maxima.size(); ican++) {
     if (debug) cout << "\nHoughGrouping::run - Candidate number: " << ican << endl;
     cands.push_back( AssociateHits(TheChamb, maxima.at(ican).first, maxima.at(ican).second) );
   }
-  
+
   // Now we filter them:
   OrderAndFilter(cands, outMpath);
   if (debug) cout << "HoughGrouping::run - now we have our muonpaths! It has " << outMpath->size() << " elements" << endl;
+
+  Short_t indi = cands.size() - 1;
+  while (! cands.empty() ) {
+    delete[] get<1>(cands.at(indi));
+    delete[] get<2>(cands.at(indi));
+    delete[] get<4>(cands.at(indi));
+    delete[] get<5>(cands.at(indi));
+
+    cands.pop_back();
+    indi--;
+  }
+  std::vector<std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*>>().swap(cands);
   return;
 }
 
@@ -209,7 +222,7 @@ void HoughGrouping::ResetAttributes() {
   if (debug) cout << "HoughGrouping::ResetAttributes" << endl;
   // std::vector's:
   maxima.clear();
-  cands.clear();
+//   cands.clear();
   hitvec.clear();
   
   // Integer-type variables:
@@ -617,7 +630,7 @@ void HoughGrouping::SetDifferenceBetweenSL(std::tuple<UShort_t, Bool_t*, Bool_t*
 }
 
 
-void HoughGrouping::OrderAndFilter(std::vector<std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*>> invector, std::vector<MuonPath*> *&outMuonPath) {
+void HoughGrouping::OrderAndFilter(std::vector<std::tuple<UShort_t, Bool_t*, Bool_t*, UShort_t, Double_t*, DTPrimitive*>> &invector, std::vector<MuonPath*> *&outMuonPath) {
   if (debug) cout << "HoughGrouping::OrderAndFilter" << endl;
   // 0: # of layers with hits.
   // 1: # of hits of high quality (the expected line crosses the cell).
@@ -661,7 +674,13 @@ void HoughGrouping::OrderAndFilter(std::vector<std::tuple<UShort_t, Bool_t*, Boo
     
     if (debug) cout << "HoughGrouping::OrderAndFilter - We are gonna erase " << elstoremove.size() << " elements" << endl;
     
-    for (UShort_t el = 0; el < elstoremove.size(); el++) invector.erase(invector.begin() + elstoremove.at(el));
+    for (Short_t el = (elstoremove.size() - 1); el > -1; el--) {
+      delete[] get<1>(invector.at(elstoremove.at(el)));
+      delete[] get<2>(invector.at(elstoremove.at(el)));
+      delete[] get<4>(invector.at(elstoremove.at(el)));
+      delete[] get<5>(invector.at(elstoremove.at(el)));
+      invector.erase(invector.begin() + elstoremove.at(el));
+    }
     
     if (ind + 1 == (UShort_t)invector.size()) filtered = true;
     else                                      std::sort(invector.begin() + ind + 1, invector.end(), HoughOrdering);
@@ -669,8 +688,14 @@ void HoughGrouping::OrderAndFilter(std::vector<std::tuple<UShort_t, Bool_t*, Boo
   }
   
   // Ultimate filter: if the remaining do not fill the requirements (configurable through pset arguments), they are removed also.
-  for (UShort_t el = 0; el < invector.size(); el++) {
-    if (! AreThereEnoughHits(invector.at(el))) invector.erase(invector.begin() + el);
+  for (Short_t el = (invector.size() - 1); el > -1; el--) {
+    if (! AreThereEnoughHits(invector.at(el))) {
+      delete[] get<1>(invector.at(el));
+      delete[] get<2>(invector.at(el));
+      delete[] get<4>(invector.at(el));
+      delete[] get<5>(invector.at(el));
+      invector.erase(invector.begin() + el);
+    }
   }
   
   if (invector.size() == 0) {
@@ -691,7 +716,6 @@ void HoughGrouping::OrderAndFilter(std::vector<std::tuple<UShort_t, Bool_t*, Boo
         if (lay < 4) tmplowfill++;
         else         tmpupfill++;
       }
-//       cout << "y la primitiva que hemos metio nel array tien de canal: " << ptrPrimitive[lay]->getChannelId() << endl;
     }
     
     MuonPath *ptrMuonPath = new MuonPath(ptrPrimitive, tmplowfill, tmpupfill);
