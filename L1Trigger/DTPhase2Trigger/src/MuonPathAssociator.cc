@@ -107,6 +107,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		if(debug) std::cout<<"correlating "<<SL1metaPrimitives.size()<<" metaPrim in SL1 and "<<SL3metaPrimitives.size()<<" in SL3 for "<<sl3Id<<std::endl;
 	
 		bool at_least_one_correlation=false;
+		bool at_least_one_confirmation=false;
 	
 		//SL1-SL3
 	
@@ -288,7 +289,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					    wi4,tdc4,lat4,
 					    -1
 					    }));
-			    at_least_one_correlation=true;
+			    at_least_one_confirmation=true;
 			}
 		    }
 		}
@@ -392,13 +393,13 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					    SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,
 					    -1
 					    }));
-			    at_least_one_correlation=true;
+			    at_least_one_confirmation=true;
 			}
 		    }
 		}
 	
 		//finish SL3-SL1
-		if(at_least_one_correlation==false){
+		if(at_least_one_correlation==false && at_least_one_confirmation==false){
 		    if(debug) std::cout<<"correlation we found zero correlations, adding both collections as they are to the outMPaths"<<std::endl;
 		    if(debug) std::cout<<"correlation sizes:"<<SL1metaPrimitives.size()<<" "<<SL3metaPrimitives.size()<<std::endl;
 		    for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
