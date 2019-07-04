@@ -107,7 +107,8 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		if(debug) std::cout<<"correlating "<<SL1metaPrimitives.size()<<" metaPrim in SL1 and "<<SL3metaPrimitives.size()<<" in SL3 for "<<sl3Id<<std::endl;
 	
 		bool at_least_one_correlation=false;
-		bool at_least_one_confirmation=false;
+		bool at_least_one_SL1_confirmation=false;
+		bool at_least_one_SL3_confirmation=false;
 	
 		//SL1-SL3
 	
@@ -289,7 +290,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					    wi4,tdc4,lat4,
 					    -1
 					    }));
-			    at_least_one_confirmation=true;
+			    at_least_one_SL1_confirmation=true;
 			}
 		    }
 		}
@@ -393,17 +394,18 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					    SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,
 					    -1
 					    }));
-			    at_least_one_confirmation=true;
+			    at_least_one_SL3_confirmation=true;
 			}
 		    }
 		}
 	
 		//finish SL3-SL1
-		if(at_least_one_correlation==false && at_least_one_confirmation==false){
+		if(at_least_one_correlation==false){
 		    if(debug) std::cout<<"correlation we found zero correlations, adding both collections as they are to the outMPaths"<<std::endl;
 		    if(debug) std::cout<<"correlation sizes:"<<SL1metaPrimitives.size()<<" "<<SL3metaPrimitives.size()<<std::endl;
-		    for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
-			DTSuperLayerId SLId(SL1metaPrimitive->rawId);
+		    if (at_least_one_SL1_confirmation == false) {
+		      for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
+		  	DTSuperLayerId SLId(SL1metaPrimitive->rawId);
 			DTChamberId(SLId.wheel(),SLId.station(),SLId.sector());
 			outMPaths.push_back(metaPrimitive({ChId.rawId(),SL1metaPrimitive->t0,SL1metaPrimitive->x,SL1metaPrimitive->tanPhi,SL1metaPrimitive->phi,SL1metaPrimitive->phiB,SL1metaPrimitive->chi2,SL1metaPrimitive->quality,
 					SL1metaPrimitive->wi1,SL1metaPrimitive->tdc1,SL1metaPrimitive->lat1,
@@ -416,8 +418,10 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					-1,-1,-1,
 					-1
 					}));
+	  	      }
 		    }
-		    for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
+		    if (at_least_one_SL3_confirmation == false){
+		      for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
 			DTSuperLayerId SLId(SL3metaPrimitive->rawId);
 			DTChamberId(SLId.wheel(),SLId.station(),SLId.sector());
 			outMPaths.push_back(metaPrimitive({ChId.rawId(),SL3metaPrimitive->t0,SL3metaPrimitive->x,SL3metaPrimitive->tanPhi,SL3metaPrimitive->phi,SL3metaPrimitive->phiB,SL3metaPrimitive->chi2,SL3metaPrimitive->quality,
@@ -431,6 +435,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,
 					-1
 					}));
+		      }
 		    }
 		}
 	
