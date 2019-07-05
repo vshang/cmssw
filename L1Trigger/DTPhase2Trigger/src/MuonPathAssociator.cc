@@ -299,12 +299,12 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 
 		//SL3-SL1
 		for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
-		    for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
+		    /*for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
 			if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) < dT0_correlate_TP){//time match
 			    //this comb was already filled up in the previous loop now we just want to know if there was at least one match
 			    at_least_one_correlation=true;
 			}
-		    }
+		    } */
 	  
 		    if(at_least_one_correlation==false){//no correlation was found, trying with pairs of two digis in the other SL
 	    
