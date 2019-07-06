@@ -381,7 +381,7 @@ void MuonPathAnalyzerPerSL::buildLateralities(void) {
  */
 bool MuonPathAnalyzerPerSL::isStraightPath(LATERAL_CASES sideComb[4]) {
 
-    //return true; //trying with all lateralities to be confirmed
+    return true; //trying with all lateralities to be confirmed
 
     int i, ajustedLayout[4], pairDiff[3], desfase[3];
 
