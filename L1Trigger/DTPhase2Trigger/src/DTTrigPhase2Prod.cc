@@ -355,40 +355,13 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 
     vector<L1Phase2MuDTPhDigi> outP2Ph;
     
-    // First we asociate a new index to the metaprimitive depending on quality or phiB; 
-    uint32_t rawId = -1; 
-    int numP = -1;
-    for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
-	numP++;
-	rawId = (*metaPrimitiveIt).rawId;   
+    // Assigning index value
 
-	int inf = 0;
-	int numP2 = -1;  
-	for (auto metaPrimitiveItN = correlatedMetaPrimitives.begin(); metaPrimitiveItN != correlatedMetaPrimitives.end(); ++metaPrimitiveItN){
-	    numP2++;
-	    if (rawId != (*metaPrimitiveItN).rawId) continue; 
-	    if (numP2 == numP) {
-		(*metaPrimitiveIt).index = inf; 
-		break;  
-	    } else if ((*metaPrimitiveIt).quality < (*metaPrimitiveItN).quality) {
-		inf++;
-	    } else if ((*metaPrimitiveIt).quality > (*metaPrimitiveItN).quality) {
-		(*metaPrimitiveItN).index++;
-	    } else if ((*metaPrimitiveIt).quality == (*metaPrimitiveItN).quality) {
-		if (fabs((*metaPrimitiveIt).phiB) >= fabs((*metaPrimitiveItN).phiB) ){
-		    inf++;
-		} else if (fabs((*metaPrimitiveIt).phiB) < fabs((*metaPrimitiveItN).phiB) ){
-		    (*metaPrimitiveItN).index++;
-		}
-	    }
-	}
-
-    }
-
+    assignIndex(correlatedMetaPrimitives);
 
     for (auto metaPrimitiveIt = correlatedMetaPrimitives.begin(); metaPrimitiveIt != correlatedMetaPrimitives.end(); ++metaPrimitiveIt){
       DTChamberId chId((*metaPrimitiveIt).rawId);
-      if(debug) std::cout<<"looping in final vector: SuperLayerId"<<chId<<" x="<<(*metaPrimitiveIt).x<<" quality="<<(*metaPrimitiveIt).quality << " chi2="<< (*metaPrimitiveIt).chi2 <<std::endl;
+      if(debug) std::cout<<"looping in final vector: SuperLayerId"<<chId<<" x="<<(*metaPrimitiveIt).x<<" quality="<<(*metaPrimitiveIt).quality << " chi2="<< (*metaPrimitiveIt).chi2 << " index=" << (*metaPrimitiveIt).index <<std::endl;
       
       int sectorTP=chId.sector();
       if(sectorTP==13) sectorTP=4;
@@ -616,4 +589,52 @@ GlobalPoint DTTrigPhase2Prod::getRPCGlobalPosition(RPCDetId rpcId, const RPCRecH
   return rpc_gp;
 
 }
+
+void  DTTrigPhase2Prod::assignIndex(std::vector<metaPrimitive> &inMPaths)
+{
+    // First we asociate a new index to the metaprimitive depending on quality or phiB; 
+    uint32_t rawId = -1; 
+    int numP = -1;
+    for (auto metaPrimitiveIt = inMPaths.begin(); metaPrimitiveIt != inMPaths.end(); ++metaPrimitiveIt){
+      numP++;
+      rawId = (*metaPrimitiveIt).rawId;   
+      int iOrder = assignQualityOrder((*metaPrimitiveIt));
+      int inf = 0;
+      int numP2 = -1;  
+      for (auto metaPrimitiveItN = inMPaths.begin(); metaPrimitiveItN != inMPaths.end(); ++metaPrimitiveItN){
+        int nOrder = assignQualityOrder((*metaPrimitiveItN));    
+        numP2++;
+	if (rawId != (*metaPrimitiveItN).rawId) continue; 
+	if (numP2 == numP) {
+	  (*metaPrimitiveIt).index = inf; 
+	  break;  
+	} else if (iOrder < nOrder) {
+	  inf++;
+	} else if (iOrder > nOrder) {
+	  (*metaPrimitiveItN).index++;
+	} else if (iOrder == nOrder) {
+	  if (fabs((*metaPrimitiveIt).phiB) >= fabs((*metaPrimitiveItN).phiB) ){
+	    inf++;
+	  } else if (fabs((*metaPrimitiveIt).phiB) < fabs((*metaPrimitiveItN).phiB) ){
+	    (*metaPrimitiveItN).index++;
+	  }
+        }	
+      } // ending second for
+    } // ending first for
+}
+
+int DTTrigPhase2Prod::assignQualityOrder(metaPrimitive mP)
+{
+    if (mP.quality == 9) return 9;
+    if (mP.quality == 8) return 8;
+    if (mP.quality == 7) return 6;
+    if (mP.quality == 6) return 7;
+    if (mP.quality == 5) return 3;
+    if (mP.quality == 4) return 5;
+    if (mP.quality == 3) return 4;
+    if (mP.quality == 2) return 2;
+    if (mP.quality == 1) return 1;
+    return -1; 
+}
+
 

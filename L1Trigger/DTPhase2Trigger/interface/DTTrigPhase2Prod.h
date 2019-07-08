@@ -135,7 +135,8 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
     // RPC
     bool useRPC;
     GlobalPoint getRPCGlobalPosition(RPCDetId rpcId, const RPCRecHit& rpcIt) const;
-    
+    void assignIndex(std::vector<metaPrimitive> &inMPaths);
+    int assignQualityOrder(metaPrimitive mP);
 };
 
 
