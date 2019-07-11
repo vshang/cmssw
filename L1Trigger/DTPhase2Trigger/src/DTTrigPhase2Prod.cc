@@ -73,6 +73,8 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset){
     do_correlation = pset.getUntrackedParameter<bool>("do_correlation");
     p2_df = pset.getUntrackedParameter<int>("p2_df");
     
+    scenario = pset.getUntrackedParameter<int>("scenario");
+    
     txt_ttrig_bc0 = pset.getUntrackedParameter<bool>("apply_txt_ttrig_bc0");
     
     dtDigisToken = consumes< DTDigiCollection >(pset.getParameter<edm::InputTag>("digiTag"));
@@ -374,10 +376,18 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
       }
 
       double shift_back=0;
-      if (iEvent.eventAuxiliary().run() == 1) //FIX MC                                                                                                 
+      
+      //if (iEvent.eventAuxiliary().run() == 1) //FIX MC                                                                                                 
+      if(scenario == 0)//scope for MC
 	  shift_back = 400;
 
+      if(scenario == 1)//scope for data
+	  shift_back=0;
       
+      if(scenario == 2)//scope for slice test
+	  shift_back=0;
+      
+	  
       if(p2_df==2){
 	  if(debug)std::cout<<"pushing back phase-2 dataformat carlo-federica dataformat"<<std::endl;
 	  outP2Ph.push_back(L1Phase2MuDTPhDigi((int)round((*metaPrimitiveIt).t0/25.)-shift_back,   // ubx (m_bx) //bx en la orbita

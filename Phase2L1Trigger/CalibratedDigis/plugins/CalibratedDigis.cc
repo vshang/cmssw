@@ -64,6 +64,7 @@ public:
 private:
     int timeOffset_;
     int flat_calib_;
+    int scenario;
 
     virtual void beginStream(edm::StreamID) override;
     virtual void produce(edm::Event&, const edm::EventSetup&) override;
@@ -115,6 +116,8 @@ CalibratedDigis::CalibratedDigis(const edm::ParameterSet& iConfig)
     theSync = DTTTrigSyncFactory::get()->create(iConfig.getParameter<string>("tTrigMode"),
 					      iConfig.getParameter<ParameterSet>("tTrigModeConfig"));
 
+    scenario = iConfig.getUntrackedParameter<int>("scenario");
+
     produces<DTDigiCollection>();
     //now do what ever other initialization is needed
   
@@ -162,10 +165,11 @@ CalibratedDigis::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  if(flat_calib_!=0)
 	      newTime = digiTime - 325                     + 25.0*iEvent.eventAuxiliary().bunchCrossing() + float(timeOffset_);
 	  else {
-	      if (iEvent.eventAuxiliary().run() == 1) //FIX MC 
-	          newTime = digiTime - theSync->offset(wireId) + 25.0*400 + float(timeOffset_);
-	      else 
-	          newTime = digiTime - theSync->offset(wireId) + 25.0*iEvent.eventAuxiliary().bunchCrossing() + float(timeOffset_); 
+	      //if (iEvent.eventAuxiliary().run() == 1) //FIX MC 
+		  if (scenario == 0) //FIX MC 
+		      newTime = digiTime - theSync->offset(wireId) + 25.0*400 + float(timeOffset_);
+		  else 
+		      newTime = digiTime - theSync->offset(wireId) + 25.0*iEvent.eventAuxiliary().bunchCrossing() + float(timeOffset_); 
 	  }
 	  DTDigi newDigi(wire, newTime, number);
 	  mydigis.insertDigi(layerId,newDigi);

@@ -17,10 +17,12 @@ CalibratedDigis = cms.EDProducer("CalibratedDigis",
         doT0Correction = cms.bool(True),
         debug = cms.untracked.bool(False),
         tTrigLabel = cms.string(''),
+        scenario = cms.untracked.int32(0),
         ),
                                  tTrigMode = cms.string('DTTTrigSyncFromDB'),
                                  timeOffset = cms.int32(0),
                                  flat_calib = cms.int32(0),
+                                 scenario = cms.untracked.int32(0),
                                  dtDigiTag = cms.InputTag("muonDTDigis")
                                  )
 

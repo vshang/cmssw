@@ -115,6 +115,7 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
     int min_phinhits_match_segment;
     bool do_correlation;
     int p2_df;
+    int scenario;
 
     // txt ttrig flag
     bool txt_ttrig_bc0;
