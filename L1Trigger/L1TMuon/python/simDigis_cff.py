@@ -20,8 +20,7 @@ simCscTriggerPrimitiveDigis = L1Trigger.CSCTriggerPrimitives.cscTriggerPrimitive
     CSCWireDigiProducer       = 'simMuonCSCDigis:MuonCSCWireDigi'
 )
 
-SimL1TMuonCommonTask = cms.Task(simDtTriggerPrimitiveDigis, simCscTriggerPrimitiveDigis)
-SimL1TMuonCommon = cms.Sequence(SimL1TMuonCommonTask)
+SimL1TMuonCommon = cms.Sequence(simDtTriggerPrimitiveDigis + simCscTriggerPrimitiveDigis)
 
 #
 # Legacy Trigger:
@@ -111,4 +110,4 @@ _phase2_SimL1TMuonTask = SimL1TMuonTask.copy()
 _phase2_SimL1TMuonTask.add(me0TriggerAllDigiTask)
 
 from Configuration.Eras.Modifier_phase2_muon_cff import phase2_muon
-(stage2L1Trigger & phase2_muon).toReplaceWith( SimL1TMuonTask, _phase2_SimL1TMuonTask )
+(stage2L1Trigger & phase2_muon).toReplaceWith( SimL1TMuon, _phase2_SimL1TMuon )

@@ -37,16 +37,14 @@ from L1Trigger.L1TMuon.simDigis_cff import *
 from L1Trigger.L1TGlobal.simDigis_cff import *
 
 # define a core which can be extented in customizations:
-SimL1EmulatorCoreTask = cms.Task(
-    SimL1TCalorimeterTask,
-    SimL1TMuonTask,
-    SimL1TechnicalTriggersTask,
-    SimL1TGlobalTask
-)
-SimL1EmulatorCore = cms.Sequence(SimL1EmulatorCoreTask)
+SimL1EmulatorCore = cms.Sequence(
+    SimL1TCalorimeter +
+    SimL1TMuon +
+    SimL1TechnicalTriggers +
+    SimL1TGlobal
+    )
 
-SimL1EmulatorTask = cms.Task(SimL1EmulatorCoreTask)
-SimL1Emulator = cms.Sequence( SimL1EmulatorTask )
+SimL1Emulator = cms.Sequence( SimL1EmulatorCore )
 
 #
 # Emulators are configured from DB (GlobalTags)
