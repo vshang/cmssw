@@ -9,10 +9,9 @@ process.DTGeometryESModule.applyAlignment = False
 process.load("L1Trigger.DTPhase2Trigger.dtTriggerPhase2PrimitiveDigis_cfi")
 process.load("Configuration.StandardSequences.FrontierConditions_GlobalTag_cff")
 process.load("Configuration.StandardSequences.MagneticField_AutoFromDBCurrent_cff")
-#process.GlobalTag.globaltag = "90X_dataRun2_Express_v2"
-#process.GlobalTag.globaltag = "80X_dataRun2_2016SeptRepro_v7"
-from Configuration.AlCa.GlobalTag import GlobalTag
-process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase2_realistic', '')
+process.GlobalTag.globaltag = "106X_upgrade2018_realistic_v4"
+#from Configuration.AlCa.GlobalTag import GlobalTag
+#process.GlobalTag = GlobalTag(process.GlobalTag, 'auto:phase2_realistic', '')
 
 #Calibrate Digis
 process.load("Phase2L1Trigger.CalibratedDigis.CalibratedDigis_cfi")
@@ -40,15 +39,16 @@ process.dtTriggerPhase2PrimitiveDigis.useRPC = True
 process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring(
         #'file:/eos/user/c/carrillo/digis_segments_Run2016BSingleMuonRAW-RECO.root'
         'file:/eos/cms/store/group/dpg_dt/comm_dt/TriggerSimulation/SamplesReco/SingleMu_FlatPt-2to100/Version_10_5_0/SimRECO_1.root'
+        #'file:/eos/cms/store/group/dpg_rpc/comm_rpc/UpgradePhaseII/RPC_PLUS_DT/SingleMu_FlatPt-2to100_10_5_0_MaryCruz_WithRPCRecHits/SimRECO_1.root'
         )
                             )
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(100)
+    input = cms.untracked.int32(1000)
 )
 
 process.out = cms.OutputModule("PoolOutputModule",
                                outputCommands = cms.untracked.vstring('keep *'),
-                               fileName = cms.untracked.string('DTTriggerPhase2Primitives100_withRPC.root')
+                               fileName = cms.untracked.string('DTTriggerPhase2Primitives1000_withRPC.root')
 )
 
 process.p = cms.Path(process.rpcRecHits*process.CalibratedDigis*process.dtTriggerPhase2PrimitiveDigis)

@@ -118,6 +118,7 @@ DTTrigPhase2Prod::DTTrigPhase2Prod(const ParameterSet& pset){
     mpathqualityenhancer = new MPQualityEnhancerFilter(pset);
     mpathredundantfilter = new MPRedundantFilter(pset);
     mpathassociator      = new MuonPathAssociator(pset);
+    rpc_integrator       = new RPCIntegrator(pset);
 }
 
 DTTrigPhase2Prod::~DTTrigPhase2Prod(){
@@ -132,6 +133,7 @@ DTTrigPhase2Prod::~DTTrigPhase2Prod(){
   delete mpathqualityenhancer; // Filter destructor
   delete mpathredundantfilter; // Filter destructor
   delete mpathassociator; // Associator destructor
+  delete rpc_integrator;
 }
 
 
@@ -142,9 +144,6 @@ void DTTrigPhase2Prod::beginRun(edm::Run const& iRun, const edm::EventSetup& iEv
   if(debug) std::cout<<"getting DT geometry"<<std::endl;
   iEventSetup.get<MuonGeometryRecord>().get(dtGeo);//1103
 
-  if(debug) std::cout<<"getting RPC geometry"<<std::endl;
-  iEventSetup.get<MuonGeometryRecord>().get(rpcGeo);
-  
   ESHandle< DTConfigManager > dtConfig ;
   iEventSetup.get< DTConfigManagerRcd >().get( dtConfig );
 
@@ -180,8 +179,8 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
     iEvent.getByToken(dtDigisToken, dtdigis);
     
     if(debug) std::cout <<"\t Getting the RPC RecHits"<<std::endl;
-    Handle<RPCRecHitCollection> rpcHits;
-    iEvent.getByToken(rpcRecHitsLabel,rpcHits);
+    edm::Handle<RPCRecHitCollection> rpcRecHits;
+    iEvent.getByToken(rpcRecHitsLabel,rpcRecHits);
     
     ///////////////////////////////////
     // GROUPING CODE: 
@@ -352,6 +351,13 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
       } 
     }
     
+    // RPC integration
+    if(useRPC) {
+        if (debug) std::cout << "Start integrating RPC" << std::endl;
+        rpc_integrator->initialise(iEventSetup);
+        rpc_integrator->translateRPC(rpcRecHits);
+        rpc_integrator->confirmDT(correlatedMetaPrimitives);
+    }
 
     /// STORING RESULTs 
 
@@ -401,7 +407,7 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 					       (*metaPrimitiveIt).index,  // uind (m_segmentIndex)
 					       (int)round((*metaPrimitiveIt).t0)-shift_back*25,  // ut0 (m_t0Segment)
 					       (int)round((*metaPrimitiveIt).chi2*1000000),  // uchi2 (m_chi2Segment)
-					       -10    // urpc (m_rpcFlag)
+					       (*metaPrimitiveIt).rpcFlag    // urpc (m_rpcFlag)
 					       ));
 	
       }
@@ -588,16 +594,6 @@ int DTTrigPhase2Prod::rango(metaPrimitive mp) {
     if(mp.quality==1 or mp.quality==2) return 3;
     if(mp.quality==3 or mp.quality==4) return 4;
     return mp.quality;
-}
-
-GlobalPoint DTTrigPhase2Prod::getRPCGlobalPosition(RPCDetId rpcId, const RPCRecHit& rpcIt) const{
-
-  RPCDetId rpcid = RPCDetId(rpcId);
-  const LocalPoint& rpc_lp = rpcIt.localPosition();
-  const GlobalPoint& rpc_gp = rpcGeo->idToDet(rpcid)->surface().toGlobal(rpc_lp);
-
-  return rpc_gp;
-
 }
 
 void  DTTrigPhase2Prod::assignIndex(std::vector<metaPrimitive> &inMPaths)

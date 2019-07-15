@@ -44,6 +44,7 @@
 #include "DataFormats/RPCRecHit/interface/RPCRecHitCollection.h"
 #include <DataFormats/MuonDetId/interface/RPCDetId.h>
 #include "Geometry/RPCGeometry/interface/RPCGeometry.h"
+#include "L1Trigger/DTPhase2Trigger/interface/RPCIntegrator.h"
 
 
 #include <fstream>
@@ -73,7 +74,6 @@ class DTTrigPhase2Prod: public edm::EDProducer{
 void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
     
     edm::ESHandle<DTGeometry> dtGeo;
-    edm::ESHandle<RPCGeometry> rpcGeo;
 
     std::vector<std::pair<int,MuonPath>> primitives;
 
@@ -134,8 +134,9 @@ void endRun(edm::Run const& iRun, const edm::EventSetup& iEventSetup) override;
     MuonPathAssociator* mpathassociator;
 
     // RPC
+    RPCIntegrator* rpc_integrator;
     bool useRPC;
-    GlobalPoint getRPCGlobalPosition(RPCDetId rpcId, const RPCRecHit& rpcIt) const;
+
     void assignIndex(std::vector<metaPrimitive> &inMPaths);
     int assignQualityOrder(metaPrimitive mP);
 };
