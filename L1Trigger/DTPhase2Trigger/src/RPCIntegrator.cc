@@ -101,13 +101,14 @@ L1Phase2MuDTPhDigi* RPCIntegrator::matchDTwithRPC(metaPrimitive* dt_metaprimitiv
     return bestMatch_rpcRecHit;
 }
 
-void RPCIntegrator::confirmDT(std::vector<metaPrimitive> & dt_metaprimitives) {
+void RPCIntegrator::confirmDT(std::vector<metaPrimitive> & dt_metaprimitives, double shift_back) {
     for (auto dt_metaprimitive = dt_metaprimitives.begin(); dt_metaprimitive != dt_metaprimitives.end(); dt_metaprimitive++) {
         L1Phase2MuDTPhDigi* bestMatch_rpcRecHit = matchDTwithRPC(&*dt_metaprimitive);
         if (bestMatch_rpcRecHit) {
             (*dt_metaprimitive).rpcFlag = 4;
             if ((*dt_metaprimitive).quality < m_min_quality_overwrite_t0){
-                (*dt_metaprimitive).t0 = bestMatch_rpcRecHit->t0(); // Overwriting t0 will propagates to BX since it is defined by round((*metaPrimitiveIt).t0/25.)-shift_back
+                (*dt_metaprimitive).t0 = bestMatch_rpcRecHit->t0() + 25 * shift_back; // Overwriting t0 will propagates to BX since it is defined by round((*metaPrimitiveIt).t0/25.)-shift_back
+                                                                                      // but we need to add this shift back since all RPC chamber time is centered at 0 for prompt muon
                 (*dt_metaprimitive).rpcFlag = 1;
             }
         }

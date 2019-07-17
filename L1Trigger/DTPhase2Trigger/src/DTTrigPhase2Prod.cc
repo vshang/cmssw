@@ -350,13 +350,25 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 	  cout<<endl;
       } 
     }
+
+    double shift_back=0;
+
+    //if (iEvent.eventAuxiliary().run() == 1) //FIX MC
+    if(scenario == 0)//scope for MC
+        shift_back = 400;
+
+    if(scenario == 1)//scope for data
+        shift_back=0;
+
+    if(scenario == 2)//scope for slice test
+        shift_back=0;
     
     // RPC integration
     if(useRPC) {
         if (debug) std::cout << "Start integrating RPC" << std::endl;
         rpc_integrator->initialise(iEventSetup);
         rpc_integrator->translateRPC(rpcRecHits);
-        rpc_integrator->confirmDT(correlatedMetaPrimitives);
+        rpc_integrator->confirmDT(correlatedMetaPrimitives, shift_back);
     }
 
     /// STORING RESULTs 
@@ -380,36 +392,22 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
 	  if(inner((*metaPrimitiveIt))) sl=1;
 	  else sl=3;
       }
-
-      double shift_back=0;
-      
-      //if (iEvent.eventAuxiliary().run() == 1) //FIX MC                                                                                                 
-      if(scenario == 0)//scope for MC
-	  shift_back = 400;
-
-      if(scenario == 1)//scope for data
-	  shift_back=0;
-      
-      if(scenario == 2)//scope for slice test
-	  shift_back=0;
-      
 	  
       if(p2_df==2){
-	  if(debug)std::cout<<"pushing back phase-2 dataformat carlo-federica dataformat"<<std::endl;
-	  outP2Ph.push_back(L1Phase2MuDTPhDigi((int)round((*metaPrimitiveIt).t0/25.)-shift_back,   // ubx (m_bx) //bx en la orbita
-					       chId.wheel(),   // uwh (m_wheel)     // FIXME: It is not clear who provides this?
-					       sectorTP,   // usc (m_sector)    // FIXME: It is not clear who provides this?
-					       chId.station(),   // ust (m_station)
-					       sl,   // ust (m_station)
-					       (int)round((*metaPrimitiveIt).phi*65536./0.8), // uphi (_phiAngle)
-					       (int)round((*metaPrimitiveIt).phiB*2048./1.4), // uphib (m_phiBending)
-					       (*metaPrimitiveIt).quality,  // uqua (m_qualityCode)
-					       (*metaPrimitiveIt).index,  // uind (m_segmentIndex)
-					       (int)round((*metaPrimitiveIt).t0)-shift_back*25,  // ut0 (m_t0Segment)
-					       (int)round((*metaPrimitiveIt).chi2*1000000),  // uchi2 (m_chi2Segment)
-					       (*metaPrimitiveIt).rpcFlag    // urpc (m_rpcFlag)
-					       ));
-	
+          if(debug)std::cout<<"pushing back phase-2 dataformat carlo-federica dataformat"<<std::endl;
+          outP2Ph.push_back(L1Phase2MuDTPhDigi((int)round((*metaPrimitiveIt).t0/25.)-shift_back,   // ubx (m_bx) //bx en la orbita
+                               chId.wheel(),   // uwh (m_wheel)     // FIXME: It is not clear who provides this?
+                               sectorTP,   // usc (m_sector)    // FIXME: It is not clear who provides this?
+                               chId.station(),   // ust (m_station)
+                               sl,   // ust (m_station)
+                               (int)round((*metaPrimitiveIt).phi*65536./0.8), // uphi (_phiAngle)
+                               (int)round((*metaPrimitiveIt).phiB*2048./1.4), // uphib (m_phiBending)
+                               (*metaPrimitiveIt).quality,  // uqua (m_qualityCode)
+                               (*metaPrimitiveIt).index,  // uind (m_segmentIndex)
+                               (int)round((*metaPrimitiveIt).t0)-shift_back*25,  // ut0 (m_t0Segment)
+                               (int)round((*metaPrimitiveIt).chi2*1000000),  // uchi2 (m_chi2Segment)
+                               (*metaPrimitiveIt).rpcFlag    // urpc (m_rpcFlag)
+                               ));
       }
     }
     

@@ -16,6 +16,7 @@ process.GlobalTag.globaltag = "106X_upgrade2018_realistic_v4"
 #Calibrate Digis
 process.load("Phase2L1Trigger.CalibratedDigis.CalibratedDigis_cfi")
 process.CalibratedDigis.dtDigiTag = "simMuonDTDigis"
+process.CalibratedDigis.scenario = 0 # 0 for mc, 1 for data, 2 for slice test
 #process.CalibratedDigis.flat_calib = 325 #turn to 0 to use the DB  , 325 for JM and Jorge benchmark
 
 #DTTriggerPhase2
@@ -35,6 +36,8 @@ process.rpcRecHits.rpcDigiLabel = cms.InputTag('simMuonRPCDigis')
 process.load('Configuration.Geometry.GeometryExtended2023D38Reco_cff')
 process.load('Configuration.Geometry.GeometryExtended2023D38_cff')
 process.dtTriggerPhase2PrimitiveDigis.useRPC = True
+process.dtTriggerPhase2PrimitiveDigis.min_quality_overwrite_t0 = 10
+process.dtTriggerPhase2PrimitiveDigis.scenario = 0 # 0 for mc, 1 for data, 2 for slice test
 
 process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring(
         #'file:/eos/user/c/carrillo/digis_segments_Run2016BSingleMuonRAW-RECO.root'
@@ -43,19 +46,14 @@ process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring(
         )
                             )
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1000)
+    input = cms.untracked.int32(5000)
 )
 
 process.out = cms.OutputModule("PoolOutputModule",
                                outputCommands = cms.untracked.vstring('keep *'),
-                               fileName = cms.untracked.string('DTTriggerPhase2Primitives1000_withRPC.root')
+                               fileName = cms.untracked.string('DTTriggerPhase2Primitives5000_withRPC.root')
 )
 
 process.p = cms.Path(process.rpcRecHits*process.CalibratedDigis*process.dtTriggerPhase2PrimitiveDigis)
 process.this_is_the_end = cms.EndPath(process.out)
-
-
-
-
-
 

@@ -35,7 +35,7 @@ class RPCIntegrator {
         GlobalPoint getRPCGlobalPosition(RPCDetId rpcId, const RPCRecHit& rpcIt) const;
         void translateRPC(edm::Handle<RPCRecHitCollection> rpcRecHits);
         L1Phase2MuDTPhDigi* matchDTwithRPC(metaPrimitive* dt_metaprimitive);
-        void confirmDT(std::vector<metaPrimitive> & dt_metaprimitives);
+        void confirmDT(std::vector<metaPrimitive> & dt_metaprimitives, double shift_back);
 
         std::vector<L1Phase2MuDTPhDigi> rpcRecHits_translated;
 
