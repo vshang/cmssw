@@ -36,7 +36,7 @@ process.rpcRecHits.rpcDigiLabel = cms.InputTag('simMuonRPCDigis')
 process.load('Configuration.Geometry.GeometryExtended2023D38Reco_cff')
 process.load('Configuration.Geometry.GeometryExtended2023D38_cff')
 process.dtTriggerPhase2PrimitiveDigis.useRPC = True
-process.dtTriggerPhase2PrimitiveDigis.min_quality_overwrite_t0 = 10
+process.dtTriggerPhase2PrimitiveDigis.max_quality_to_overwrite_t0 = 9 # strict inequality
 process.dtTriggerPhase2PrimitiveDigis.scenario = 0 # 0 for mc, 1 for data, 2 for slice test
 
 process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring(

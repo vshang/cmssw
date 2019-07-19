@@ -32,7 +32,7 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                #RPC
                                                rpcRecHits = cms.untracked.InputTag("rpcRecHits"),
                                                useRPC = cms.untracked.bool(False),
-                                               min_quality_overwrite_t0 = cms.untracked.int32(9) # will use RPC 't0' for TP with quality < min_quality_overwrite_t0
+                                               max_quality_to_overwrite_t0 = cms.untracked.int32(9) # will use RPC  to set 't0' for TP with quality < max_quality_to_overwrite_t0
                                                )
 
 dtTriggerPhase2PrimitiveDigis.HoughGrouping      = HoughGrouping

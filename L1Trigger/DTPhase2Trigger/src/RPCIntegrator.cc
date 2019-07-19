@@ -8,7 +8,7 @@
 RPCIntegrator::RPCIntegrator(const edm::ParameterSet& pset){
     m_debug = pset.getUntrackedParameter<Bool_t>("debug");
     if (m_debug) std::cout <<"RPCIntegrator constructor" << std::endl;
-    m_min_quality_overwrite_t0 = pset.getUntrackedParameter<int>("min_quality_overwrite_t0");
+    m_max_quality_to_overwrite_t0 = pset.getUntrackedParameter<int>("max_quality_to_overwrite_t0");
 }
 
 RPCIntegrator::~RPCIntegrator() {
@@ -106,7 +106,7 @@ void RPCIntegrator::confirmDT(std::vector<metaPrimitive> & dt_metaprimitives, do
         L1Phase2MuDTPhDigi* bestMatch_rpcRecHit = matchDTwithRPC(&*dt_metaprimitive);
         if (bestMatch_rpcRecHit) {
             (*dt_metaprimitive).rpcFlag = 4;
-            if ((*dt_metaprimitive).quality < m_min_quality_overwrite_t0){
+            if ((*dt_metaprimitive).quality < m_max_quality_to_overwrite_t0){
                 (*dt_metaprimitive).t0 = bestMatch_rpcRecHit->t0() + 25 * shift_back; // Overwriting t0 will propagates to BX since it is defined by round((*metaPrimitiveIt).t0/25.)-shift_back
                                                                                       // but we need to add this shift back since all RPC chamber time is centered at 0 for prompt muon
                 (*dt_metaprimitive).rpcFlag = 1;
@@ -114,14 +114,3 @@ void RPCIntegrator::confirmDT(std::vector<metaPrimitive> & dt_metaprimitives, do
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
