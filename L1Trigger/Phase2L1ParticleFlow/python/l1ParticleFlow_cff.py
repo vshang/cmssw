@@ -238,6 +238,23 @@ l1ParticleFlow_pf_hf = cms.Sequence(
 )
 
 
+# PF in the TSA Region
+l1pfProducerTSA = l1pfProducerBarrel.clone(
+    trackRegionMode = cms.string("atVertex"),
+    regions = cms.VPSet(
+        cms.PSet(
+            etaBoundaries = cms.vdouble(-3,3),
+            phiSlices = cms.uint32(18),
+            etaExtra = cms.double(0.0),
+            phiExtra = cms.double(0.0)
+        ),
+    ),
+)
+l1ParticleFlow_pf_tsa = cms.Sequence(
+    pfTracksFromL1TracksBarrel +
+    l1pfProducerTSA
+)
+
 # Merging all outputs
 l1pfCandidates = cms.EDProducer("L1TPFCandMultiMerger",
     pfProducers = cms.VInputTag(
