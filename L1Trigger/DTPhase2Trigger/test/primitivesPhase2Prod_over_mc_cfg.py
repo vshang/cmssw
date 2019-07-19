@@ -17,6 +17,7 @@ process.GlobalTag.globaltag = "100X_upgrade2018_realistic_v10"
 process.load("Phase2L1Trigger.CalibratedDigis.CalibratedDigis_cfi")
 #process.CalibratedDigis.flat_calib = 325 #turn to 0 to use the DB  , 325 for JM and Jorge benchmark
 process.CalibratedDigis.dtDigiTag = "simMuonDTDigis" #turn to 0 to use the DB  , 325 for JM and Jorge benchmark
+process.CalibratedDigis.scenario = 0 # 0 for mc, 1 for data, 2 for slice test
 
 #DTTriggerPhase2
 process.load("L1Trigger.DTPhase2Trigger.dtTriggerPhase2PrimitiveDigis_cfi")
