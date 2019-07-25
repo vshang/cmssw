@@ -95,6 +95,8 @@ MuonPath::MuonPath(DTPrimitive *ptrPrimitive[8], int nprimUp, int nprimDown) {
 MuonPath::MuonPath(MuonPath *ptr) {
   //  std::cout<<"Clonando un 'MuonPath'"<<std::endl;
   setRawId		 ( ptr->getRawId()		  );
+  setPhi		 ( ptr->getPhi()		  );
+  setPhiB		 ( ptr->getPhiB()		  );
   setQuality             ( ptr->getQuality()              );
   setBaseChannelId       ( ptr->getBaseChannelId()        );
   setCellHorizontalLayout( ptr->getCellHorizontalLayout() );

@@ -204,7 +204,7 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
       }
     }
     DTLayerId thisLId(selected_Id);
-    if(thisLId.station()>=3)z=1.8;   
+    if(thisLId.station()>=3)z=-1.8;   
  
     DTSuperLayerId MuonPathSLId(thisLId.wheel(),thisLId.station(),thisLId.sector(),thisLId.superLayer());
     GlobalPoint jm_x_cmssw_global = dtGeo->chamber(MuonPathSLId)->toGlobal(LocalPoint(jm_x,0.,z));//jm_x is already extrapolated to the middle of the SL
@@ -216,7 +216,7 @@ void MuonPathAnalyzerInChamber::analyze(MuonPath *inMPath,std::vector<MuonPath*>
     mPath->setPhi(jm_x_cmssw_global.phi()-0.5235988*(thisec-1));
     mPath->setPhiB(hasPosRF(MuonPathSLId.wheel(),MuonPathSLId.sector()) ? psi-phi : -psi-phi);
     
-    if(mPath->getChiSq() < best_chi2){
+    if(mPath->getChiSq() < best_chi2 && mPath->getChiSq() > 0 ){
       mpAux = new MuonPath(mPath);
       bestI = i; 
       best_chi2 = mPath->getChiSq();
