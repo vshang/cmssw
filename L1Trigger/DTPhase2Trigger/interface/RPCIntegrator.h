@@ -43,6 +43,7 @@ class RPCIntegrator {
         //RPCRecHitCollection m_rpcRecHits;
         Bool_t m_debug;
         int m_max_quality_to_overwrite_t0;
+        bool m_storeAllRPCHits;
         edm::ESHandle<RPCGeometry> m_rpcGeo;
         int m_dt_phi_granularity = 81920;
 };

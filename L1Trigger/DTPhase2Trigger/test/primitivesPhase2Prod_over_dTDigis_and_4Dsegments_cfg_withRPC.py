@@ -37,6 +37,7 @@ process.load('Configuration.Geometry.GeometryExtended2023D38Reco_cff')
 process.load('Configuration.Geometry.GeometryExtended2023D38_cff')
 process.dtTriggerPhase2PrimitiveDigis.useRPC = True
 process.dtTriggerPhase2PrimitiveDigis.max_quality_to_overwrite_t0 = 9 # strict inequality
+#process.dtTriggerPhase2PrimitiveDigis.storeAllRPCHits = True
 process.dtTriggerPhase2PrimitiveDigis.scenario = 0 # 0 for mc, 1 for data, 2 for slice test
 
 process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring(
@@ -46,12 +47,12 @@ process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring(
         )
                             )
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(5000)
+    input = cms.untracked.int32(100)
 )
 
 process.out = cms.OutputModule("PoolOutputModule",
                                outputCommands = cms.untracked.vstring('keep *'),
-                               fileName = cms.untracked.string('DTTriggerPhase2Primitives5000_withRPC.root')
+                               fileName = cms.untracked.string('DTTriggerPhase2Primitives100_withRPC.root')
 )
 
 process.p = cms.Path(process.rpcRecHits*process.CalibratedDigis*process.dtTriggerPhase2PrimitiveDigis)

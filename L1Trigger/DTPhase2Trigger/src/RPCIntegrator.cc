@@ -9,6 +9,7 @@ RPCIntegrator::RPCIntegrator(const edm::ParameterSet& pset){
     m_debug = pset.getUntrackedParameter<Bool_t>("debug");
     if (m_debug) std::cout <<"RPCIntegrator constructor" << std::endl;
     m_max_quality_to_overwrite_t0 = pset.getUntrackedParameter<int>("max_quality_to_overwrite_t0");
+    m_storeAllRPCHits = pset.getUntrackedParameter<bool>("storeAllRPCHits");
 }
 
 RPCIntegrator::~RPCIntegrator() {
@@ -85,9 +86,10 @@ L1Phase2MuDTPhDigi* RPCIntegrator::matchDTwithRPC(metaPrimitive* dt_metaprimitiv
     if (sectorTP == 14) sectorTP = 10;
     sectorTP = sectorTP - 1;
     L1Phase2MuDTPhDigi* bestMatch_rpcRecHit = NULL;
+    auto bestMatch_rpcRecHit_idx = rpcRecHits_translated.begin();
     float min_dPhi = std::numeric_limits<float>::max();
     for (auto rpcRecHit_translated = rpcRecHits_translated.begin(); rpcRecHit_translated != rpcRecHits_translated.end(); rpcRecHit_translated++) {
-        if (rpcRecHit_translated->whNum() == dt_chId.wheel() && rpcRecHit_translated->stNum() == dt_chId.station() && rpcRecHit_translated->scNum() == sectorTP) {
+        if (rpcRecHit_translated->whNum() == dt_chId.wheel() && rpcRecHit_translated->stNum() == dt_chId.station() && rpcRecHit_translated->scNum() == sectorTP) {//FIXME improve DT/RPC matching
             //if (min_dPhi != std::numeric_limits<float>::max()){
             //    std::cout << "More than one match for DT/RPC" << dt_chId << std::endl;
             //}
@@ -95,8 +97,12 @@ L1Phase2MuDTPhDigi* RPCIntegrator::matchDTwithRPC(metaPrimitive* dt_metaprimitiv
             if (std::abs(rpcRecHit_translated->phi() - dt_metaprimitive->phi) < min_dPhi){
                 min_dPhi = std::abs(rpcRecHit_translated->phi() - dt_metaprimitive->phi);
                 bestMatch_rpcRecHit = &*rpcRecHit_translated;
+                bestMatch_rpcRecHit_idx = rpcRecHit_translated;
             }
         }
+    }
+    if (bestMatch_rpcRecHit and !m_storeAllRPCHits){
+        rpcRecHits_translated.erase(bestMatch_rpcRecHit_idx);
     }
     return bestMatch_rpcRecHit;
 }
