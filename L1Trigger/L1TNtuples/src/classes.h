@@ -7,6 +7,7 @@
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisRCTDataFormat.h"
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisCaloTPDataFormat.h"
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisGeneratorDataFormat.h"
+#include "L1Trigger/L1TNtuples/interface/L1AnalysisCustomGeneratorDataFormat.h" 
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisSimulationDataFormat.h"
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisL1ExtraDataFormat.h"
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisRecoMuonDataFormat.h"
