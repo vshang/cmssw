@@ -254,7 +254,7 @@ L1TS2PFJetInputPatternWriter::endJob()
   unsigned int evPerFile = floor(framesPerFile/framesPerEv);
 
   //number of output files
-  unsigned int nOutFiles = ceil(nEvents_/evPerFile);
+  unsigned int nOutFiles = ceil((float)nEvents_/(float)evPerFile);
 
   LogDebug("L1TDebug") << "Read " << nFrame_ << " frames" << std::endl;
   LogDebug("L1TDebug") << "Read " << nEvents_ << " events" << std::endl;
@@ -296,7 +296,7 @@ L1TS2PFJetInputPatternWriter::endJob()
     // then the data
     unsigned iFileFrame=0;
     for ( unsigned iFrame=itFile*framesPerFile; iFrame<(itFile*framesPerFile+framesPerFile); ++iFrame ) {
-      if( iFrame <= nFrame_ ){
+      if( iFrame <= nFrame_ && iFrame < (framesPerEv*nEvents_)){
 	outFiles[itFile] << "Frame " << std::dec << std::setw(4) << std::setfill('0') << iFileFrame << " : ";
 	for ( unsigned iQuad=0; iQuad<nQuad_; ++iQuad ) {
 	  for ( unsigned iChan=0; iChan<nChan_; ++iChan ) {
