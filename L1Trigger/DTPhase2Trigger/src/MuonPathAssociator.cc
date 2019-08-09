@@ -193,10 +193,10 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					    SL1metaPrimitive->wi2,SL1metaPrimitive->tdc2,SL1metaPrimitive->lat2,
 					    SL1metaPrimitive->wi3,SL1metaPrimitive->tdc3,SL1metaPrimitive->lat3,
 					    SL1metaPrimitive->wi4,SL1metaPrimitive->tdc4,SL1metaPrimitive->lat4,
-					    SL3metaPrimitive->wi1,SL3metaPrimitive->tdc1,SL1metaPrimitive->lat5,
-					    SL3metaPrimitive->wi2,SL3metaPrimitive->tdc2,SL1metaPrimitive->lat6,
-					    SL3metaPrimitive->wi3,SL3metaPrimitive->tdc3,SL1metaPrimitive->lat7,
-					    SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL1metaPrimitive->lat8,
+					    SL3metaPrimitive->wi1,SL3metaPrimitive->tdc1,SL3metaPrimitive->lat1,
+					    SL3metaPrimitive->wi2,SL3metaPrimitive->tdc2,SL3metaPrimitive->lat2,
+					    SL3metaPrimitive->wi3,SL3metaPrimitive->tdc3,SL3metaPrimitive->lat3,
+					    SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,
 					    -1
 					    }));
 			    at_least_one_correlation=true;
