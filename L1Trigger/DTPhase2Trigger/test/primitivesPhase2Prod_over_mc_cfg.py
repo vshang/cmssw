@@ -30,6 +30,7 @@ process.load("L1Trigger.DTPhase2Trigger.dtTriggerPhase2PrimitiveDigis_cfi")
 #process.dtTriggerPhase2PrimitiveDigis.min_phinhits_match_segment = 4
 #process.dtTriggerPhase2PrimitiveDigis.debug = True
 process.dtTriggerPhase2PrimitiveDigis.scenario = 0
+process.dtTriggerPhase2PrimitiveDigis.dump = True
 
 process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring(
         'file:/eos/cms/store/group/dpg_dt/comm_dt/TriggerSimulation/SamplesReco/SingleMu_FlatPt-2to100/Version_10_5_0/SimRECO_1.root',
@@ -48,7 +49,7 @@ process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring(
         )
                             )
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1000)
+    input = cms.untracked.int32(2)
 )
 
 process.out = cms.OutputModule("PoolOutputModule",

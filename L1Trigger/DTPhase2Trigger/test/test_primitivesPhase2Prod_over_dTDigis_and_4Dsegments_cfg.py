@@ -18,7 +18,7 @@ process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring('file
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(10))
 process.dtTriggerPhase2PrimitiveDigis.dump = True
 process.dtTriggerPhase2PrimitiveDigis.debug = False
-process.dtTriggerPhase2PrimitiveDigis.grouping_code = cms.untracked.int32(2)
+process.dtTriggerPhase2PrimitiveDigis.grouping_code = cms.untracked.int32(0)
 
 process.out = cms.OutputModule("PoolOutputModule",
                                outputCommands = cms.untracked.vstring('keep *'),
