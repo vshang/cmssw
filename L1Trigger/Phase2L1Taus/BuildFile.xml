@@ -2,6 +2,7 @@
 <use   name="FWCore/ParameterSet"/>
 <use   name="FWCore/Utilities"/>
 <use   name="DataFormats/L1Trigger"/>
+<use   name="DataFormats/Phase2L1Taus"/>
 <use   name="DataFormats/L1CaloTrigger"/>
 <use   name="DataFormats/Phase2L1CaloTrig"/>
 <use   name="DataFormats/Phase2L1ParticleFlow"/>
@@ -10,6 +11,11 @@
 <use   name="Geometry/HcalTowerAlgo"/>
 <use   name="PhysicsTools/TensorFlow"/>
 <use   name="tensorflow"/>
+<use   name="DataFormats/Candidate"/>
+<use   name="DataFormats/L1TVertex"/>
+<use   name="boost"/>
+<use   name="CLHEP"/>
+<use   name="root"/>
 <export>
   <lib name="1"/>
 </export>

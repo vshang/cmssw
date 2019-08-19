@@ -44,6 +44,8 @@ namespace l1t
   };
   
   typedef std::vector<l1t::PFCandidate> PFCandidateCollection;
+  typedef edm::Ref<l1t::PFCandidateCollection> PFCandidateRef;
+  typedef edm::RefVector<l1t::PFCandidateCollection> PFCandidateRefVector;
 }
 #endif
 

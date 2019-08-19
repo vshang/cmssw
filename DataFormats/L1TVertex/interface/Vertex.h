@@ -13,7 +13,7 @@ namespace l1t {
 
 class Vertex;
 typedef std::vector<Vertex> VertexCollection;
-
+typedef edm::Ref<VertexCollection> VertexRef;
 
 class Vertex {
 public:
