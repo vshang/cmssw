@@ -337,12 +337,15 @@ std::vector<reco::CaloJet> Phase1L1TJetProducer::_buildJetsFromSeeds(const TH2F 
   // For each seed take a grid centered on the seed of the size specified by the user
   // Sum the pf in the grid, that will be the pt of the l1t jet. Eta and phi of the jet is taken from the seed.
   std::vector<reco::CaloJet> jets;
+
   for (const auto& seed: seeds)
   {
     reco::CaloJet jet = this -> _buildJetFromSeed(caloGrid, seed);
     jets.push_back(jet);
+    std::cout << std::fixed << std::setprecision(2) << jet.pt() << "\t" <<  
+      jet.eta() << "\t" << jet.phi() << std::endl;
   }
-
+  if(jets.size()>0) std::cout << " " << std::endl;
   return jets;
 }
 
@@ -351,9 +354,17 @@ template <class Container>
 void Phase1L1TJetProducer::_fillCaloGrid(TH2F & caloGrid, const Container & triggerPrimitives)
 {
   //Filling the calo grid with the primitives
-  for (auto primitiveIterator = triggerPrimitives.begin(); primitiveIterator != triggerPrimitives.end(); primitiveIterator++) 
-  {
-    caloGrid.Fill((float) primitiveIterator -> eta(), (float) primitiveIterator -> phi(), (float) primitiveIterator -> pt());
+  for (auto primitiveIterator = triggerPrimitives.begin(); primitiveIterator != triggerPrimitives.end(); primitiveIterator++){
+    {
+      if(primitiveIterator->eta() >= 0 && primitiveIterator->eta() < 1.5 && primitiveIterator->phi() >= 0 && primitiveIterator->phi() < 0.7)
+	//std::cout << std::fixed << std::setprecision(2) << "pt = " << primitiveIterator->pt() << ",\t eta = " <<  
+	//	  primitiveIterator->eta() << ",\t phi = " << primitiveIterator->phi() << std::endl;
+      //if(primitiveIterator->eta() >= 0.75 && primitiveIterator->eta() < 1.5 && primitiveIterator->phi() >= 0 && primitiveIterator->phi() < 0.7)
+      //std::cout << "pt = " << primitiveIterator->pt() << ",\t eta = " <<  
+      //  primitiveIterator->eta() << ",\t phi = " << primitiveIterator->phi() << std::endl;	
+      
+      caloGrid.Fill((float) primitiveIterator -> eta(), (float) primitiveIterator -> phi(), (float) primitiveIterator -> pt());
+    }
   }
   return;
 }

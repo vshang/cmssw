@@ -12,14 +12,14 @@ caloEtaSegmentation = cms.vdouble(
 )
 
 Phase1L1TJetProducer = cms.EDProducer('Phase1L1TJetProducer',
-  inputCollectionTag = cms.InputTag("l1pfCandidates", "Puppi", "IN"),
+  inputCollectionTag = cms.InputTag("l1pfCandidates", "Puppi", "REPR"),
   etaBinning = caloEtaSegmentation,
   nBinsPhi = cms.uint32(72),
   phiLow = cms.double(-pi),
   phiUp = cms.double(pi),
   jetIEtaSize = cms.uint32(5),
   jetIPhiSize = cms.uint32(5),
-  seedPtThreshold = cms.double(5), # GeV
+  seedPtThreshold = cms.double(1.25), # GeV
   puSubtraction = cms.bool(False),
   outputCollectionName = cms.string("UncalibratedPhase1L1TJetFromPfCandidates"),
   vetoZeroPt = cms.bool(True)
