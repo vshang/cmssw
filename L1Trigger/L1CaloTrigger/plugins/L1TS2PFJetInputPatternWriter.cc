@@ -123,6 +123,20 @@ L1TS2PFJetInputPatternWriter::L1TS2PFJetInputPatternWriter(const edm::ParameterS
   data_.resize(nLink_);
   LogDebug("L1TDebug") << "Preparing for " << nLink_ << " links" << std::endl;
 
+  //first frame
+  dataValid_.push_back( 1 );
+  for ( unsigned iQuad=0; iQuad<nQuad_; ++iQuad ) {
+    for ( unsigned iChan=0; iChan<nChan_; ++iChan ) {
+      uint iLink = (iQuad*nChan_)+iChan;
+      if(iLink==0)
+	data_.at(iLink).push_back(0);
+      else
+	data_.at(iLink).push_back(0);
+      continue;
+    }
+  }
+  nFrame_++;
+
 }
 
 
@@ -162,6 +176,10 @@ L1TS2PFJetInputPatternWriter::analyze(const edm::Event& iEvent, const edm::Event
       pfPartsB.push_back(*pfIt);
   }
   
+  if(pfPartsA.size()==0 && pfPartsB.size()==0)
+    return;
+
+
   // loop over frames
   for ( unsigned iFrame=0; iFrame<nPayloadFrames_; ++iFrame ) {
     
@@ -171,24 +189,30 @@ L1TS2PFJetInputPatternWriter::analyze(const edm::Event& iEvent, const edm::Event
     for ( unsigned iQuad=0; iQuad<nQuad_; ++iQuad ) {
       for ( unsigned iChan=0; iChan<nChan_; ++iChan ) {
 
-	uint64_t data=0;
-
         // get tower ieta, iphi for link
 	uint iLink = (iQuad*nChan_)+iChan;
+
+	uint64_t data=0;
 	
-	if(!(iFrame%2)){
+	if((nFrame_%13)==1){
 	  if(iLink < 24 && pfPartsA.size() > iLink){
 	    data |= ((uint64_t)floor(pfPartsA.at(iLink).pt()  / ptLSB_ )     & 0xffff);
 	    data |= ((uint64_t)floor(pfPartsA.at(iLink).phi() / phiLSB_)     & 0x3ff)  << 16;
 	    data |= ((uint64_t)floor(pfPartsA.at(iLink).eta() / etaLSB_)     & 0x3ff)  << 26;
-	  }	  
+	    std::cout << std::fixed << std::setprecision(2) << pfPartsA.at(iLink).pt() << "\t" <<  
+	      pfPartsA.at(iLink).eta() << "\t" << pfPartsA.at(iLink).phi() << std::endl;
+
+	  }
 	  // add data to output
 	  data_.at(iLink).push_back( data );
-	}else{
+	}
+	if((nFrame_%13)==2){
 	  if(iLink < 24 && pfPartsB.size() > iLink){
 	    data |= ((uint64_t)floor(pfPartsB.at(iLink).pt()  / ptLSB_ )     & 0xffff);
 	    data |= ((uint64_t)floor(pfPartsB.at(iLink).phi() / phiLSB_)     & 0x3ff)  << 16;
-	    data |= ((uint64_t)floor(pfPartsB.at(iLink).eta() / etaLSB_)     & 0x3ff)  << 26;
+	    data |= ((uint64_t)floor((pfPartsB.at(iLink).eta()-0.75) / etaLSB_)     & 0x3ff)  << 26;
+	    std::cout << std::fixed << std::setprecision(2) << pfPartsB.at(iLink).pt() << "\t" <<  
+	      pfPartsB.at(iLink).eta() << "\t" << pfPartsB.at(iLink).phi() << std::endl;
 	  }
 	  // add data to output
 	  data_.at(iLink).push_back( data );
@@ -211,22 +235,20 @@ L1TS2PFJetInputPatternWriter::analyze(const edm::Event& iEvent, const edm::Event
     for ( unsigned iQuad=0; iQuad<nQuad_; ++iQuad ) {
       for ( unsigned iChan=0; iChan<nChan_; ++iChan ) {
 
-	int data=0;
+	uint64_t data=0;
 
         // get tower ieta, iphi for link
 	unsigned iLink = (iQuad*nChan_)+iChan;
-	
+  
 	// add data to output
 	data_.at(iLink).push_back( data );
-
       }
-
     }
-
+    
     nFrame_++;
-
+    
   }
-      
+  std::cout << " " << std::endl;
 
 }
 
@@ -260,7 +282,7 @@ L1TS2PFJetInputPatternWriter::endJob()
   LogDebug("L1TDebug") << "Read " << nEvents_ << " events" << std::endl;
   LogDebug("L1TDebug") << "Writing " << nOutFiles << " files" << std::endl;
   LogDebug("L1TDebug") << "Output directory: ./" << outDir_ << "/" << std::endl;
-  
+
   //files
   std::vector< std::ofstream > outFiles(nOutFiles);
     
@@ -296,7 +318,7 @@ L1TS2PFJetInputPatternWriter::endJob()
     // then the data
     unsigned iFileFrame=0;
     for ( unsigned iFrame=itFile*framesPerFile; iFrame<(itFile*framesPerFile+framesPerFile); ++iFrame ) {
-      if( iFrame <= nFrame_ && iFrame < (framesPerEv*nEvents_)){
+      if( iFrame <= nFrame_  && iFrame < (framesPerEv*nEvents_)){
 	outFiles[itFile] << "Frame " << std::dec << std::setw(4) << std::setfill('0') << iFileFrame << " : ";
 	for ( unsigned iQuad=0; iQuad<nQuad_; ++iQuad ) {
 	  for ( unsigned iChan=0; iChan<nChan_; ++iChan ) {
@@ -305,7 +327,8 @@ L1TS2PFJetInputPatternWriter::endJob()
 	      outFiles[itFile] << std::hex << ::std::setw(1) << dataValid_.at(iFrame) << "v" << std::hex << std::setw(16) << std::setfill('0') << data_.at(iLink).at(iFrame) << " ";
 	    }
 	    else {
-	      std::cerr << "Out of range : " << iLink << ", " << iFrame << std::endl;
+	      //std::cerr << "Out of range : " << iLink << ", " << iFrame << std::endl;
+	      outFiles[itFile] << std::hex << ::std::setw(1) << 0 << "v" << std::hex << std::setw(16) << std::setfill('0') << 0 << " ";
 	    }
 	  }
 	}
