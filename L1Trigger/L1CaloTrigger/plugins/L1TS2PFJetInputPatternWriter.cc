@@ -229,7 +229,7 @@ L1TS2PFJetInputPatternWriter::analyze(const edm::Event& iEvent, const edm::Event
   // loop over clear frames
   for ( unsigned iFrame=0; iFrame<nClearFrames_; ++iFrame ) {
     
-    dataValid_.push_back( 0 );
+    dataValid_.push_back( 1 );
 
     // loop over links
     for ( unsigned iQuad=0; iQuad<nQuad_; ++iQuad ) {
