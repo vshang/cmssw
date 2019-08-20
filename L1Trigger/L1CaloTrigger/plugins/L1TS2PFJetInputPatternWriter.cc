@@ -124,6 +124,19 @@ L1TS2PFJetInputPatternWriter::L1TS2PFJetInputPatternWriter(const edm::ParameterS
   LogDebug("L1TDebug") << "Preparing for " << nLink_ << " links" << std::endl;
 
   //first frame
+  dataValid_.push_back( 0 );
+  for ( unsigned iQuad=0; iQuad<nQuad_; ++iQuad ) {
+    for ( unsigned iChan=0; iChan<nChan_; ++iChan ) {
+      uint iLink = (iQuad*nChan_)+iChan;
+      if(iLink==0)
+	data_.at(iLink).push_back(0);
+      else
+	data_.at(iLink).push_back(0);
+      continue;
+    }
+  }
+  nFrame_++;
+  //second frame
   dataValid_.push_back( 1 );
   for ( unsigned iQuad=0; iQuad<nQuad_; ++iQuad ) {
     for ( unsigned iChan=0; iChan<nChan_; ++iChan ) {
@@ -136,6 +149,8 @@ L1TS2PFJetInputPatternWriter::L1TS2PFJetInputPatternWriter(const edm::ParameterS
     }
   }
   nFrame_++;
+
+
 
 }
 
@@ -194,7 +209,7 @@ L1TS2PFJetInputPatternWriter::analyze(const edm::Event& iEvent, const edm::Event
 
 	uint64_t data=0;
 	
-	if((nFrame_%13)==1){
+	if((nFrame_%13)==2){
 	  if(iLink < 24 && pfPartsA.size() > iLink){
 	    data |= ((uint64_t)floor(pfPartsA.at(iLink).pt()  / ptLSB_ )     & 0xffff);
 	    data |= ((uint64_t)floor(pfPartsA.at(iLink).phi() / phiLSB_)     & 0x3ff)  << 16;
@@ -206,7 +221,7 @@ L1TS2PFJetInputPatternWriter::analyze(const edm::Event& iEvent, const edm::Event
 	  // add data to output
 	  data_.at(iLink).push_back( data );
 	}
-	if((nFrame_%13)==2){
+	if((nFrame_%13)==3){
 	  if(iLink < 24 && pfPartsB.size() > iLink){
 	    data |= ((uint64_t)floor(pfPartsB.at(iLink).pt()  / ptLSB_ )     & 0xffff);
 	    data |= ((uint64_t)floor(pfPartsB.at(iLink).phi() / phiLSB_)     & 0x3ff)  << 16;
