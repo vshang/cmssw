@@ -32,7 +32,8 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                #RPC
                                                rpcRecHits = cms.untracked.InputTag("rpcRecHits"),
                                                useRPC = cms.untracked.bool(False),
-                                               max_quality_to_overwrite_t0 = cms.untracked.int32(9), # will use RPC  to set 't0' for TP with quality < max_quality_to_overwrite_t0
+                                               bx_window = cms.untracked.int32(1), # will look for RPC cluster within a bunch crossing window of 'dt.BX +- bx_window' 
+                                               max_quality_to_overwrite_t0 = cms.untracked.int32(9), # will use RPC  to set 't0' for TP with quality < 'max_quality_to_overwrite_t0'
                                                storeAllRPCHits = cms.untracked.bool(False)
                                                )
 

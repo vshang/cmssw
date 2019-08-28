@@ -9,6 +9,7 @@ RPCIntegrator::RPCIntegrator(const edm::ParameterSet& pset){
     m_debug = pset.getUntrackedParameter<Bool_t>("debug");
     if (m_debug) std::cout <<"RPCIntegrator constructor" << std::endl;
     m_max_quality_to_overwrite_t0 = pset.getUntrackedParameter<int>("max_quality_to_overwrite_t0");
+    m_bx_window = pset.getUntrackedParameter<int>("bx_window");
     m_storeAllRPCHits = pset.getUntrackedParameter<bool>("storeAllRPCHits");
 }
 
@@ -79,7 +80,8 @@ void RPCIntegrator::translateRPC(edm::Handle<RPCRecHitCollection> rpcRecHits) {
     }
 }
 
-L1Phase2MuDTPhDigi* RPCIntegrator::matchDTwithRPC(metaPrimitive* dt_metaprimitive) {
+L1Phase2MuDTPhDigi* RPCIntegrator::matchDTwithRPC(metaPrimitive* dt_metaprimitive, double shift_back) {
+    int dt_bx = (int)round(dt_metaprimitive->t0/25.) - shift_back;
     DTChamberId dt_chId = DTChamberId(dt_metaprimitive->rawId);
     int sectorTP = dt_chId.sector();
     if (sectorTP == 13) sectorTP = 4;
@@ -89,7 +91,7 @@ L1Phase2MuDTPhDigi* RPCIntegrator::matchDTwithRPC(metaPrimitive* dt_metaprimitiv
     auto bestMatch_rpcRecHit_idx = rpcRecHits_translated.begin();
     float min_dPhi = std::numeric_limits<float>::max();
     for (auto rpcRecHit_translated = rpcRecHits_translated.begin(); rpcRecHit_translated != rpcRecHits_translated.end(); rpcRecHit_translated++) {
-        if (rpcRecHit_translated->whNum() == dt_chId.wheel() && rpcRecHit_translated->stNum() == dt_chId.station() && rpcRecHit_translated->scNum() == sectorTP) {//FIXME improve DT/RPC matching
+        if (rpcRecHit_translated->whNum() == dt_chId.wheel() && rpcRecHit_translated->stNum() == dt_chId.station() && rpcRecHit_translated->scNum() == sectorTP && std::abs(rpcRecHit_translated->bxNum() - dt_bx) <= m_bx_window) {//FIXME improve DT/RPC matching
             //if (min_dPhi != std::numeric_limits<float>::max()){
             //    std::cout << "More than one match for DT/RPC" << dt_chId << std::endl;
             //}
@@ -109,7 +111,7 @@ L1Phase2MuDTPhDigi* RPCIntegrator::matchDTwithRPC(metaPrimitive* dt_metaprimitiv
 
 void RPCIntegrator::confirmDT(std::vector<metaPrimitive> & dt_metaprimitives, double shift_back) {
     for (auto dt_metaprimitive = dt_metaprimitives.begin(); dt_metaprimitive != dt_metaprimitives.end(); dt_metaprimitive++) {
-        L1Phase2MuDTPhDigi* bestMatch_rpcRecHit = matchDTwithRPC(&*dt_metaprimitive);
+        L1Phase2MuDTPhDigi* bestMatch_rpcRecHit = matchDTwithRPC(&*dt_metaprimitive, shift_back);
         if (bestMatch_rpcRecHit) {
             (*dt_metaprimitive).rpcFlag = 4;
             if ((*dt_metaprimitive).quality < m_max_quality_to_overwrite_t0){
