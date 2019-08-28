@@ -113,8 +113,9 @@ void RPCIntegrator::confirmDT(std::vector<metaPrimitive> & dt_metaprimitives, do
         if (bestMatch_rpcRecHit) {
             (*dt_metaprimitive).rpcFlag = 4;
             if ((*dt_metaprimitive).quality < m_max_quality_to_overwrite_t0){
-                (*dt_metaprimitive).t0 = bestMatch_rpcRecHit->t0() + 25 * shift_back; // Overwriting t0 will propagates to BX since it is defined by round((*metaPrimitiveIt).t0/25.)-shift_back
+                (*dt_metaprimitive).t0 = bestMatch_rpcRecHit->t0() + 25 * shift_back; // Overwriting t0 will propagate to BX since it is defined by round((*metaPrimitiveIt).t0/25.)-shift_back
                                                                                       // but we need to add this shift back since all RPC chamber time is centered at 0 for prompt muon
+                //(*dt_metaprimitive).phiB = bestMatch_rpcRecHit->phi() - dt_metaprimitive->phi; // Use to fine tune the phi matching window
                 (*dt_metaprimitive).rpcFlag = 1;
             }
         }

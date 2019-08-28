@@ -13,7 +13,7 @@ DT quality code
 
 RPC Flag (tells how RPC was used) #FIXME being implemented, not everything availabel yet
 ---------------------------------
-0: RPC not used
+0: RPC not used or segment that could not be mathced to any RPC cluster
 1: RPC used to overwrite TP timing info (both t0 and BX)
 2: RPC only segment
 3: RPC single hit
