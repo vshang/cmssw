@@ -393,7 +393,7 @@ bool L1HPSPFTauBuilder::isWithinStrip(const l1t::PFCandidate& l1PFCand)
   {
     double deltaEta = l1PFCand.eta() - l1PFTauSeed_eta_;
     double deltaPhi = l1PFCand.phi() - l1PFTauSeed_phi_;
-    if ( deltaEta < stripSize_eta_ && deltaPhi < stripSize_phi_ ) return true;
+    if ( std::fabs(deltaEta) < stripSize_eta_ && std::fabs(deltaPhi) < stripSize_phi_ ) return true;
   }
   return false;
 }
