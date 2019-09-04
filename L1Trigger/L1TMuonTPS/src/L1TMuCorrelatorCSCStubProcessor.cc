@@ -78,7 +78,7 @@ L1TMuCorrelatorCSCStubProcessor::buildStub(const CSCDetId& detid,const CSCCorrel
 
 
 
-  int qeta1=1;
+
 
 
 
