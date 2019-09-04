@@ -1,0 +1,16 @@
+<use   name="FWCore/Framework"/>
+<use   name="FWCore/PluginManager"/>
+<use   name="FWCore/ParameterSet"/>
+<use   name="FWCore/Utilities"/>
+<use   name="DataFormats/L1TMuon"/>
+<use   name="L1Trigger/L1TMuon"/>
+<use   name="L1Trigger/L1TTwinMux"/>
+<use   name="DataFormats/L1TrackTrigger"/>
+<use   name="boost"/>
+<use   name="root"/>
+<use   name="rootrflx"/>
+<use   name="DataFormats/Math"/>
+<export>
+  <flags   SEALPLUGIN="1"/>
+  <lib   name="1"/>
+</export>

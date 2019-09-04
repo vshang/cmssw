@@ -30,7 +30,7 @@ class RPCHitCleaner {
 public:
   RPCHitCleaner(RPCDigiCollection const& inrpcDigis);
 
-  void run(const edm::EventSetup& c);
+  void run(const edm::EventSetup& c,bool doEndcap=false);
 
   ///Return Output RPCCollection
   RPCDigiCollection const& getRPCCollection() { return m_outrpcDigis; }

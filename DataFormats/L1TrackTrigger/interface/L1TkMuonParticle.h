@@ -7,7 +7,7 @@
 #include "DataFormats/L1TrackTrigger/interface/TTTypes.h"
 #include "DataFormats/L1TMuon/interface/RegionalMuonCand.h"
 #include "DataFormats/L1TMuon/interface/RegionalMuonCandFwd.h"
-#include "DataFormats/L1TMuon/interface/L1MuKBMTCombinedStub.h"
+#include "DataFormats/L1TMuon/interface/L1MuCorrelatorHit.h"
 
 namespace l1t
 {
@@ -18,7 +18,7 @@ namespace l1t
     typedef TTTrack< Ref_Phase2TrackerDigi_ >  L1TTTrackType;
     typedef std::vector< L1TTTrackType > L1TTTrackCollection;
 
-      L1TkMuonParticle() : theIsolation(-999.), TrkzVtx_(999.), quality_(999) {}
+  L1TkMuonParticle() : theIsolation(-999.), TrkzVtx_(999.), quality_(999),pattern_(0) {}
 
       L1TkMuonParticle( const LorentzVector& p4,
    		        const edm::Ref< l1t::RegionalMuonCandBxCollection >& muRef,
@@ -46,12 +46,13 @@ namespace l1t
       float getTrkIsol() const { return theIsolation; }
       float getTrkzVtx() const { return TrkzVtx_ ; }
 
-      const L1MuKBMTCombinedStubRefVector getBarrelStubs() const { return barrelStubs_; }
+      const L1MuCorrelatorHitRefVector getMatchedStubs() const { return matchedStubs_; }
       float dR()  const { return dR_;}
       int nTracksMatched() const { return nTracksMatch_;}
       double trackCurvature()  const { return trackCurvature_;}
 
       unsigned int quality()  const {return quality_;}
+      unsigned int pattern()  const {return pattern_;}
 
       unsigned int muonDetector() const {return muonDetector_;}  
 
@@ -60,12 +61,12 @@ namespace l1t
       void setTrkzVtx(float TrkzVtx) { TrkzVtx_ = TrkzVtx ; }
       void setTrkIsol(float TrkIsol) { theIsolation = TrkIsol ; }
       void setQuality(unsigned int q){ quality_ = q;}
-      void addBarrelStub(const L1MuKBMTCombinedStubRef&);
+      void setPattern(unsigned int p){ pattern_ = p;}
+      void addStub(const L1MuCorrelatorHitRef&);
 
       void setdR(float dR) { dR_=dR;}
       void setNTracksMatched(int nTracksMatch) { nTracksMatch_=nTracksMatch;}
       void setTrackCurvature(double trackCurvature) { trackCurvature_=trackCurvature;} // this is signed
-
       void setMuonDetector(unsigned int detector) {muonDetector_=detector;}
 
     private:
@@ -75,7 +76,7 @@ namespace l1t
       edm::Ref< l1t::RegionalMuonCandBxCollection > muRef_ ;
 
       //Used for Tracker + Stubs algorithm
-      L1MuKBMTCombinedStubRefVector barrelStubs_;
+      L1MuCorrelatorHitRefVector matchedStubs_;
 
       edm::Ptr< L1TTTrackType > trkPtr_ ;
 
@@ -86,6 +87,7 @@ namespace l1t
       double trackCurvature_;
 
       unsigned int quality_;
+      unsigned int pattern_;
  
       int muonDetector_;     
 

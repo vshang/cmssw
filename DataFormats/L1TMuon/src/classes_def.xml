@@ -61,6 +61,11 @@
  <class name="edm::Ref<L1MuKBMTCombinedStubCollection>" splitLevel="0"/>
  <class name="edm::Wrapper<edm::Ref<L1MuKBMTCombinedStubCollection > >"/>
 
+ <class name="L1MuCorrelatorHit"/>
+ <class name="L1MuCorrelatorHitCollection"/>
+ <class name="edm::Wrapper<L1MuCorrelatorHitCollection >"/>
+ <class name="edm::Ref<L1MuCorrelatorHitCollection>" splitLevel="0"/>
+ <class name="edm::Wrapper<edm::Ref<L1MuCorrelatorHitCollection > >"/>
 
 
   <class name="L1MuBMTrack" ClassVersion="13">

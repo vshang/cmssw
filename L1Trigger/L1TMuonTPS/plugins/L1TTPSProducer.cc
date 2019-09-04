@@ -8,19 +8,19 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/StreamID.h"
 
-#include "DataFormats/L1TMuon/interface/L1MuKBMTCombinedStub.h"
+#include "DataFormats/L1TMuon/interface/L1MuCorrelatorHit.h"
 #include "DataFormats/L1TMuon/interface/RegionalMuonCandFwd.h"
 #include "DataFormats/L1TrackTrigger/interface/L1TkMuonParticle.h"
-#include "L1Trigger/L1TTrackMatch/interface/L1TTrackerPlusBarrelStubsMatcher.h"
+#include "L1Trigger/L1TMuonTPS/interface/L1TTPSCorrelator.h"
 
 //
 // class declaration
 //
 
-class L1TTrackerPlusStubsProducer : public edm::stream::EDProducer<> {
+class L1TTPSProducer : public edm::stream::EDProducer<> {
    public:
-      explicit L1TTrackerPlusStubsProducer(const edm::ParameterSet&);
-      ~L1TTrackerPlusStubsProducer() override;
+      explicit L1TTPSProducer(const edm::ParameterSet&);
+      ~L1TTPSProducer() override;
 
       static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
 
@@ -29,27 +29,28 @@ class L1TTrackerPlusStubsProducer : public edm::stream::EDProducer<> {
       void produce(edm::Event&, const edm::EventSetup&) override;
       void endStream() override;
 
-  edm::EDGetTokenT<std::vector<L1MuKBMTCombinedStub> > srcStubs_;
+  edm::EDGetTokenT<std::vector<L1MuCorrelatorHit> > srcStubs_;
   edm::EDGetTokenT<l1t::L1TkMuonParticle::L1TTTrackCollection> srcTracks_;
-  std::unique_ptr<L1TTrackerPlusBarrelStubsMatcher> matcher_;
-  
+  std::unique_ptr<L1TTPSCorrelator> correlator_;
   double maxchi2_;
+  unsigned int minStubs_;
   
   
   
 
 };
-L1TTrackerPlusStubsProducer::L1TTrackerPlusStubsProducer(const edm::ParameterSet& iConfig):
-  srcStubs_(consumes<std::vector<L1MuKBMTCombinedStub> >(iConfig.getParameter<edm::InputTag>("srcStubs"))),
+L1TTPSProducer::L1TTPSProducer(const edm::ParameterSet& iConfig):
+  srcStubs_(consumes<std::vector<L1MuCorrelatorHit> >(iConfig.getParameter<edm::InputTag>("srcStubs"))),
   srcTracks_(consumes<l1t::L1TkMuonParticle::L1TTTrackCollection>(iConfig.getParameter<edm::InputTag>("srcTracks"))),
-  matcher_(new L1TTrackerPlusBarrelStubsMatcher(iConfig.getParameter<edm::ParameterSet>("trackMatcherSettings"))),
-  maxchi2_(iConfig.getParameter<double>("maxChi2"))
+  correlator_(new L1TTPSCorrelator(iConfig)),
+  maxchi2_(iConfig.getParameter<double>("maxChi2")),
+  minStubs_(iConfig.getParameter<unsigned int>("minStubs"))
 {
   produces <std::vector<l1t::L1TkMuonParticle> >();
 }
 
 
-L1TTrackerPlusStubsProducer::~L1TTrackerPlusStubsProducer()
+L1TTPSProducer::~L1TTPSProducer()
 {
  
    // do anything here that needs to be done at destruction time
@@ -66,21 +67,16 @@ L1TTrackerPlusStubsProducer::~L1TTrackerPlusStubsProducer()
 
 // ------------ method called to produce the data  ------------
 void
-L1TTrackerPlusStubsProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
+L1TTPSProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
    using namespace edm;
-   Handle<std::vector<L1MuKBMTCombinedStub> >stubHandle;
+   Handle<std::vector<L1MuCorrelatorHit> >stubHandle;
    Handle<l1t::L1TkMuonParticle::L1TTTrackCollection> trackHandle;
-
-
-
-
    iEvent.getByToken(srcStubs_,stubHandle);
    iEvent.getByToken(srcTracks_,trackHandle);
-
-   L1MuKBMTCombinedStubRefVector stubs;
+   L1MuCorrelatorHitRefVector stubs;
    for (uint i=0;i<stubHandle->size();++i) {
-     L1MuKBMTCombinedStubRef r(stubHandle,i);
+     L1MuCorrelatorHitRef r(stubHandle,i);
      if (r->bxNum()==0)
        stubs.push_back(r);
    }
@@ -89,31 +85,31 @@ L1TTrackerPlusStubsProducer::produce(edm::Event& iEvent, const edm::EventSetup& 
    for (uint i=0;i<trackHandle->size();++i) {
      edm::Ptr< l1t::L1TkMuonParticle::L1TTTrackType > track(trackHandle, i);
      double chi2dof=track->getChi2()/(2*track->getStubRefs().size()-4);
-     if (chi2dof>maxchi2_) 
+     if (chi2dof>maxchi2_   || track->getStubRefs().size()<4) 
 	continue;
-     tracks.push_back(track);
+     else
+       tracks.push_back(track);
    }
 
-   std::vector<l1t::L1TkMuonParticle> out = matcher_->process(tracks,stubs);
-
- std::unique_ptr<std::vector<l1t::L1TkMuonParticle> > out1 = std::make_unique<std::vector<l1t::L1TkMuonParticle> >(out); 
+   std::vector<l1t::L1TkMuonParticle> out = correlator_->process(tracks,stubs);
+   std::unique_ptr<std::vector<l1t::L1TkMuonParticle> > out1 = std::make_unique<std::vector<l1t::L1TkMuonParticle> >(out); 
    iEvent.put(std::move(out1));
 
 }
 
 // ------------ method called once each stream before processing any runs, lumis or events  ------------
 void
-L1TTrackerPlusStubsProducer::beginStream(edm::StreamID)
+L1TTPSProducer::beginStream(edm::StreamID)
 {
 }
 
 // ------------ method called once each stream after processing all runs, lumis and events  ------------
 void
-L1TTrackerPlusStubsProducer::endStream() {
+L1TTPSProducer::endStream() {
 }
 
 void
-L1TTrackerPlusStubsProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
+L1TTPSProducer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
   // Please change this to state exactly what you do use, even if it is no parameters
   edm::ParameterSetDescription desc;
@@ -122,4 +118,4 @@ L1TTrackerPlusStubsProducer::fillDescriptions(edm::ConfigurationDescriptions& de
 }
 
 //define this as a plug-in
-DEFINE_FWK_MODULE(L1TTrackerPlusStubsProducer);
+DEFINE_FWK_MODULE(L1TTPSProducer);

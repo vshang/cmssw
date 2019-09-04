@@ -469,7 +469,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubs(const edm::Handle<l1t::L1TkMu
     l1extra_.tkMuonStubszVtx.push_back(it->getTrkzVtx());
     l1extra_.tkMuonStubsBx .push_back(0); //it->bx());
     l1extra_.tkMuonStubsQual .push_back(1);
-    l1extra_.tkMuonStubsBarrelStubs.push_back(it->getBarrelStubs().size());
+    l1extra_.tkMuonStubsBarrelStubs.push_back(it->getMatchedStubs().size());
     l1extra_.tkMuonStubsRegion.push_back(muonDetector);
     l1extra_.nTkMuonStubs++;
   }

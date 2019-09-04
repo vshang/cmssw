@@ -1,0 +1,10 @@
+<library   file="*.cc" name="L1TMuonTPSPlugins">
+ <use   name="L1Trigger/L1TMuonTPS"/>
+ <use   name="DataFormats/L1TMuon"/>
+ <use   name="SimGeneral/HepPDTRecord"/>
+<use name="DataFormats/L1TrackTrigger"/>
+<use name="DataFormats/L1TMuon"/>
+  <use   name="hepmc"/>
+  <use   name="root"/>
+  <flags   EDM_PLUGIN="1"/>
+</library>

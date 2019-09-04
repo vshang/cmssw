@@ -46,8 +46,8 @@ L1TkMuonParticle::L1TkMuonParticle( const LorentzVector& p4,
 
 
 
-void L1TkMuonParticle::addBarrelStub(const L1MuKBMTCombinedStubRef& stub) {
-  barrelStubs_.push_back(stub);
+void L1TkMuonParticle::addStub(const L1MuCorrelatorHitRef& stub) {
+  matchedStubs_.push_back(stub);
 }
 
 
