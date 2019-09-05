@@ -15,7 +15,7 @@ l1TPSStubs = cms.EDProducer("L1TMuCorrelatorHitProducer",
         phiLSB             = cms.double(0.00019174760), 
         etaLSB             = cms.double(0.00585938), 
         ),
-   DT = cms.PSet(                         
+    DT = cms.PSet(                         
         verbose            = cms.int32(0),
         minPhiQuality      = cms.int32(0),
         minThetaQuality    = cms.int32(0),
@@ -63,8 +63,8 @@ tpsAlgoSettings = cms.PSet(
     etaLSB = cms.double(0.000366211),
     etaShift = cms.uint32(4),
     curvLSB  = cms.double(0.000122070),
-    vetoIndex=cms.vuint32(0,0,1,1,1,1,2,4,5,5,5,6),
-    vetoPattern=cms.vuint32(9,3,5,6,9,3,3,3,5,6,5)
+    vetoIndex  =cms.vuint32(0,0,1,1,1,2,3,4,5,5,5,5,6),
+    vetoPattern=cms.vuint32(3,9,3,5,10,3,10,3,3,6,9,10,5)
 )
         
 
