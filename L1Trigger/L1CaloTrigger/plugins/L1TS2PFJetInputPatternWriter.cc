@@ -123,29 +123,16 @@ L1TS2PFJetInputPatternWriter::L1TS2PFJetInputPatternWriter(const edm::ParameterS
   data_.resize(nLink_);
   LogDebug("L1TDebug") << "Preparing for " << nLink_ << " links" << std::endl;
 
-  //first frame
-  dataValid_.push_back( 0 );
-  for ( unsigned iQuad=0; iQuad<nQuad_; ++iQuad ) {
-    for ( unsigned iChan=0; iChan<nChan_; ++iChan ) {
-      uint iLink = (iQuad*nChan_)+iChan;
-      if(iLink==0)
-	data_.at(iLink).push_back(0);
-      else
-	data_.at(iLink).push_back(0);
-      continue;
-    }
-  }
-  nFrame_++;
-  //second frame
+  //first (empty) frame
   dataValid_.push_back( 1 );
   for ( unsigned iQuad=0; iQuad<nQuad_; ++iQuad ) {
     for ( unsigned iChan=0; iChan<nChan_; ++iChan ) {
-      uint iLink = (iQuad*nChan_)+iChan;
-      if(iLink==0)
-	data_.at(iLink).push_back(0);
-      else
-	data_.at(iLink).push_back(0);
-      continue;
+	uint iLink = (iQuad*nChan_)+iChan;
+	if(iLink==0)
+	  data_.at(iLink).push_back(0);
+	else
+	  data_.at(iLink).push_back(0);
+	continue;
     }
   }
   nFrame_++;
