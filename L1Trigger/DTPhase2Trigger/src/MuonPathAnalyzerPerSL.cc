@@ -269,6 +269,7 @@ void MuonPathAnalyzerPerSL::analyze(MuonPath *inMPath,std::vector<metaPrimitive>
 			    chi2_phi=phi;
 			    chi2_phiB=phiB;
 			    chi2_chi2=chi2;
+			    best_chi2=chi2;
 			    chi2_quality= mpAux->getQuality();
     			    for(int i=0;i<4;i++){bestLat[i]=lat[i];}
 			}
