@@ -394,7 +394,8 @@ bool L1TTPSSectorProcessor::processTrack(l1t::L1TkMuonParticle& muon,const L1MuC
     return false;
 
 
-  uint absEta = uint(fabs(muon.eta()))>>trackEtaShift_;
+  int eta = trackEta(muon);
+  uint absEta = uint(fabs(eta))>>trackEtaShift_;
   uint etaIndex = L1TTPS::etaIndex[absEta];
 
 

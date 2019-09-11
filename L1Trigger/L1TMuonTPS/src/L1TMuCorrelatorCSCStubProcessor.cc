@@ -60,7 +60,7 @@ L1TMuCorrelatorCSCStubProcessor::buildStub(const CSCDetId& detid,const CSCCorrel
   int sector = fabs(chamber);
   int phiB =0;
   bool tag = 0;
-  int bx=digi.getBX()-6;
+  int bx=digi.getBX()-8;
   int quality=0;
 
   uint tfLayer=0;
