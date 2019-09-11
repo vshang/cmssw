@@ -7,7 +7,7 @@
       sectors[k]->clean();
     }
     
-//for (std::map<string,FPGADTC>::iterator it=dtcs.begin();it!=dtcs.end();it++){
+//for (std::map<string,DTC>::iterator it=dtcs.begin();it!=dtcs.end();it++){
 //  	it->second.clean();
 //  }
     
@@ -201,7 +201,7 @@
 	#endif	
 
 	if(add&&writememLinks&&k==writememsect) {
-	  FPGAStub fpgastub(stub,sectors[k]->phimin(),sectors[k]->phimax());
+	  Stub fpgastub(stub,sectors[k]->phimin(),sectors[k]->phimax());
 	  FPGAWord phi=fpgastub.phi();
 	  int topbit=phi.value()>>(phi.nbits()-1);
 	  //cout << "dtcbase:"<<dtcbase<<endl;
@@ -224,9 +224,9 @@
 	  string dataword=ldcode.str()+"|"+fpgastub.str();
 	  //cout << "fpgastub phi:"<<phi.str()<<" "<<topbit<<endl;
 	  if (topbit==0) {
-	    (*dtcstubs[dtcbase+"A"]) << dataword<<" "<<FPGAMemoryBase::hexFormat(dataword)<<endl;
+	    (*dtcstubs[dtcbase+"A"]) << dataword<<" "<<MemoryBase::hexFormat(dataword)<<endl;
 	  } else {
-	    (*dtcstubs[dtcbase+"B"]) << dataword<<" "<<FPGAMemoryBase::hexFormat(dataword)<<endl;
+	    (*dtcstubs[dtcbase+"B"]) << dataword<<" "<<MemoryBase::hexFormat(dataword)<<endl;
           }
         }
 
@@ -248,7 +248,7 @@
 //if (writeDTCLinks) {
 //  //cout << "Will write DTC links"<<endl;
 //  static ofstream out("dtclinks.txt");
-//  for (std::map<string,FPGADTC>::iterator iter=dtcs.begin();iter!=dtcs.end();iter++) {
+//  for (std::map<string,DTC>::iterator iter=dtcs.begin();iter!=dtcs.end();iter++) {
 //    for (unsigned int j=0;j<iter->second.nLinks();j++) {
 //      out << iter->first << " " << j << " " << iter->second.link(j).nStubs() << endl;    
 //    }	 
@@ -371,9 +371,9 @@ if (writeHitEff) {
     }
     TCTimer.stop();
 
-    int nTP=FPGAGlobal::event()->nsimtracks();
+    int nTP=GlobalHistTruth::event()->nsimtracks();
     for (int iTP=0;iTP<nTP;iTP++){
-      L1SimTrack simtrk=FPGAGlobal::event()->simtrack(iTP-1);
+      L1SimTrack simtrk=GlobalHistTruth::event()->simtrack(iTP-1);
       if (simtrk.pt()<2.0) continue;
       if (fabs(simtrk.vz())>15.0) continue;
       if (hypot(simtrk.vx(),simtrk.vy())>0.1) continue;
@@ -396,7 +396,7 @@ if (writeHitEff) {
       }
       for(int iseed=0;iseed<8;iseed++){
 	bool eff=matchseed.find(iseed)!=matchseed.end();
-	FPGAGlobal::histograms()->fillSeedEff(iseed,simtrk.eta(),eff);
+	GlobalHistTruth::histograms()->fillSeedEff(iseed,simtrk.eta(),eff);
       }
     } 
 

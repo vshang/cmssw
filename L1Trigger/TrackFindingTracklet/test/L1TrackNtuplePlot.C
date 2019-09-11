@@ -2618,7 +2618,6 @@ void L1TrackNtuplePlot(TString type,
   h2_resVsEta_eta_68->SetMarkerStyle(20);
   h2_resVsEta_eta_68->Draw("p");
   c.SaveAs(DIR+type+"_resVsEta_eta_68.pdf");
-  c.SaveAs(DIR+type+"_resVsEta_eta_68.png");
 
   if (doDetailedPlots) {
     h2_resVsEta_eta_L_90->Draw("p");
@@ -2646,7 +2645,6 @@ void L1TrackNtuplePlot(TString type,
   h2_resVsEta_z0_68->SetMarkerStyle(20);
   h2_resVsEta_z0_68->Draw("p");
   c.SaveAs(DIR+type+"_resVsEta_z0_68.pdf");
-  c.SaveAs(DIR+type+"_resVsEta_z0_68.png");
 
   if (doDetailedPlots) {
     h2_resVsEta_z0_L_90->Draw();
@@ -2689,7 +2687,6 @@ void L1TrackNtuplePlot(TString type,
   h2_resVsEta_phi_68->SetMarkerStyle(20);
   h2_resVsEta_phi_68->Draw("p");
   c.SaveAs(DIR+type+"_resVsEta_phi_68.pdf");
-  c.SaveAs(DIR+type+"_resVsEta_phi_68.png");
 
   if (doDetailedPlots) {
     h2_resVsEta_phi_L_90->Draw();
@@ -2717,7 +2714,6 @@ void L1TrackNtuplePlot(TString type,
   h2_resVsEta_ptRel_68->SetMarkerStyle(20);
   h2_resVsEta_ptRel_68->Draw("p");
   c.SaveAs(DIR+type+"_resVsEta_ptRel_68.pdf");
-  c.SaveAs(DIR+type+"_resVsEta_ptRel_68.png");
 
   if (doDetailedPlots) {
     h2_resVsEta_ptRel_L_90->Draw();

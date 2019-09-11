@@ -33,10 +33,10 @@
 #include "DataFormats/SiPixelDetId/interface/PXFDetId.h" 
 #include "DataFormats/Common/interface/DetSetVector.h"
 
-#include "L1Trigger/TrackFindingTracklet/interface/slhcevent.hh"
-#include "L1Trigger/TrackFindingTracklet/interface/L1TBarrel.hh"
-#include "L1Trigger/TrackFindingTracklet/interface/L1TDisk.hh"
-#include "L1Trigger/TrackFindingTracklet/interface/L1TStub.hh"
+#include "L1Trigger/TrackFindingTracklet/interface/slhcevent.h"
+#include "L1Trigger/TrackFindingTracklet/interface/L1TBarrel.h"
+#include "L1Trigger/TrackFindingTracklet/interface/L1TDisk.h"
+#include "L1Trigger/TrackFindingTracklet/interface/L1TStub.h"
 
 #include "SimDataFormats/TrackingHit/interface/PSimHitContainer.h"
 #include "SimDataFormats/TrackingHit/interface/PSimHit.h"
@@ -64,10 +64,6 @@
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 #include "DataFormats/SiPixelDetId/interface/PixelChannelIdentifier.h"
 #include "TrackingTools/GeomPropagators/interface/HelixArbitraryPlaneCrossing.h"
-////////////////////////
-// FAST SIMULATION STUFF
-//#include "FastSimulation/Particle/interface/RawParticle.h"
-//#include "FastSimulation/BaseParticlePropagator/interface/BaseParticlePropagator.h"
 
 ////////////////////////////
 // DETECTOR GEOMETRY HEADERS
@@ -93,7 +89,9 @@
 #include "DataFormats/GeometrySurface/interface/BoundPlane.h"
 
 #include "L1Trigger/TrackTrigger/interface/StubPtConsistency.h"
+
 #include "L1Trigger/TrackFindingTracklet/interface/StubKiller.h"
+
 
 
 //////////////
@@ -264,7 +262,7 @@ void L1TrackProducer::beginRun(const edm::Run& run, const edm::EventSetup& iSetu
 
   // ------------------------------------------------------------------------------------------
   // check killing stubs for stress test
-
+  
   int failtype = 0;
   if (failscenario_ < 0 || failscenario_ > 5) {
     std::cout << "invalid fail scenario! ignoring input" << std::endl;
@@ -275,7 +273,7 @@ void L1TrackProducer::beginRun(const edm::Run& run, const edm::EventSetup& iSetu
 
   my_stubkiller = new StubKiller();
   my_stubkiller->initialise(failtype, tTopo, theTrackerGeom);
-
+  
   // ------------------------------------------------------------------------------------------
 
 
@@ -377,7 +375,7 @@ void L1TrackProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   int this_tp = 0;
   std::vector< TrackingParticle >::const_iterator iterTP;
   for (iterTP = TrackingParticleHandle->begin(); iterTP != TrackingParticleHandle->end(); ++iterTP) {
- 
+
     edm::Ptr< TrackingParticle > tp_ptr(TrackingParticleHandle, this_tp);
     this_tp++;
 
@@ -720,10 +718,8 @@ void L1TrackProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     // pt consistency
     float consistency4par = StubPtConsistency::getConsistency(aTrack, theTrackerGeom, tTopo, mMagneticFieldStrength, 4);
     aTrack.setStubPtConsistency(consistency4par, 4);
-
     float consistency5par = StubPtConsistency::getConsistency(aTrack, theTrackerGeom, tTopo, mMagneticFieldStrength, 5);
     aTrack.setStubPtConsistency(consistency5par,5);
-
 
     L1TkTracksForOutput->push_back(aTrack);
 
