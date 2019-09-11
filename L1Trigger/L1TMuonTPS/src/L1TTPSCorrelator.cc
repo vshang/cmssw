@@ -69,17 +69,16 @@ std::vector<l1t::L1TkMuonParticle> L1TTPSCorrelator::clean(const std::vector<l1t
     for (uint j=0;j<tmp.size();++j) {
       const L1MuCorrelatorHitRefVector& stubs2 = tmp[j].getMatchedStubs();
       //check if stubs match
-      bool overlap=false;
+      uint overlap=0;
       for (const auto& stub1 : stubs1) {
 	for (const auto& stub2 : stubs2) {
-	  if (stub1==stub2) {
- 	    overlap=true;
-	    break;
+	  if (*stub1==*stub2) {
+ 	    overlap=overlap+1;
 	  }
 	  
 	}
       }
-      if (overlap && (central[i].quality()<tmp[j].quality())) {
+      if ((central[i].getMatchedStubs().size()-overlap)<2  && (central[i].quality()<tmp[j].quality())) {
 	keep=false;
 	break;
       }

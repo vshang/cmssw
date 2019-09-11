@@ -431,17 +431,16 @@ std::vector<l1t::L1TkMuonParticle> L1TTPSSectorProcessor::clean(const std::vecto
       if (i==j)
 	continue;
       const L1MuCorrelatorHitRefVector& stubs2 = muons[j].getMatchedStubs();
-      bool overlap=false;
+      int overlap=0;
       for (const auto& stub1 : stubs1) {
 	for (const auto& stub2 : stubs2) {
 	  if ((*stub1)==(*stub2)) {
- 	    overlap=true;
-	    break;
+ 	    overlap+=1;
 	  }
 	}
       }
 
-      if (overlap && (muons[i].quality()<muons[j].quality())) {
+      if ((muons[0].getMatchedStubs().size()-overlap)<2 && (muons[i].quality()<muons[j].quality())) {
 	keep=false;
 	break;
       }
