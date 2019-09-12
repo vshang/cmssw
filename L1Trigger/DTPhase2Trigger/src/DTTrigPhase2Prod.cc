@@ -369,6 +369,8 @@ void DTTrigPhase2Prod::produce(Event & iEvent, const EventSetup& iEventSetup){
         rpc_integrator->initialise(iEventSetup);
         rpc_integrator->translateRPC(rpcRecHits);
         rpc_integrator->confirmDT(correlatedMetaPrimitives, shift_back);
+        rpc_integrator->makeRPConlySegments();
+        rpc_integrator->removeRPCHitsMatched();
     }
 
     /// STORING RESULTs 
@@ -517,6 +519,7 @@ void DTTrigPhase2Prod::endRun(edm::Run const& iRun, const edm::EventSetup& iEven
   mpathqualityenhancer->finish();
   mpathredundantfilter->finish();
   mpathassociator->finish();
+  rpc_integrator->finish();
 };
 
 

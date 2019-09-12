@@ -36,8 +36,9 @@ process.rpcRecHits.rpcDigiLabel = cms.InputTag('simMuonRPCDigis')
 process.load('Configuration.Geometry.GeometryExtended2023D38Reco_cff')
 process.load('Configuration.Geometry.GeometryExtended2023D38_cff')
 process.dtTriggerPhase2PrimitiveDigis.useRPC = True
+process.dtTriggerPhase2PrimitiveDigis.bx_window = 50 # TO BE modified when DT and RPC will have same BX definition...
 process.dtTriggerPhase2PrimitiveDigis.max_quality_to_overwrite_t0 = 9 # strict inequality
-#process.dtTriggerPhase2PrimitiveDigis.storeAllRPCHits = True
+process.dtTriggerPhase2PrimitiveDigis.storeAllRPCHits = True
 process.dtTriggerPhase2PrimitiveDigis.scenario = 0 # 0 for mc, 1 for data, 2 for slice test
 
 process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring(
@@ -52,7 +53,7 @@ process.maxEvents = cms.untracked.PSet(
 
 process.out = cms.OutputModule("PoolOutputModule",
                                outputCommands = cms.untracked.vstring('keep *'),
-                               fileName = cms.untracked.string('DTTriggerPhase2Primitives100_withRPC.root')
+                               fileName = cms.untracked.string('DTTriggerPhase2Primitives100_withRPC_StoreAllRpcHits.root')
 )
 
 process.p = cms.Path(process.rpcRecHits*process.CalibratedDigis*process.dtTriggerPhase2PrimitiveDigis)
