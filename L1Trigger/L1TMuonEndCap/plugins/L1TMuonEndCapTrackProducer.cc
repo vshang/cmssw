@@ -38,6 +38,7 @@ void L1TMuonEndCapTrackProducer::produce(edm::Event& iEvent, const edm::EventSet
       out_hits->push_back(h);
     }
   }
+#endif
 
   // Convert into uGMT format
   uGMT_converter_->convert_all(iEvent, *out_tracks, *out_cands);

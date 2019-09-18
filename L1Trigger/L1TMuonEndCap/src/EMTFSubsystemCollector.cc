@@ -354,7 +354,6 @@ void EMTFSubsystemCollector::extractPrimitives(emtf::ME0Tag tag,
     for (; digi != dend; ++digi) {
       out.emplace_back((*chamber).first, *digi);
     }
-    out.emplace_back(detid, *segment, tp_geom->getME0Geometry());
   }
   return;
 }
@@ -580,23 +579,20 @@ void EMTFSubsystemCollector::declusterize_gem(TriggerPrimitiveCollection& clus_m
   copy_n_if(clus_muon_primitives.begin(), clus_muon_primitives.end(), maxClusters, std::back_inserter(tmp_clus_muon_primitives), gem_cluster_layer2_select);
 
   // 3. Declusterize
-  //declus_muon_primitives.clear();
-  //
-  //TriggerPrimitiveCollection::const_iterator tp_it  = tmp_clus_muon_primitives.begin();
-  //TriggerPrimitiveCollection::const_iterator tp_end = tmp_clus_muon_primitives.end();
-  //
-  //for (; tp_it != tp_end; ++tp_it) {
-  //  for (uint16_t pad = tp_it->getGEMData().pad_low; pad != tp_it->getGEMData().pad_hi+1; ++pad) {
-  //    TriggerPrimitive new_tp = *tp_it;  // make a copy
-  //    new_tp.accessGEMData().pad     = pad;
-  //    new_tp.accessGEMData().pad_low = pad;
-  //    new_tp.accessGEMData().pad_hi  = pad;
-  //    declus_muon_primitives.push_back(new_tp);
-  //  }
-  //}
+  declus_muon_primitives.clear();
 
-  // Dec 2018: do not declusterize
-  declus_muon_primitives = std::move(tmp_clus_muon_primitives);
+  TriggerPrimitiveCollection::const_iterator tp_it  = tmp_clus_muon_primitives.begin();
+  TriggerPrimitiveCollection::const_iterator tp_end = tmp_clus_muon_primitives.end();
+
+  for (; tp_it != tp_end; ++tp_it) {
+    for (uint16_t pad = tp_it->getGEMData().pad_low; pad != tp_it->getGEMData().pad_hi+1; ++pad) {
+      TriggerPrimitive new_tp = *tp_it;  // make a copy
+      new_tp.accessGEMData().pad     = pad;
+      new_tp.accessGEMData().pad_low = pad;
+      new_tp.accessGEMData().pad_hi  = pad;
+      declus_muon_primitives.push_back(new_tp);
+    }
+  }
 }
 
 void EMTFSubsystemCollector::make_copad_gem(TriggerPrimitiveCollection& declus_muon_primitives, TriggerPrimitiveCollection& copad_muon_primitives) const {
@@ -694,7 +690,6 @@ void EMTFSubsystemCollector::make_copad_gem(TriggerPrimitiveCollection& declus_m
       // make a new coincidence pad digi
       if (has_copad) {
         copad_muon_primitives.push_back(*p);
-        copad_muon_primitives.back().accessGEMData().bend = bend;  // overwrites the bend
       }
     }  // end loop over pads
   }  // end loop over in_pads_layer1

@@ -1180,12 +1180,13 @@ void PrimitiveConversion::convert_me0(
   int tp_endcap    = (tp_region == -1) ? 2 : tp_region;
   int tp_station   = tp_detId.station();
   int tp_ring      = 1;  // tp_detId.ring() does not exist
-  int tp_roll      = tp_detId.roll();
+  //int tp_roll      = tp_detId.roll();
   //int tp_layer     = tp_detId.layer();
   int tp_chamber   = tp_detId.chamber();
 
   int tp_bx        = tp_data.bx;
-  int tp_pad       = tp_data.pad;
+  int tp_pad       = tp_data.phiposition;
+  int tp_partition = tp_data.partition;
 
   // The ME0 geometry is similar to ME2/1, so I use tp_station = 2, tp_ring = 1
   // when calling get_trigger_sector() and get_trigger_csc_ID()
@@ -1206,12 +1207,12 @@ void PrimitiveConversion::convert_me0(
   // Set properties
   conv_hit.SetME0DetId       ( tp_detId );
 
-  conv_hit.set_bx            ( tp_bx + bxShiftGEM_ );
+  conv_hit.set_bx            ( tp_bx + bxShiftME0_ );
   conv_hit.set_subsystem     ( TriggerPrimitive::kME0 );
   conv_hit.set_endcap        ( (tp_endcap == 2) ? -1 : tp_endcap );
   conv_hit.set_station       ( tp_station );
   conv_hit.set_ring          ( tp_ring );
-  conv_hit.set_roll          ( tp_roll );
+  conv_hit.set_roll          ( tp_partition );
   conv_hit.set_chamber       ( tp_chamber );
   conv_hit.set_sector        ( tp_sector );
   conv_hit.set_subsector     ( tp_subsector );
@@ -1232,9 +1233,9 @@ void PrimitiveConversion::convert_me0(
   //conv_hit.set_strip_low     ( tp_strip );
   //conv_hit.set_strip_hi      ( tp_strip );
   //conv_hit.set_wire          ( tp_data.keywire );
-  conv_hit.set_quality       ( tp_data.nhits );
+  conv_hit.set_quality       ( tp_data.quality );
   conv_hit.set_pattern       ( 0 );  // arbitrary
-  conv_hit.set_bend          ( static_cast<int>(std::round(tp_data.bend)) );
+  conv_hit.set_bend          ( tp_data.deltaphi * (tp_data.bend == 0 ? 1 : -1) );
   conv_hit.set_time          ( 0. );  // No fine resolution timing
   //conv_hit.set_alct_quality  ( tp_data.alct_quality );
   //conv_hit.set_clct_quality  ( tp_data.clct_quality );
@@ -1257,22 +1258,10 @@ void PrimitiveConversion::convert_me0(
     int fph = emtf::calc_phi_loc_int(glob_phi, conv_hit.PC_sector());
     int th  = emtf::calc_theta_int(glob_theta, conv_hit.Endcap());
 
-    bool fix_me0_phi_edge = true;
-    if (fix_me0_phi_edge) {
-      // The ME0 chamber 1 starts at -10 deg. The CSC chamber 1 starts at -5 deg.
-      // This 5 deg difference unfortunately causes the local phi coord to go
-      // out of bound. This is because the local phi 0 is set to the CSC chamber
-      // edge minus 22 deg to accommodate for the neighbor chamber. However, it
-      // is possible for the ME0 neighbor chamber to go to as far as the CSC
-      // chamber edge minus 25 deg.
-      double loc = emtf::calc_phi_loc_deg_from_glob(glob_phi, conv_hit.PC_sector());
-      if ((loc + 22.) < 0.&& (loc + 27.) > 0.)
-        fph = 0;
-      else if ((loc + 360. + 22.) < 0.&& (loc + 360. + 27.) > 0.)
-        fph = 0;
-
+    bool fix_me0_theta_edge = true;
+    if (fix_me0_theta_edge) {
       // The ME0 extends to eta of 2.8 or theta of 7.0 deg. But integer theta
-      // starts from theta of 8.5 deg.
+      // only starts at theta of 8.5 deg.
       if (th < 0)
         th = 0;
     }
