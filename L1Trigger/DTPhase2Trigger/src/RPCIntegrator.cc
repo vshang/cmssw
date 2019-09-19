@@ -174,8 +174,8 @@ L1Phase2MuDTPhDigi RPCIntegrator::createL1Phase2MuDTPhDigi(RPCDetId rpcDetId, in
     int trigger_sector = rpcDetId.sector()-1; // DT Trigger sector:[0,11] while RPC sector:[1,12]
     int rpc_station = rpcDetId.station();
     int rpc_layer = rpcDetId.layer();
-    int rpc_trigger_phi = (phiB == -10000) ? phiB : getPhiInDTTPFormat(rpc_global_phi, rpcDetId.sector());
-    int rpc_trigger_phiB = (int)round(phiB * m_dt_phiB_granularity);
+    int rpc_trigger_phi = getPhiInDTTPFormat(rpc_global_phi, rpcDetId.sector());
+    int rpc_trigger_phiB = (phiB == -10000) ? phiB : (int)round(phiB * m_dt_phiB_granularity);
     int rpc_quality = -1; // dummy for rpc
     int rpc_index = 0; // dummy for rpc
     return L1Phase2MuDTPhDigi(rpc_bx,
