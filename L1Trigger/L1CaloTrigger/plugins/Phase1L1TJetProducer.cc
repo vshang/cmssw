@@ -159,6 +159,18 @@ void Phase1L1TJetProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
     // dumping the data
     this -> _caloGrid -> Reset();
     this -> _fillCaloGrid<>(*(this -> _caloGrid), *inputCollectionHandle);
+
+    int nBinsX = this -> _caloGrid -> GetNbinsX();
+    int nBinsY = this -> _caloGrid -> GetNbinsY();
+    for (int iPhi = 1; iPhi <= nBinsY; iPhi++)
+    {
+      // std::cout << "iPhi " << iPhi - 1 << " " << this -> _caloGrid -> GetYaxis() -> GetBinCenter(iPhi) << ": ";
+      for (int iEta = 1; iEta <= nBinsX; iEta++)
+      {
+        // std::cout <<this -> _caloGrid -> GetBinContent(iEta, iPhi) << " ";
+      }
+      // std::cout << std::endl;
+    }
     const auto seedsVector = this -> _findSeeds(*(this -> _caloGrid), this -> _seedPtThreshold); // seedPtThreshold = 6
     std::vector<reco::CaloJet> l1jetVector;
     if (this -> _puSubtraction)
@@ -247,7 +259,7 @@ std::vector<std::tuple<int, int>> Phase1L1TJetProducer::_findSeeds(const TH2F & 
     for (int iEta = 1; iEta <= nBinsX; iEta++)
     {
       float centralPt = caloGrid.GetBinContent(iEta, iPhi);
-      if (centralPt <= seedThreshold) continue;
+      if (centralPt < seedThreshold) continue;
       bool isLocalMaximum = true;
 
       // Scanning through the grid centered on the seed
@@ -308,6 +320,8 @@ reco::CaloJet Phase1L1TJetProducer::_buildJetFromSeed(const TH2F & caloGrid, con
   //ptVector.SetPtEtaPhiE(ptSum, caloGrid.GetXaxis() -> GetBinCenter(iEta), caloGrid.GetYaxis() -> GetBinCenter(iPhi), ptSum);
   ptVector.SetEta(caloGrid.GetXaxis() -> GetBinCenter(iEta));
   ptVector.SetPhi(caloGrid.GetYaxis() -> GetBinCenter(iPhi));
+  // ptVector.SetEta(iEta);
+  // ptVector.SetPhi(iPhi);
   reco::CaloJet jet;
   jet.setP4(ptVector);
   return jet;
@@ -327,25 +341,25 @@ std::vector<reco::CaloJet> Phase1L1TJetProducer::_buildJetsFromSeedsWithPUSubtra
     if ((this -> _vetoZeroPt) && (jet.pt() <= 0)) continue;
     jets.push_back(jet);
   }
-
   return jets;
 }
 
 std::vector<reco::CaloJet> Phase1L1TJetProducer::_buildJetsFromSeeds(const TH2F & caloGrid, const std::vector<std::tuple<int, int>> & seeds)
 {
-
   // For each seed take a grid centered on the seed of the size specified by the user
   // Sum the pf in the grid, that will be the pt of the l1t jet. Eta and phi of the jet is taken from the seed.
   std::vector<reco::CaloJet> jets;
-
   for (const auto& seed: seeds)
   {
     reco::CaloJet jet = this -> _buildJetFromSeed(caloGrid, seed);
     jets.push_back(jet);
-    std::cout << std::fixed << std::setprecision(2) << jet.pt() << "\t" <<  
-      jet.eta() << "\t" << jet.phi() << std::endl;
+    //if(caloGrid.GetEntries() > 0)
+    //  std::cout << std::fixed << std::setprecision(2) << jet.pt() << "\t" <<  
+    //	jet.eta() << "\t" << jet.phi() << std::endl;
+    
   }
-  if(jets.size()>0) std::cout << " " << std::endl;
+  //if(caloGrid.GetEntries() > 0 && jets.size() == 0) std::cout << "0\t0\t0" << std::endl;
+  //if(caloGrid.GetEntries() > 0) std::cout << " " << std::endl;
   return jets;
 }
 
@@ -356,13 +370,7 @@ void Phase1L1TJetProducer::_fillCaloGrid(TH2F & caloGrid, const Container & trig
   //Filling the calo grid with the primitives
   for (auto primitiveIterator = triggerPrimitives.begin(); primitiveIterator != triggerPrimitives.end(); primitiveIterator++){
     {
-      if(primitiveIterator->eta() >= 0 && primitiveIterator->eta() < 1.5 && primitiveIterator->phi() >= 0 && primitiveIterator->phi() < 0.7)
-	//std::cout << std::fixed << std::setprecision(2) << "pt = " << primitiveIterator->pt() << ",\t eta = " <<  
-	//	  primitiveIterator->eta() << ",\t phi = " << primitiveIterator->phi() << std::endl;
-      //if(primitiveIterator->eta() >= 0.75 && primitiveIterator->eta() < 1.5 && primitiveIterator->phi() >= 0 && primitiveIterator->phi() < 0.7)
-      //std::cout << "pt = " << primitiveIterator->pt() << ",\t eta = " <<  
-      //  primitiveIterator->eta() << ",\t phi = " << primitiveIterator->phi() << std::endl;	
-      
+      //if(primitiveIterator->eta() >= 0 && primitiveIterator->eta() < 1.5 && primitiveIterator->phi() >= 0 && primitiveIterator->phi() < 0.7)
       caloGrid.Fill((float) primitiveIterator -> eta(), (float) primitiveIterator -> phi(), (float) primitiveIterator -> pt());
     }
   }

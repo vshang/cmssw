@@ -5,6 +5,8 @@ from __future__ import print_function
 # Source: /local/reps/CMSSW/CMSSW/Configuration/Applications/python/ConfigBuilder.py,v 
 # with command line options: SingleElectronPt10_cfi.py -s GEN,SIM,DIGI,L1 --pileup=NoPileUp --geometry DB --conditions=auto:startup -n 1 --no_exec
 import FWCore.ParameterSet.Config as cms
+import FWCore.Utilities.FileUtils as FileUtils # ADDED
+
 import os
 
 # options
@@ -21,7 +23,7 @@ options.register('outDir',
                  VarParsing.VarParsing.varType.string,
                  "Output directory for buffer files")
 options.register('nPayloadFrames',
-                 2,
+                 13,
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.int,
                  "N payload frames per event")
@@ -31,7 +33,7 @@ options.register('nHeaderFrames',
                  VarParsing.VarParsing.varType.int,
                  "N header frames per event")
 options.register('nClearFrames',
-                 11,
+                 0,
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.int,
                  "N clear frames between events")
@@ -76,6 +78,9 @@ options.parseArguments()
 if (options.maxEvents == -1):
     options.maxEvents = 1
 
+fileList = FileUtils.loadListFromFile('ttbar.list')
+readFiles = cms.untracked.vstring(*fileList)
+
 # make output directory if it doesn't already exist
 try:
     os.stat(options.outDir)
@@ -98,7 +103,8 @@ process.maxEvents = cms.untracked.PSet(
 
 # Input source
 process.source = cms.Source("PoolSource",
-                            fileNames = cms.untracked.vstring(options.inputFiles)
+    fileNames = readFiles,
+#                            fileNames = cms.untracked.vstring(options.inputFiles)
 #        '/store/relval/CMSSW_7_4_0/RelValSingleElectronPt35_UP15/GEN-SIM-DIGI-RAW-HLTDEBUG/MCRUN2_74_V7_GENSIM_7_1_15-v1/00000/1E628CEB-7ADD-E411-ACF3-0025905A609E.root'
 #        )
 )
@@ -152,7 +158,7 @@ process.load("CommonTools.UtilAlgos.TFileService_cfi")
 process.TFileService.fileName = cms.string('l1tCalo_2019_histos.root')
 
 process.load('L1Trigger.L1CaloTrigger.l1tS2PFJetInputPatternWriter_cfi')
-process.l1tS2PFJetInputPatternWriter.pfTag = cms.InputTag("l1pfCandidates", "Puppi", "REPR")
+process.l1tS2PFJetInputPatternWriter.pfTag = cms.InputTag("l1pfCandidates", "Puppi", "IN")#"REPR")
 process.l1tS2PFJetInputPatternWriter.filename = cms.untracked.string(options.filename)
 process.l1tS2PFJetInputPatternWriter.outDir = cms.untracked.string(options.outDir)
 process.l1tS2PFJetInputPatternWriter.nPayloadFrames = cms.untracked.uint32(options.nPayloadFrames)
