@@ -36,13 +36,14 @@ process.rpcRecHits.rpcDigiLabel = cms.InputTag('simMuonRPCDigis')
 process.load('Configuration.Geometry.GeometryExtended2023D38Reco_cff')
 process.load('Configuration.Geometry.GeometryExtended2023D38_cff')
 process.dtTriggerPhase2PrimitiveDigis.useRPC = True
-process.dtTriggerPhase2PrimitiveDigis.bx_window = 50 # TO BE modified when DT and RPC will have same BX definition...
-process.dtTriggerPhase2PrimitiveDigis.max_quality_to_overwrite_t0 = 9 # strict inequality
-process.dtTriggerPhase2PrimitiveDigis.storeAllRPCHits = True
 process.dtTriggerPhase2PrimitiveDigis.scenario = 0 # 0 for mc, 1 for data, 2 for slice test
+## Parameters that could be optimized (show here the default values)
+#process.dtTriggerPhase2PrimitiveDigis.bx_window = 1 #
+#process.dtTriggerPhase2PrimitiveDigis.max_quality_to_overwrite_t0 = 9 # strict inequality
+#process.dtTriggerPhase2PrimitiveDigis.phi_window = 50
+#process.dtTriggerPhase2PrimitiveDigis.storeAllRPCHits = False
 
 process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring(
-        #'file:/eos/user/c/carrillo/digis_segments_Run2016BSingleMuonRAW-RECO.root'
         'file:/eos/cms/store/group/dpg_dt/comm_dt/TriggerSimulation/SamplesReco/SingleMu_FlatPt-2to100/Version_10_5_0/SimRECO_1.root'
         #'file:/eos/cms/store/group/dpg_rpc/comm_rpc/UpgradePhaseII/RPC_PLUS_DT/SingleMu_FlatPt-2to100_10_5_0_MaryCruz_WithRPCRecHits/SimRECO_1.root'
         )
@@ -53,7 +54,7 @@ process.maxEvents = cms.untracked.PSet(
 
 process.out = cms.OutputModule("PoolOutputModule",
                                outputCommands = cms.untracked.vstring('keep *'),
-                               fileName = cms.untracked.string('DTTriggerPhase2Primitives100_withRPC_StoreAllRpcHits.root')
+                               fileName = cms.untracked.string('DTTriggerPhase2Primitives100_withRPC.root')
 )
 
 process.p = cms.Path(process.rpcRecHits*process.CalibratedDigis*process.dtTriggerPhase2PrimitiveDigis)
