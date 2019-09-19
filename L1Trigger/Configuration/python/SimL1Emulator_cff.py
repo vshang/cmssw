@@ -173,7 +173,7 @@ from L1Trigger.Phase2L1Taus.L1NNTauProducer_cff import *
 l1NNTauProducer = L1NNTauProducer.clone()
 l1NNTauProducer.L1PFObjects = cms.InputTag("l1pfCandidates","PF")
 l1NNTauProducerPuppi = L1NNTauProducerPuppi.clone()
-l1NNTauProducerPuppi.L1PFObjects = cms.InputTag("l1pfCandidates","PF")
+l1NNTauProducerPuppi.L1PFObjects = cms.InputTag("l1pfCandidates","Puppi")
 phase2_SimL1Emulator += l1NNTauProducer
 phase2_SimL1Emulator += l1NNTauProducerPuppi
 
