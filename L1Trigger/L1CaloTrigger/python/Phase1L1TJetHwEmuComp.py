@@ -137,9 +137,9 @@ meansPt  = [0.5*(bPtEm[i]  + bPtEm[i+1])  for i in range(len(nPtEm))]
 meansEta = [0.5*(bEtaEm[i] + bEtaEm[i+1]) for i in range(len(nEtaEm))]
 meansPhi = [0.5*(bPhiEm[i] + bPhiEm[i+1]) for i in range(len(nPhiEm))]
 
-axs[0].scatter(meansPt,  nPtEm,  label='Emulator', c='#7e1e9c', marker='+', linewidths=1.5, s=50)
-axs[1].scatter(meansEta, nEtaEm, label='Emulator', c='#7e1e9c', marker='+', linewidths=1.5, s=50)
-axs[2].scatter(meansPhi, nPhiEm, label='Emulator', c='#7e1e9c', marker='+', linewidths=1.5, s=50)
+axs[0].scatter(meansPt,  nPtEm,  label='Emulator', c='#7e1e9c', linewidths=1, s=20)
+axs[1].scatter(meansEta, nEtaEm, label='Emulator', c='#7e1e9c', linewidths=1, s=20)
+axs[2].scatter(meansPhi, nPhiEm, label='Emulator', c='#7e1e9c', linewidths=1, s=20)
 
 axs[0].legend(prop={'size': 10})
 axs[1].legend(prop={'size': 10})

@@ -160,17 +160,17 @@ void Phase1L1TJetProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
     this -> _caloGrid -> Reset();
     this -> _fillCaloGrid<>(*(this -> _caloGrid), *inputCollectionHandle);
 
-    int nBinsX = this -> _caloGrid -> GetNbinsX();
-    int nBinsY = this -> _caloGrid -> GetNbinsY();
-    for (int iPhi = 1; iPhi <= nBinsY; iPhi++)
-    {
+    //int nBinsX = this -> _caloGrid -> GetNbinsX();
+    //int nBinsY = this -> _caloGrid -> GetNbinsY();
+    //for (int iPhi = 1; iPhi <= nBinsY; iPhi++)
+    //{
       // std::cout << "iPhi " << iPhi - 1 << " " << this -> _caloGrid -> GetYaxis() -> GetBinCenter(iPhi) << ": ";
-      for (int iEta = 1; iEta <= nBinsX; iEta++)
-      {
+      //for (int iEta = 1; iEta <= nBinsX; iEta++)
+      //{
         // std::cout <<this -> _caloGrid -> GetBinContent(iEta, iPhi) << " ";
-      }
+      //}
       // std::cout << std::endl;
-    }
+    //}
     const auto seedsVector = this -> _findSeeds(*(this -> _caloGrid), this -> _seedPtThreshold); // seedPtThreshold = 6
     std::vector<reco::CaloJet> l1jetVector;
     if (this -> _puSubtraction)
@@ -368,12 +368,11 @@ template <class Container>
 void Phase1L1TJetProducer::_fillCaloGrid(TH2F & caloGrid, const Container & triggerPrimitives)
 {
   //Filling the calo grid with the primitives
-  for (auto primitiveIterator = triggerPrimitives.begin(); primitiveIterator != triggerPrimitives.end(); primitiveIterator++){
+  for (auto primitiveIterator = triggerPrimitives.begin(); primitiveIterator != triggerPrimitives.end(); primitiveIterator++)
     {
       //if(primitiveIterator->eta() >= 0 && primitiveIterator->eta() < 1.5 && primitiveIterator->phi() >= 0 && primitiveIterator->phi() < 0.7)
       caloGrid.Fill((float) primitiveIterator -> eta(), (float) primitiveIterator -> phi(), (float) primitiveIterator -> pt());
     }
-  }
   return;
 }
 
