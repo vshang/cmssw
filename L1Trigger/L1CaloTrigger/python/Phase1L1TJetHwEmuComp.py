@@ -120,14 +120,14 @@ for evIt in xrange(0,nEv):
 
 
 
-fig, axs =   plt.subplots(1,3,sharey=True, figsize=(28, 7))
+fig, axs =   plt.subplots(2,3, figsize=(20, 10), gridspec_kw={'height_ratios': [3, 1]})
 
 fig.patch.set_facecolor( '#ffffff')
 
 
-nPtHw  = axs[0].hist([jet[0] for event in hwDataNoZ for jet in event], bins=50, range=(0,200), histtype='step', linewidth=1.5, label='Firmware', color='#343837')[0]
-nEtaHw = axs[1].hist([jet[1] for event in hwDataNoZ for jet in event], bins=18, range=(0,1.5), histtype='step', linewidth=1.5, label='Firmware', color='#343837')[0]
-nPhiHw = axs[2].hist([jet[2] for event in hwDataNoZ for jet in event], bins=8,  range=(0,0.7), histtype='step', linewidth=1.5, label='Firmware', color='#343837')[0]
+nPtHw  = axs[0,0].hist([jet[0] for event in hwDataNoZ for jet in event], bins=50, range=(0,200), histtype='step', linewidth=1.5, label='Firmware', color='#000000')[0]
+nEtaHw = axs[0,1].hist([jet[1] for event in hwDataNoZ for jet in event], bins=18, range=(0,1.5), histtype='step', linewidth=1.5, label='Firmware', color='#000000')[0]
+nPhiHw = axs[0,2].hist([jet[2] for event in hwDataNoZ for jet in event], bins=8,  range=(0,0.7), histtype='step', linewidth=1.5, label='Firmware', color='#000000')[0]
 
 nPtEm,  bPtEm  = np.histogram([jet[0] for event in emDataNoZ for jet in event], bins=50, range=(0,200))
 nEtaEm, bEtaEm = np.histogram([jet[1] for event in emDataNoZ for jet in event], bins=18, range=(0,1.5))
@@ -137,34 +137,49 @@ meansPt  = [0.5*(bPtEm[i]  + bPtEm[i+1])  for i in range(len(nPtEm))]
 meansEta = [0.5*(bEtaEm[i] + bEtaEm[i+1]) for i in range(len(nEtaEm))]
 meansPhi = [0.5*(bPhiEm[i] + bPhiEm[i+1]) for i in range(len(nPhiEm))]
 
-axs[0].scatter(meansPt,  nPtEm,  label='Emulator', c='#7e1e9c', linewidths=1, s=20)
-axs[1].scatter(meansEta, nEtaEm, label='Emulator', c='#7e1e9c', linewidths=1, s=20)
-axs[2].scatter(meansPhi, nPhiEm, label='Emulator', c='#7e1e9c', linewidths=1, s=20)
+axs[0,0].scatter(meansPt,  nPtEm,  label='Emulator', c='#380282', linewidths=0.5, s=15)
+axs[0,1].scatter(meansEta, nEtaEm, label='Emulator', c='#380282', linewidths=0.5, s=15)
+axs[0,2].scatter(meansPhi, nPhiEm, label='Emulator', c='#380282', linewidths=0.5, s=15)
 
-axs[0].legend(prop={'size': 10})
-axs[1].legend(prop={'size': 10})
-axs[2].legend(prop={'size': 10})
+axs[1,0].scatter(meansPt,  [(hw/em) for hw,em in zip(nPtHw,nPtEm)] , c='#380282', linewidths=0.5, s=15)
+axs[1,1].scatter(meansEta, [(hw/em) for hw,em in zip(nEtaHw,nEtaEm)], c='#380282', linewidths=0.5, s=15)
+axs[1,2].scatter(meansPhi, [(hw/em) for hw,em in zip(nPhiHw,nPhiEm)], c='#380282', linewidths=0.5, s=15)
+
+axs[1,0].axhline(y=0.993, linewidth=1.5, linestyle='--', c='#000000')
+axs[1,1].axhline(y=0.993, linewidth=1.5, linestyle='--', c='#000000')
+axs[1,2].axhline(y=0.993, linewidth=1.5, linestyle='--', c='#000000')
+
+axs[1,0].set(ylim=(0.5,1.5))
+axs[1,1].set(ylim=(0.5,1.5))
+axs[1,2].set(ylim=(0.5,1.5))
+
+axs[0,0].set(ylabel="Events")
+axs[1,0].set(ylabel="FW / EMU")
+
+axs[0,0].legend(prop={'size': 10})
+axs[0,1].legend(prop={'size': 10})
+axs[0,2].legend(prop={'size': 10})
 
 ymaxPt  = max(np.concatenate([nPtHw,nPtEm]))
 ymaxEta = max(np.concatenate([nEtaHw,nEtaEm]))
 ymaxPhi = max(np.concatenate([nPhiHw,nPhiEm]))
 
-axs[0].set(xlim=(0,200))
-axs[1].set(xlim=(0,1.5))
-axs[2].set(xlim=(0,0.7))
+axs[0,0].set(xlim=(0,200))
+axs[0,1].set(xlim=(0,1.5))
+axs[0,2].set(xlim=(0,0.7))
 
-axs[0].set(ylim=(0,ymaxPt +(0.05*ymaxPt)))
-axs[1].set(ylim=(0,ymaxEta+(0.05*ymaxEta)))
-axs[2].set(ylim=(0,ymaxPhi+(0.05*ymaxPhi)))
+axs[0,0].set(ylim=(0,ymaxPt +(0.05*ymaxPt)))
+axs[0,1].set(ylim=(0,ymaxEta+(0.05*ymaxEta)))
+axs[0,2].set(ylim=(0,ymaxPhi+(0.05*ymaxPhi)))
 
 
-axs[0].set_title("FW vs. EMU comparison: pT, ttbar, 3900 events")  
-axs[1].set_title("FW vs. EMU comparison: Eta, ttbar, 3900 events")  
-axs[2].set_title("FW vs. EMU comparison: Phi, ttbar, 3900 events") 
+#axs[0,0].set_title("Histogrammed PF Jet FW vs EMU: pT, ttbar, 3900 events")  
+#axs[0,1].set_title("Histogrammed PF Jet FW vs EMU: Eta, ttbar, 3900 events")  
+#axs[0,2].set_title("Histogrammed PF Jet FW vs EMU: Phi, ttbar, 3900 events") 
 
-axs[0].set(xlabel="pT (GeV)")
-axs[1].set(xlabel="eta")
-axs[2].set(xlabel="phi")
+axs[0,0].set(xlabel="Jet $p_T$ (GeV)")
+axs[0,1].set(xlabel="Jet $\eta$")
+axs[0,2].set(xlabel="Jet $\phi$")
 
 plt.savefig('ttbarPU200_3900.pdf', bbox_inches='tight')
 plt.show()
