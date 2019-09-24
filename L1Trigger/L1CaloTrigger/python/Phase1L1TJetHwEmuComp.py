@@ -75,9 +75,28 @@ with open("emuout.txt", "r") as inFile:
             emJets.append(jet)
 
 
+nDiff = 0
+
+for evIt in xrange(0,nEv):
+    if len(hwData[evIt]) != len(emData[evIt]):
+        nDiff+=1
+        continue
+    goodJet=0
+    for hwJet in hwData[evIt]:
+        for emJet in emData[evIt]:
+            if hwJet[0] == emJet[0]:
+                if (hwJet[1]-emJet[1])<0.01:
+                    if (hwJet[2]-emJet[2])<0.01:
+                        goodJet+=1
+    if goodJet < len(hwData[evIt]):
+        nDiff+=1
 
 
-print("=====================================================================================")
+print("\n\nnEvent = " + str(nEv) + "\nnDiff = " + str(nDiff) + "\nGood events = " + str((1-float(nDiff)/float(nEv))*100) + "%")
+        
+
+
+print("\n\n=====================================================================================")
 print("\t\tFirmware Events: " + str(nHw) + "\t\t" + "Emulator Events: " + str(nEm))
 print("=====================================================================================")
 print("\t\tpT\t" + "eta\t" + "phi\t\t" + "pT\t" + "eta\t" + "phi\t")
@@ -125,29 +144,30 @@ fig, axs =   plt.subplots(2,3, figsize=(20, 10), gridspec_kw={'height_ratios': [
 fig.patch.set_facecolor( '#ffffff')
 
 
-nPtHw  = axs[0,0].hist([jet[0] for event in hwDataNoZ for jet in event], bins=50, range=(0,200), histtype='step', linewidth=1.5, label='Firmware', color='#000000')[0]
-nEtaHw = axs[0,1].hist([jet[1] for event in hwDataNoZ for jet in event], bins=18, range=(0,1.5), histtype='step', linewidth=1.5, label='Firmware', color='#000000')[0]
-nPhiHw = axs[0,2].hist([jet[2] for event in hwDataNoZ for jet in event], bins=8,  range=(0,0.7), histtype='step', linewidth=1.5, label='Firmware', color='#000000')[0]
+nPtHw,  bPtHw  = np.histogram([jet[0] for event in hwDataNoZ for jet in event], bins=50, range=(0,200))
+nEtaHw, bEtaHw = np.histogram([jet[1] for event in hwDataNoZ for jet in event], bins=18, range=(0,1.5))
+nPhiHw, bPhiHw = np.histogram([jet[2] for event in hwDataNoZ for jet in event], bins=8,  range=(0,0.7))
 
-nPtEm,  bPtEm  = np.histogram([jet[0] for event in emDataNoZ for jet in event], bins=50, range=(0,200))
-nEtaEm, bEtaEm = np.histogram([jet[1] for event in emDataNoZ for jet in event], bins=18, range=(0,1.5))
-nPhiEm, bPhiEm = np.histogram([jet[2] for event in emDataNoZ for jet in event], bins=8,  range=(0,0.7))
+meansPt  = [0.5*(bPtHw[i]  + bPtHw[i+1])  for i in range(len(nPtHw))]
+meansEta = [0.5*(bEtaHw[i] + bEtaHw[i+1]) for i in range(len(nEtaHw))]
+meansPhi = [0.5*(bPhiHw[i] + bPhiHw[i+1]) for i in range(len(nPhiHw))]
 
-meansPt  = [0.5*(bPtEm[i]  + bPtEm[i+1])  for i in range(len(nPtEm))]
-meansEta = [0.5*(bEtaEm[i] + bEtaEm[i+1]) for i in range(len(nEtaEm))]
-meansPhi = [0.5*(bPhiEm[i] + bPhiEm[i+1]) for i in range(len(nPhiEm))]
+nPtEm  = axs[0,0].hist([jet[0] for event in emDataNoZ for jet in event], bins=50, range=(0,200), histtype='bar', linewidth=1.5, label='Emulator', color='#929591', zorder=0)[0]
+nEtaEm = axs[0,1].hist([jet[1] for event in emDataNoZ for jet in event], bins=18, range=(0,1.5), histtype='bar', linewidth=1.5, label='Emulator', color='#929591', zorder=0)[0]
+nPhiEm = axs[0,2].hist([jet[2] for event in emDataNoZ for jet in event], bins=8,  range=(0,0.7), histtype='bar', linewidth=1.5, label='Emulator', color='#929591', zorder=0)[0]
 
-axs[0,0].scatter(meansPt,  nPtEm,  label='Emulator', c='#380282', linewidths=0.5, s=15)
-axs[0,1].scatter(meansEta, nEtaEm, label='Emulator', c='#380282', linewidths=0.5, s=15)
-axs[0,2].scatter(meansPhi, nPhiEm, label='Emulator', c='#380282', linewidths=0.5, s=15)
+axs[0,0].scatter(meansPt,  nPtHw,  label='Firmware', c='#000000', linewidths=0.5, s=25, marker='+')
+axs[0,1].scatter(meansEta, nEtaHw, label='Firmware', c='#000000', linewidths=0.5, s=25, marker='+')
+axs[0,2].scatter(meansPhi, nPhiHw, label='Firmware', c='#000000', linewidths=0.5, s=25, marker='+')
 
-axs[1,0].scatter(meansPt,  [(hw/em) for hw,em in zip(nPtHw,nPtEm)] , c='#380282', linewidths=0.5, s=15)
-axs[1,1].scatter(meansEta, [(hw/em) for hw,em in zip(nEtaHw,nEtaEm)], c='#380282', linewidths=0.5, s=15)
-axs[1,2].scatter(meansPhi, [(hw/em) for hw,em in zip(nPhiHw,nPhiEm)], c='#380282', linewidths=0.5, s=15)
 
-axs[1,0].axhline(y=0.993, linewidth=1.5, linestyle='--', c='#000000')
-axs[1,1].axhline(y=0.993, linewidth=1.5, linestyle='--', c='#000000')
-axs[1,2].axhline(y=0.993, linewidth=1.5, linestyle='--', c='#000000')
+axs[1,0].scatter(meansPt,  [(hw/em) for hw,em in zip(nPtHw,nPtEm)] ,  c='#000000', linewidths=0.5, s=15, zorder=1)
+axs[1,1].scatter(meansEta, [(hw/em) for hw,em in zip(nEtaHw,nEtaEm)], c='#000000', linewidths=0.5, s=15, zorder=1)
+axs[1,2].scatter(meansPhi, [(hw/em) for hw,em in zip(nPhiHw,nPhiEm)], c='#000000', linewidths=0.5, s=15, zorder=1)
+
+axs[1,0].axhline(y=1, linewidth=1, linestyle='--', c='#929591')
+axs[1,1].axhline(y=1, linewidth=1, linestyle='--', c='#929591')
+axs[1,2].axhline(y=1, linewidth=1, linestyle='--', c='#929591')
 
 axs[1,0].set(ylim=(0.5,1.5))
 axs[1,1].set(ylim=(0.5,1.5))
@@ -182,4 +202,4 @@ axs[0,1].set(xlabel="Jet $\eta$")
 axs[0,2].set(xlabel="Jet $\phi$")
 
 plt.savefig('ttbarPU200_3900.pdf', bbox_inches='tight')
-plt.show()
+#plt.show()
