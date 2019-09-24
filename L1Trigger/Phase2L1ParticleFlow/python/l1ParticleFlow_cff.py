@@ -193,6 +193,7 @@ l1pfProducerHF = l1pfProducer.clone(
     tracks = cms.InputTag(''), # no tracks
     emClusters = [ ],
     hadClusters = [ cms.InputTag('pfClustersFromCombinedCaloHF:calibrated') ],
+    hadPtCut = 17,
     # not really useful, but for consistency
     puppiDrMin = 0.1,
     puppiPtMax = 100.,
