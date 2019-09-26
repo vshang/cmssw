@@ -63,8 +63,8 @@ tpsAlgoSettings = cms.PSet(
     etaLSB = cms.double(0.000366211),
     etaShift = cms.uint32(4),
     curvLSB  = cms.double(0.000122070),
-    vetoIndex  =cms.vuint32(0,0,1,1,1,2,3,4,5,5,5,5,6),
-    vetoPattern=cms.vuint32(3,9,3,5,10,3,10,3,3,6,9,10,5)
+    vetoIndex  =cms.vuint32(0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,3,4,5,5,5,5,6),
+    vetoPattern=cms.vuint32(3,9,10,18,120,320,48,192,3,5,6,9,10,11,12,18,44,48,88,864,1408,384,448,197,3,10,3,3,6,9,10,5)
 )
         
 

@@ -29,44 +29,61 @@ std::vector<l1t::L1TkMuonParticle> L1TTPSSectorProcessor::process(const TrackPtr
   //Output collection
   std::vector<l1t::L1TkMuonParticle> out;
 
+  if (verbose_==1) 
+    printf("----Filtering the stubs for the sector----\n");
+
   //First filter the stubs:
   L1MuCorrelatorHitRefVector stubsInSector;
   for (const auto& stub : stubsAll) {
+    if (verbose_==1)
+      printf("Candidate stub type=%d phiRegion=%d etaRegion=%d depthRegion=%d phi=%d\n",stub->type(),stub->phiRegion(),stub->etaRegion(),stub->depthRegion(),stub->phi());
+
     if (stub->type()<=1) {//barrel 
       for (const auto& sector : barrelSectors_) {
 	if (stub->phiRegion()==int(sector)) {
+	  if (verbose_==1)
+	    printf("Passed stub type=%d phiRegion=%d etaRegion=%d depthRegion=%d phi=%d\n",stub->type(),stub->phiRegion(),stub->etaRegion(),stub->depthRegion(),stub->phi());
 	  stubsInSector.push_back(stub);
 	  break;
 	}
       }
     }
-    else if (stub->type()==2 && (stub->depthRegion()==1 || (stub->depthRegion()>1 && fabs(stub->etaRegion())==4))) {//CSC 10 degrees chambers in ME2/2,3/2,4/2
+    else if (stub->type()==2 && (stub->depthRegion()==1 || (stub->depthRegion()>1 && uint(fabs(stub->etaRegion()))==4))) {//CSC 10 degrees chambers in ME2/2,3/2,4/2
       for (const auto& sector : csc10DegreeChambers_) {
 	if (stub->phiRegion()==int(sector)) {
+	  if (verbose_==1)
+	    printf("Passed stub type=%d phiRegion=%d etaRegion=%d depthRegion=%d phi=%d\n",stub->type(),stub->phiRegion(),stub->etaRegion(),stub->depthRegion(),stub->phi());
+
 	  stubsInSector.push_back(stub);
 	  break;
 	}
       }
    }
-    else if (stub->type()==2 && (stub->depthRegion()>1 && fabs(stub->etaRegion())==5)) {//CSC 
+    else if (stub->type()==2 && (stub->depthRegion()>1 && uint(fabs(stub->etaRegion()))==5)) {//CSC 
       for (const auto& sector : csc20DegreeChambers_) {
 	if (stub->phiRegion()==int(sector)) {
+	  if (verbose_==1)
+	    printf("Passed stub type=%d phiRegion=%d etaRegion=%d depthRegion=%d phi=%d\n",stub->type(),stub->phiRegion(),stub->etaRegion(),stub->depthRegion(),stub->phi());
 	  stubsInSector.push_back(stub);
 	  break;
 	}
       }
     }
-    else if (stub->type()==3 &&fabs(stub->etaRegion())!=5) {//RPC
+    else if (stub->type()==3 &&uint(fabs(stub->etaRegion()))!=5) {//RPC
       for (const auto& sector : rpcEndcapChambers_) {
 	if (stub->phiRegion()==int(sector)) {
+	  if (verbose_==1)
+	    printf("Passed stub type=%d phiRegion=%d etaRegion=%d depthRegion=%d phi=%d\n",stub->type(),stub->phiRegion(),stub->etaRegion(),stub->depthRegion(),stub->phi());
 	  stubsInSector.push_back(stub);
 	  break;
 	}
       }
     }
-    else if (stub->type()==3 &&fabs(stub->etaRegion())==5) {//iRPC
+    else if (stub->type()==3 &&uint(fabs(stub->etaRegion()))==5) {//iRPC
       for (const auto& sector : iRpcChambers_) {
 	if (stub->phiRegion()==int(sector)) {
+	  if (verbose_==1)
+	    printf("Passed stub type=%d phiRegion=%d etaRegion=%d depthRegion=%d phi=%d\n",stub->type(),stub->phiRegion(),stub->etaRegion(),stub->depthRegion(),stub->phi());
 	  stubsInSector.push_back(stub);
 	  break;
 	}
@@ -390,7 +407,7 @@ bool L1TTPSSectorProcessor::processTrack(l1t::L1TkMuonParticle& muon,const L1MuC
   
 
   //Stubs requirements
-  if (nstubs<2)
+  if (muon.getMatchedStubs().size()<2)
     return false;
 
 
