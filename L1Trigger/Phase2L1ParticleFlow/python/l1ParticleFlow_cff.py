@@ -134,7 +134,7 @@ l1pfProducerHGCal = l1pfProducer.clone(
     puppiPtCuts             = cms.vdouble( 1.0, 2.0, 4.0 ),
     puppiPtCutsPhotons      = cms.vdouble( 1.0, 2.0, 4.0 ),
     puppiPtSlopes           = cms.vdouble( 0.3, 0.3, 0.3 ), # coefficient for pT
-    puppiPtSlopesPhotons    = cms.vdouble( 0.3, 0.3, 0.3 ), #When e/g ID in applied, use: cms.vdouble( 0.4, 0.4, 0.4 ),
+    puppiPtSlopesPhotons    = cms.vdouble( 0.4, 0.4, 0.4 ), #When e/g ID not applied, use: cms.vdouble( 0.3, 0.3, 0.3 ),
     puppiPtZeros            = cms.vdouble( 5.0, 7.0, 9.0 ), # ballpark pT from PU
     puppiPtZerosPhotons     = cms.vdouble( 3.0, 4.0, 5.0 ), 
     puppiAlphaSlopes        = cms.vdouble( 1.5, 1.5, 2.2 ),
@@ -144,7 +144,7 @@ l1pfProducerHGCal = l1pfProducer.clone(
     puppiAlphaCrops         = cms.vdouble(  3 ,  3 ,  4  ), # max. absolute value for alpha term
     puppiAlphaCropsPhotons  = cms.vdouble(  3 ,  3 ,  4  ),
     puppiPriors             = cms.vdouble( 5.0, 5.0, 7.0 ),
-    puppiPriorsPhotons      = cms.vdouble( 3.5, 3.5, 7.0 ), #When e/g ID in applied, use: cms.vdouble( 1.5, 1.5, 5.0 ),
+    puppiPriorsPhotons      = cms.vdouble( 1.5, 1.5, 5.0 ), #When e/g ID not applied, use: cms.vdouble( 3.5, 3.5, 7.0 ),
     # regionalize
     useRelativeRegionalCoordinates = cms.bool(False),
     trackRegionMode = cms.string("atCalo"),
