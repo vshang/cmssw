@@ -45,9 +45,15 @@
 #include "Geometry/HcalTowerAlgo/interface/HcalTrigTowerGeometry.h"
 #include "Geometry/HcalTowerAlgo/interface/HcalGeometry.h"
 
+#include "DataFormats/L1TrackTrigger/interface/L1TkPrimaryVertex.h"
 #include "DataFormats/L1Trigger/interface/L1PFTau.h"
 #include "DataFormats/Phase2L1ParticleFlow/interface/PFCandidate.h"
 #include "L1Trigger/Phase2L1Taus/interface/TauMapper.h"
+/* TMVA */
+#include "TMVA/Tools.h"
+#include "TMVA/Reader.h"
+#include "TMVA/MethodCuts.h"
+
 
 using namespace l1t;
 
@@ -118,7 +124,19 @@ class L1PFTauProducer : public edm::EDProducer {
   edm::EDGetTokenT< std::vector< TTTrack< Ref_Phase2TrackerDigi_ > > > ttTrackToken_;
   edm::EDGetTokenT< vector<l1t::PFCandidate> > L1PFToken_;
   edm::EDGetTokenT< vector<l1t::PFCandidate> > L1NeutralToken_;
+  edm::EDGetTokenT<L1TkPrimaryVertexCollection>    pvToken_;
 
+  /* Create the Reader object. */
+  TMVA::Reader *reader;
+  //TMVA::Reader *reader = new TMVA::Reader("!Color:Silent");
+
+  Float_t l1Pt_f;//      = 0;
+  Float_t l1Eta_f;//     = -10;
+  Float_t l1StripPt_f;// = 0;
+  Float_t l1DM_f;//      = -10;
+  Float_t l1PVDZ_f;//    = 0;
+  Float_t l1HoE_f;//    = 0;
+  Float_t l1EoH_f;//    = 0;
 
 };
 

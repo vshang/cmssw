@@ -109,6 +109,8 @@ class TauMapper{
 	float strip_eta;
 	float strip_phi;
 	double m_minpi0pt;
+	
+
 };
 
 #endif

@@ -156,6 +156,7 @@ void TauMapper::process(){
 
   process_strip();
 
+  sumChargedIso += sumEGIso;
   //std::cout<<"seedCH pt: "<< seedCH.pt()<<" eta: "<< seedCH.eta() <<" phi: "<<seedCH.phi()<<std::endl;
   //std::cout<<"   prong2 pt: "<< prong2.pt()<<" eta: "<< prong2.eta() <<" phi: "<<prong2.phi()<<std::endl;
   //std::cout<<"   prong3 pt: "<< prong3.pt()<<" eta: "<< prong3.eta() <<" phi: "<<prong3.phi()<<std::endl;
@@ -207,6 +208,17 @@ void TauMapper::process(){
     l1PFTau.setTauType(1);    
   }
   
+  l1PFTau.setHoE(-10);
+  l1PFTau.setEoH(-10);
+  
+  if(seedCH.pfCluster().isNonnull()){
+    l1PFTau.setHoE(seedCH.pfCluster()->hOverE());
+    if(seedCH.pfCluster()->isEM())
+      l1PFTau.setEoH(1);
+    if(!seedCH.pfCluster()->isEM())
+      l1PFTau.setEoH(0);
+  }
+  
   if(l1PFTau.chargedIso() < 50){
     l1PFTau.setPassVLooseIso(true);
   }
@@ -234,7 +246,6 @@ void TauMapper::process(){
   }
   */
   
-
 }
 
 void TauMapper::process_strip(){

@@ -99,6 +99,7 @@ namespace l1t {
     int tauType()const{return m_tauType;}
     int tauIsoQuality()const{return m_tauIsoQual;}
     int tauRelIsoQuality()const{return m_tauIsoQual;}
+    float discriminant()const{return m_tauDiscriminant;}
 
     void set_strip_p4(LorentzVector input) {m_strip_p4 = input;};
     //void setPtEtaPhiE(float pt, float eta, float phi, float et){m_p4.SetPtEtaPhiE(pt,eta,phi,et);};
@@ -112,6 +113,7 @@ namespace l1t {
     void setRawIso(float inputIso){m_rawIsolation = inputIso;};
     void setChargedIso(float inputIso){m_chargedIsolation = inputIso;};
     void setNeutralIso(float inputIso){m_neutralIsolation = inputIso;};
+    void setDiscriminant(float inputDiscriminant){m_tauDiscriminant = inputDiscriminant;};
 
     void setHWPhi(float inputPhi){
       m_hwPhi = round(inputPhi/0.0174)*0.0174;};
@@ -157,6 +159,7 @@ namespace l1t {
     float m_rawIsolation;
     float m_chargedIsolation;
     float m_neutralIsolation;
+    float m_tauDiscriminant;
 
     bool m_passTightIso;
     bool m_passMediumIso;

@@ -22,6 +22,7 @@ namespace l1t
 	  bool  passLoosePF()  const { return fullIso_ < 10.0;}
 	  bool  passTightNN()  const { return iso_*(0.1+0.2*(min(pt(),100.)))*1./20.1 > 0.25;}
 	  bool  passTightPF()  const { return fullIso_ < 5.0;}
+	  
 
       private:
           float iso_;
