@@ -42,6 +42,7 @@ class L1TMuCorrelatorDTStubProcessor {
   int verbose_;
   double phiLSB_;
   std::vector<double> bendingScale_;
+  std::vector<int> phiOffset_;
 
   //    edm::ESHandle< L1TMuonBarrelParams > bmtfParamsHandle;
   //    L1MuDTTFMasks       masks_;

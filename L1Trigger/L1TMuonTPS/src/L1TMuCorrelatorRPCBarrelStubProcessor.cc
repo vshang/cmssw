@@ -26,7 +26,8 @@ L1TMuCorrelatorRPCBarrelStubProcessor::L1TMuCorrelatorRPCBarrelStubProcessor(con
   coarseEta1_(iConfig.getParameter<std::vector<int> >("coarseEta_1")),
   coarseEta2_(iConfig.getParameter<std::vector<int> >("coarseEta_2")),
   coarseEta3_(iConfig.getParameter<std::vector<int> >("coarseEta_3")),
-  coarseEta4_(iConfig.getParameter<std::vector<int> >("coarseEta_4"))
+  coarseEta4_(iConfig.getParameter<std::vector<int> >("coarseEta_4")),
+  phiOffset_(iConfig.getParameter<std::vector<int> >("phiOffset"))
 {
 
 } 
@@ -45,13 +46,13 @@ L1TMuCorrelatorRPCBarrelStubProcessor::buildStubNoEta(const L1MuDTChambPhDigi& p
   int sign=wheel>0 ? 1 : -1;
   int sector = phiS.scNum();
   int station = phiS.stNum();
-  double globalPhi = (-180+sector*30)+phiS.phi()*30./2048.;
+  double globalPhi = (sector*30)+phiS.phi()*30./2048.;
   if (globalPhi<-180)
     globalPhi+=360;
   if (globalPhi>180)
     globalPhi-=360;
   globalPhi = globalPhi*M_PI/180.;
-  int phi = int(globalPhi/phiLSB_);
+  int phi = int(globalPhi/phiLSB_)-phiOffset_[station-1];
   int phiB = phiS.phiB();
   bool tag = (phiS.Ts2Tag()==1);
   int bx=phiS.bxNum();
@@ -60,25 +61,25 @@ L1TMuCorrelatorRPCBarrelStubProcessor::buildStubNoEta(const L1MuDTChambPhDigi& p
   int eta=-255;
 
   if (station==1){
-    eta=coarseEta1_[abswheel];
+    eta=-coarseEta1_[abswheel];
     if (tag)
       tfLayer=3;
     else
       tfLayer=0;
   }
   else if (station==2) {
-    eta=coarseEta2_[abswheel];
+    eta=-coarseEta2_[abswheel];
     if (tag)
       tfLayer=6;
     else
       tfLayer=4;
   }
   else if (station==3) {
-    eta=coarseEta3_[abswheel];
+    eta=-coarseEta3_[abswheel];
     tfLayer=6;
   }
   else if (station==4) {
-    eta=coarseEta4_[abswheel];
+    eta=-coarseEta4_[abswheel];
     tfLayer=9;
   }
   

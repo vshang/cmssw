@@ -1,4 +1,3 @@
-
 #include "L1Trigger/L1TMuonTPS/interface/L1TMuCorrelatorCSCStubProcessor.h"
 #include "L1Trigger/L1TMuon/interface/MuonTriggerPrimitive.h"
 #include <cmath>
@@ -40,6 +39,7 @@ L1TMuCorrelatorCSCStubProcessor::buildStub(const CSCDetId& detid,const CSCCorrel
   int ring = detid.ring();
 
   L1TMuon::TriggerPrimitive primitive(detid,digi);
+
   const GlobalPoint& gp = translator->getGlobalPoint(primitive);
 
 
@@ -47,7 +47,7 @@ L1TMuCorrelatorCSCStubProcessor::buildStub(const CSCDetId& detid,const CSCCorrel
   int eta1 = int(gp.eta()/etaLSB_);
 
   int type=2;
-  int wheel=0;;
+  int wheel=0;
   int sign = endcap==1 ? -1 : 1;
 
   if (ring==3)
@@ -78,7 +78,7 @@ L1TMuCorrelatorCSCStubProcessor::buildStub(const CSCDetId& detid,const CSCCorrel
 
 
 
-
+  //  printf("CSC stub wheel=%d layer=%d ring=%d station=%d phi=%d \n",wheel,tfLayer,ring,station,phi);
 
 
 

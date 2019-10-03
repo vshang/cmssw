@@ -23,6 +23,7 @@ class L1TMuCorrelatorRPCBarrelStubProcessor {
   std::vector<int> coarseEta2_;
   std::vector<int> coarseEta3_;
   std::vector<int> coarseEta4_;
+  std::vector<int> phiOffset_;
 
 
 };

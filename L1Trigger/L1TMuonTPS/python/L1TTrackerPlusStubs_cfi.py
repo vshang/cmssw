@@ -30,7 +30,8 @@ l1TPSStubs = cms.EDProducer("L1TMuCorrelatorHitProducer",
         coarseEta_2 = cms.vint32(0,-85,-154),
         coarseEta_3 = cms.vint32(0,-68,-137),
         coarseEta_4 = cms.vint32(0,-68,-119),
-        bendingScale       = cms.vdouble(16.0*1.7370158,16.0*2.6109661,16.0*4.4111160,16.0*11.660448),
+        bendingScale       = cms.vdouble(8.0*1.7370158,8.0*2.6109661,8.0*4.4111160,8.0*10.56),
+        phiOffset          = cms.vint32(17,-12,8,2)
    ),
    RPCBarrel = cms.PSet(                         
         verbose            = cms.int32(0),
@@ -44,7 +45,8 @@ l1TPSStubs = cms.EDProducer("L1TMuCorrelatorHitProducer",
         coarseEta_1 = cms.vint32(0,-102,-171),
         coarseEta_2 = cms.vint32(0,-85,-154),
         coarseEta_3 = cms.vint32(0,-68,-137),
-        coarseEta_4 = cms.vint32(0,-68,-119)
+        coarseEta_4 = cms.vint32(0,-68,-119),
+        phiOffset          = cms.vint32(17,-12,8,2)
    ),
    RPCEndcap = cms.PSet(                         
         verbose            = cms.int32(0),
@@ -63,8 +65,11 @@ tpsAlgoSettings = cms.PSet(
     etaLSB = cms.double(0.000366211),
     etaShift = cms.uint32(4),
     curvLSB  = cms.double(0.000122070),
-    vetoIndex  =cms.vuint32(0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,3,4,5,5,5,5,6),
-    vetoPattern=cms.vuint32(3,9,10,18,120,320,48,192,3,5,6,9,10,11,12,18,44,48,88,864,1408,384,448,197,3,10,3,3,6,9,10,5)
+#    vetoIndex  =cms.vuint32(),
+#    vetoPattern=cms.vuint32()
+    vetoIndex = cms.vuint32(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7),
+    vetoPattern = cms.vuint32(3, 6, 9, 10, 24, 40, 72, 160, 264, 272, 3, 6, 9, 10, 11, 12, 18, 20, 22, 36, 43, 48, 49, 144, 152, 155, 184, 240,3, 5, 9, 10, 20, 24, 40, 160, 3, 11, 18, 80, 122, 320, 3, 5, 10, 22, 1005, 3, 5, 6, 9, 10, 11, 13, 17, 10, 24, 36, 50, 495, 3)
+
 )
         
 

@@ -84,7 +84,7 @@ L1TTPSProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
    std::vector<edm::Ptr< l1t::L1TkMuonParticle::L1TTTrackType > > tracks;
    for (uint i=0;i<trackHandle->size();++i) {
      edm::Ptr< l1t::L1TkMuonParticle::L1TTTrackType > track(trackHandle, i);
-     double chi2dof=track->getChi2()/(2*track->getStubRefs().size()-4);
+     double chi2dof=track->getChi2Red();
      if (chi2dof>maxchi2_   || track->getStubRefs().size()<4) 
 	continue;
      else

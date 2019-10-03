@@ -32,7 +32,8 @@ L1TMuCorrelatorDTStubProcessor::L1TMuCorrelatorDTStubProcessor(const edm::Parame
   coarseEta4_(iConfig.getParameter<std::vector<int> >("coarseEta_4")),
   verbose_(iConfig.getParameter<int>("verbose")),
   phiLSB_(iConfig.getParameter<double>("phiLSB")),
-  bendingScale_(iConfig.getParameter<std::vector<double> >("bendingScale"))
+  bendingScale_(iConfig.getParameter<std::vector<double> >("bendingScale")),
+  phiOffset_(iConfig.getParameter<std::vector<int> >("phiOffset"))
 {
 
 } 
@@ -115,13 +116,13 @@ L1TMuCorrelatorDTStubProcessor::buildStubNoEta(const L1MuDTChambPhDigi& phiS) {
   int sign  = wheel>0 ? 1: -1;
   int sector = phiS.scNum();
   int station = phiS.stNum();
-  double globalPhi = (-180+sector*30)+phiS.phi()*30./2048.;
+  double globalPhi = (sector*30)+phiS.phi()*30./2048.;
   if (globalPhi<-180)
     globalPhi+=360;
   if (globalPhi>180)
     globalPhi-=360;
   globalPhi = globalPhi*M_PI/180.;
-  int phi = int(globalPhi/phiLSB_);
+  int phi = int(globalPhi/phiLSB_)-phiOffset_[phiS.stNum()-1];
   double normPhiB = bendingScale_[phiS.stNum()-1]*phiS.phiB()*M_PI/(6*2048.);
   int phiB = int(normPhiB/phiLSB_);
   bool tag = (phiS.Ts2Tag()==1);
@@ -131,21 +132,21 @@ L1TMuCorrelatorDTStubProcessor::buildStubNoEta(const L1MuDTChambPhDigi& phiS) {
   int eta=-255;
   if (station==1) {
     tfLayer=1; 
-    eta=coarseEta1_[abswheel];
+    eta=-coarseEta1_[abswheel];
   }
   else if (station==2) {
     tfLayer=5;
-    eta=coarseEta2_[abswheel];
+    eta=-coarseEta2_[abswheel];
 
   }
   else if (station==3) {
     tfLayer=8;
-    eta=coarseEta3_[abswheel];
+    eta=-coarseEta3_[abswheel];
 
   }
   else if (station==4) {
     tfLayer=10;
-    eta=coarseEta4_[abswheel];
+    eta=-coarseEta4_[abswheel];
 
   }
   else {
@@ -237,11 +238,11 @@ int L1TMuCorrelatorDTStubProcessor::calculateEta(uint i, int wheel,uint sector,u
 
 
   if (station==1)
-    eta=eta1_[eta+17];
+    eta=-eta1_[eta+17];
   else if (station==2)
-    eta=eta2_[eta+17];
+    eta=-eta2_[eta+17];
   else 
-    eta=eta3_[eta+17];
+    eta=-eta3_[eta+17];
 
   return eta;
 
