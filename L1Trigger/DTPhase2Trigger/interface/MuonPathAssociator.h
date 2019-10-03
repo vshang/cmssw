@@ -54,7 +54,11 @@ class MuonPathAssociator {
   void finish();
     
   // Other public methods
-  
+
+  bool shareFit (metaPrimitive first, metaPrimitive second); 
+  void removeSharingFits (std::vector<metaPrimitive> &chamberMPaths,
+			  std::vector<metaPrimitive> &allMPaths);
+ 
   // Public attributes
  edm::ESHandle<DTGeometry> dtGeo;  
 
@@ -73,6 +77,7 @@ private:
   double minx_match_2digis;
   double chi2corTh;
   Bool_t debug;
+  Bool_t clean_chi2_correlation;
 
   //shift
   edm::FileInPath shift_filename;

@@ -11,6 +11,7 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                chi2Th = cms.untracked.double(0.01), #in cm^2
                                                chi2corTh = cms.untracked.double(0.1), #in cm^2
                                                do_correlation = cms.untracked.bool(True),
+                                               clean_chi2_correlation = cms.untracked.bool(True),
                                                dT0_correlate_TP = cms.untracked.double(25.),
                                                #minx_match_2digis = cms.untracked.double(2.1),
                                                minx_match_2digis = cms.untracked.double(1.),

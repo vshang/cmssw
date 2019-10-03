@@ -13,6 +13,7 @@ using namespace std;
 MuonPathAssociator::MuonPathAssociator(const ParameterSet& pset) {
     // Obtention of parameters
     debug            = pset.getUntrackedParameter<Bool_t>("debug");
+    clean_chi2_correlation = pset.getUntrackedParameter<Bool_t>("clean_chi2_correlation");
     dT0_correlate_TP = pset.getUntrackedParameter<double>("dT0_correlate_TP");
     minx_match_2digis = pset.getUntrackedParameter<double>("minx_match_2digis");
     chi2corTh = pset.getUntrackedParameter<double>("chi2corTh");
@@ -111,7 +112,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		bool at_least_one_SL3_confirmation=false;
 	
 		//SL1-SL3
-	
+                std::vector<metaPrimitive> chamberMetaPrimitives; 	
 		for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
 		    for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
 			if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) < dT0_correlate_TP){//time match
@@ -188,7 +189,18 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			    double psi=atan(NewSlope);
 			    double phiB=hasPosRF(ChId.wheel(),ChId.sector()) ? psi-phi :-psi-phi ;
 			    
-			    outMPaths.push_back(metaPrimitive({ChId.rawId(),MeanT0,MeanPos,NewSlope,phi,phiB,newChi2,quality,
+			    if (!clean_chi2_correlation) outMPaths.push_back(metaPrimitive({ChId.rawId(),MeanT0,MeanPos,NewSlope,phi,phiB,newChi2,quality,
+					    SL1metaPrimitive->wi1,SL1metaPrimitive->tdc1,SL1metaPrimitive->lat1,
+					    SL1metaPrimitive->wi2,SL1metaPrimitive->tdc2,SL1metaPrimitive->lat2,
+					    SL1metaPrimitive->wi3,SL1metaPrimitive->tdc3,SL1metaPrimitive->lat3,
+					    SL1metaPrimitive->wi4,SL1metaPrimitive->tdc4,SL1metaPrimitive->lat4,
+					    SL3metaPrimitive->wi1,SL3metaPrimitive->tdc1,SL3metaPrimitive->lat1,
+					    SL3metaPrimitive->wi2,SL3metaPrimitive->tdc2,SL3metaPrimitive->lat2,
+					    SL3metaPrimitive->wi3,SL3metaPrimitive->tdc3,SL3metaPrimitive->lat3,
+					    SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,
+					    -1
+					    }));
+			    else chamberMetaPrimitives.push_back(metaPrimitive({ChId.rawId(),MeanT0,MeanPos,NewSlope,phi,phiB,newChi2,quality,
 					    SL1metaPrimitive->wi1,SL1metaPrimitive->tdc1,SL1metaPrimitive->lat1,
 					    SL1metaPrimitive->wi2,SL1metaPrimitive->tdc2,SL1metaPrimitive->lat2,
 					    SL1metaPrimitive->wi3,SL1metaPrimitive->tdc3,SL1metaPrimitive->lat3,
@@ -202,6 +214,8 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			    at_least_one_correlation=true;
 			}
 		    }
+
+		    
 	  
 		    if(at_least_one_correlation==false){//no correlation was found, trying with pairs of two digis in the other SL
 			int matched_digis=0;
@@ -295,7 +309,10 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		    }
 		}
 	
-		//finish SL1-SL3
+                // Start correlation cleaning
+                if (clean_chi2_correlation) removeSharingFits (chamberMetaPrimitives, outMPaths); 
+		
+                //finish SL1-SL3
 
 		//SL3-SL1
 		for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
@@ -447,6 +464,57 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 	}
     }
 }
+
+
+
+void MuonPathAssociator::removeSharingFits (std::vector<metaPrimitive> &chamberMPaths,
+				            std::vector<metaPrimitive> &allMPaths)
+{
+  bool useFit [chamberMPaths.size()];
+  for (unsigned int i = 0; i < chamberMPaths.size(); i++){
+    useFit[i]=true; 
+  } 
+  for (unsigned int i = 0; i < chamberMPaths.size(); i++) {
+    if (debug) cout << "Looking at prim" << i << endl; 
+    if (!useFit[i]) continue;
+    for (unsigned int j = i + 1; j < chamberMPaths.size(); j++) {
+      if (debug) cout << "Comparing with prim " << j << endl; 
+      if (!useFit[j]) continue; 
+      metaPrimitive first = chamberMPaths[i];
+      metaPrimitive second = chamberMPaths[j];
+      if (shareFit (first, second) && first.quality == second.quality) {
+        if (first.chi2 < second.chi2) useFit[j] = false; 
+        else { useFit[i] = false; break;} 
+      }
+    }
+    if (useFit[i]) {
+      if (debug) cout << "Pushing back primitive number " << i << endl; 
+      allMPaths.push_back(chamberMPaths[i]);
+    }
+  }
+  if (debug) cout << "---Swapping chamber---" << endl;  
+}
+
+
+
+bool MuonPathAssociator::shareFit (metaPrimitive first, metaPrimitive second) {
+  bool lay1 = (first.wi1 == second.wi1) && (first.tdc1 = second.tdc1);
+  bool lay2 = (first.wi2 == second.wi2) && (first.tdc2 = second.tdc2);
+  bool lay3 = (first.wi3 == second.wi3) && (first.tdc3 = second.tdc3);
+  bool lay4 = (first.wi4 == second.wi4) && (first.tdc4 = second.tdc4);
+  bool lay5 = (first.wi5 == second.wi5) && (first.tdc5 = second.tdc5);
+  bool lay6 = (first.wi6 == second.wi6) && (first.tdc6 = second.tdc6);
+  bool lay7 = (first.wi7 == second.wi7) && (first.tdc7 = second.tdc7);
+  bool lay8 = (first.wi8 == second.wi8) && (first.tdc8 = second.tdc8);
+  
+  if (lay1 && lay2 && lay3 && lay4) return true; 
+  else if (lay5 && lay6 && lay7 && lay8) return true;
+  else return false; 
+} 
+
+
+
+
 	
 /*
   void MuonPathAssociator::associate(MuonPath *mpath) {
