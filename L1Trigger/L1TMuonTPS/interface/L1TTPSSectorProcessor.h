@@ -59,6 +59,8 @@ class L1TTPSSectorProcessor {
   double trackCurvLSB_;
   std::vector<uint> vetoIndex_;
   std::vector<uint> vetoPattern_;
+  std::vector<uint> chiIndex_;
+  std::vector<double> chiCut_;
 
   
 

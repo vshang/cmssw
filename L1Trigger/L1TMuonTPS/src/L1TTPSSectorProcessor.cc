@@ -21,6 +21,8 @@ L1TTPSSectorProcessor::L1TTPSSectorProcessor(const edm::ParameterSet& iConfig):
   trackCurvLSB_     = algoSettings.getParameter<double>("curvLSB");
   vetoIndex_        = algoSettings.getParameter<std::vector<uint> >("vetoIndex");
   vetoPattern_      = algoSettings.getParameter<std::vector<uint> >("vetoPattern");
+  chiIndex_        = algoSettings.getParameter<std::vector<uint> >("chiIndex");
+  chiCut_          = algoSettings.getParameter<std::vector<double> >("chiCut");
 }
 
 L1TTPSSectorProcessor::~L1TTPSSectorProcessor() {}
@@ -416,9 +418,14 @@ bool L1TTPSSectorProcessor::processTrack(l1t::L1TkMuonParticle& muon,const L1MuC
   uint etaIndex = L1TTPS::etaIndex[absEta];
 
 
-  for (uint i =0 ;i<vetoIndex_.size();++i)
+  for (uint i =0 ;i<vetoIndex_.size();++i) 
     if ((etaIndex==vetoIndex_[i]) && pattern==vetoPattern_[i])
       return false;
+  for (uint i =0 ;i<chiIndex_.size();++i) 
+    if ((etaIndex==chiIndex_[i]) && muon.getTrkPtr()->getChi2Red()>chiCut_[i])
+      return false;
+
+
 
   
   return true;
