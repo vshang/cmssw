@@ -107,13 +107,13 @@ void HGCalTriggerNtupleHGCMulticlusters::initialize(TTree& tree,
   tree.Branch(withPrefix("srrmax"), &cl3d_srrmax_);
   tree.Branch(withPrefix("srrmean"), &cl3d_srrmean_);
   tree.Branch(withPrefix("emaxe"), &cl3d_emaxe_);
-  tree.Branch(withPrefix("hoe"), &cl3d_hoe_);
-  tree.Branch(withPrefix("meanz"), &cl3d_meanz_);
-  tree.Branch(withPrefix("layer10"), &cl3d_layer10_);
-  tree.Branch(withPrefix("layer50"), &cl3d_layer50_);
-  tree.Branch(withPrefix("layer90"), &cl3d_layer90_);
-  tree.Branch(withPrefix("ntc67"), &cl3d_ntc67_);
-  tree.Branch(withPrefix("ntc90"), &cl3d_ntc90_);
+  //  tree.Branch(withPrefix("hoe"), &cl3d_hoe_);
+  // tree.Branch(withPrefix("meanz"), &cl3d_meanz_);
+  // tree.Branch(withPrefix("layer10"), &cl3d_layer10_);
+  // tree.Branch(withPrefix("layer50"), &cl3d_layer50_);
+  // tree.Branch(withPrefix("layer90"), &cl3d_layer90_);
+  // tree.Branch(withPrefix("ntc67"), &cl3d_ntc67_);
+  // tree.Branch(withPrefix("ntc90"), &cl3d_ntc90_);
   tree.Branch(withPrefix("bdteg"), &cl3d_bdteg_);
   tree.Branch(withPrefix("quality"), &cl3d_quality_);
   if (fill_interpretation_info_) {
