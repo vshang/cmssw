@@ -302,10 +302,10 @@ L1TTPSSectorProcessor::PropagationInfo L1TTPSSectorProcessor::propagate(const l1
   out.propagatorIndex = propIndex;
   out.propagatedSigmaAngle = uint(fabs(resa*curv)+resb);
   out.propagatedSigmaBend = hasPhiB ? uint(fabs(resa_phib*curv)+resb_phib) : 0.0;
-  if (out.propagatedSigmaAngle>1023)
-    out.propagatedSigmaAngle=1023;
-  if (out.propagatedSigmaBend>1023)
-    out.propagatedSigmaBend=1023;
+  if (out.propagatedSigmaAngle>511)
+    out.propagatedSigmaAngle=511;
+  if (out.propagatedSigmaBend>511)
+    out.propagatedSigmaBend=511;
   out.etaIndex=etaIndex;
   out.valid = valid;
   out.hasPhiB = hasPhiB;
