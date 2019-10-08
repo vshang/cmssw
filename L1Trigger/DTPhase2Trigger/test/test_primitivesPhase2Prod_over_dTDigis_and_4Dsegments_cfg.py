@@ -17,8 +17,9 @@ process.load("L1Trigger.DTPhase2Trigger.dtTriggerPhase2PrimitiveDigis_cfi")
 process.source = cms.Source("PoolSource",fileNames = cms.untracked.vstring('file:/eos/cms/store/user/folguera/P2L1TUpgrade/digis_segments_Run2016BSingleMuonRAW-RECO_camilo.root'))
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(10))
 process.dtTriggerPhase2PrimitiveDigis.dump = True
-process.dtTriggerPhase2PrimitiveDigis.debug = False
+process.dtTriggerPhase2PrimitiveDigis.debug = False 
 process.dtTriggerPhase2PrimitiveDigis.grouping_code = cms.untracked.int32(0)
+process.dtTriggerPhase2PrimitiveDigis.clean_chi2_correlation = False
 
 process.out = cms.OutputModule("PoolOutputModule",
                                outputCommands = cms.untracked.vstring('keep *'),

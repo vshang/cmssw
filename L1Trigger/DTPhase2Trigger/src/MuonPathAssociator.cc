@@ -110,11 +110,21 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		bool at_least_one_correlation=false;
 		bool at_least_one_SL1_confirmation=false;
 		bool at_least_one_SL3_confirmation=false;
-	
+			
+  		bool useFitSL1 [SL1metaPrimitives.size()];
+		for (unsigned int i = 0; i < SL1metaPrimitives.size(); i++) useFitSL1[i] = false;
+  		bool useFitSL3 [SL3metaPrimitives.size()];
+		for (unsigned int i = 0; i < SL3metaPrimitives.size(); i++) useFitSL3[i] = false;
+
 		//SL1-SL3
                 std::vector<metaPrimitive> chamberMetaPrimitives; 	
-		for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
-		    for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
+                std::vector<metaPrimitive> confirmedMetaPrimitives; 	
+                std::vector<metaPrimitive> normalMetaPrimitives; 	
+		int sl1 = 0; int sl3 = 0;
+		for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive, sl1++, sl3 = -1){
+		    if (clean_chi2_correlation) at_least_one_correlation=false;
+		    for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive, sl3++){
+			//std::cout << "Correlating " << sl1 << " with " << sl3 << std::endl;
 			if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) < dT0_correlate_TP){//time match
 			    double PosSL1=SL1metaPrimitive->x;
 			    double PosSL3=SL3metaPrimitive->x;
@@ -170,6 +180,11 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 				newChi2 = newChi2 + (xH[i]-xReco[i])*(xH[i]-xReco[i]);
 			    } 
 			    if(newChi2>chi2corTh) continue;
+
+			    // Fill the used vectors			    
+  		            useFitSL1 [sl1] = true;
+  		            useFitSL3 [sl3] = true;
+
 
 	                    int quality = 0;
 			    if(SL3metaPrimitive->quality <= 2 and SL1metaPrimitive->quality <=2) quality=6;
@@ -292,7 +307,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			    if(best_layer==3) {wi3=best_wire; tdc3=best_tdc; lat3=best_lat;}
 			    if(best_layer==4) {wi4=best_wire; tdc4=best_tdc; lat4=best_lat;}    
 			    
-			    outMPaths.push_back(metaPrimitive({ChId.rawId(),SL1metaPrimitive->t0,SL1metaPrimitive->x,SL1metaPrimitive->tanPhi,SL1metaPrimitive->phi,SL1metaPrimitive->phiB,SL1metaPrimitive->chi2,
+			    if (!clean_chi2_correlation) outMPaths.push_back(metaPrimitive({ChId.rawId(),SL1metaPrimitive->t0,SL1metaPrimitive->x,SL1metaPrimitive->tanPhi,SL1metaPrimitive->phi,SL1metaPrimitive->phiB,SL1metaPrimitive->chi2,
 					    new_quality,
 					    SL1metaPrimitive->wi1,SL1metaPrimitive->tdc1,SL1metaPrimitive->lat1,
 					    SL1metaPrimitive->wi2,SL1metaPrimitive->tdc2,SL1metaPrimitive->lat2,
@@ -304,26 +319,37 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					    wi4,tdc4,lat4,
 					    -1
 					    }));
+			    else confirmedMetaPrimitives.push_back(metaPrimitive({ChId.rawId(),SL1metaPrimitive->t0,SL1metaPrimitive->x,SL1metaPrimitive->tanPhi,SL1metaPrimitive->phi,SL1metaPrimitive->phiB,SL1metaPrimitive->chi2,
+					    new_quality,
+					    SL1metaPrimitive->wi1,SL1metaPrimitive->tdc1,SL1metaPrimitive->lat1,
+					    SL1metaPrimitive->wi2,SL1metaPrimitive->tdc2,SL1metaPrimitive->lat2,
+					    SL1metaPrimitive->wi3,SL1metaPrimitive->tdc3,SL1metaPrimitive->lat3,
+					    SL1metaPrimitive->wi4,SL1metaPrimitive->tdc4,SL1metaPrimitive->lat4,
+					    wi1,tdc1,lat1,
+					    wi2,tdc2,lat2,
+					    wi3,tdc3,lat3,
+					    wi4,tdc4,lat4,
+					    -1
+					    }));
+			    useFitSL1 [sl1] = true;
 			    at_least_one_SL1_confirmation=true;
 			}
 		    }
 		}
 	
-                // Start correlation cleaning
-                if (clean_chi2_correlation) removeSharingFits (chamberMetaPrimitives, outMPaths); 
-		
                 //finish SL1-SL3
 
 		//SL3-SL1
-		for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
+	 	sl3 = 0; 	
+		for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive, sl3++){
 		    /*for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
 			if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) < dT0_correlate_TP){//time match
 			    //this comb was already filled up in the previous loop now we just want to know if there was at least one match
 			    at_least_one_correlation=true;
 			}
 		    } */
-	  
-		    if(at_least_one_correlation==false){//no correlation was found, trying with pairs of two digis in the other SL
+	 	    if (useFitSL3[sl3]) continue; 
+		    if(at_least_one_correlation==false || clean_chi2_correlation){//no correlation was found, trying with pairs of two digis in the other SL
 	    
 			int matched_digis=0;
 			double minx=minx_match_2digis;
@@ -399,7 +425,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			    if(best_layer==3) {wi3=best_wire; tdc3=best_tdc; lat3=best_lat;}
 			    if(best_layer==4) {wi4=best_wire; tdc4=best_tdc; lat4=best_lat;}    
 			    
-			    outMPaths.push_back(metaPrimitive({ChId.rawId(),SL3metaPrimitive->t0,SL3metaPrimitive->x,SL3metaPrimitive->tanPhi,SL3metaPrimitive->phi,SL3metaPrimitive->phiB,SL3metaPrimitive->chi2,
+			    if (!clean_chi2_correlation) outMPaths.push_back(metaPrimitive({ChId.rawId(),SL3metaPrimitive->t0,SL3metaPrimitive->x,SL3metaPrimitive->tanPhi,SL3metaPrimitive->phi,SL3metaPrimitive->phiB,SL3metaPrimitive->chi2,
 					    new_quality,
 					    wi1,tdc1,lat1,
 					    wi2,tdc2,lat2,
@@ -411,37 +437,76 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					    SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,
 					    -1
 					    }));
+			    else confirmedMetaPrimitives.push_back(metaPrimitive({ChId.rawId(),SL3metaPrimitive->t0,SL3metaPrimitive->x,SL3metaPrimitive->tanPhi,SL3metaPrimitive->phi,SL3metaPrimitive->phiB,SL3metaPrimitive->chi2,
+					    new_quality,
+					    wi1,tdc1,lat1,
+					    wi2,tdc2,lat2,
+					    wi3,tdc3,lat3,
+					    wi4,tdc4,lat4,
+					    SL3metaPrimitive->wi1,SL3metaPrimitive->tdc1,SL3metaPrimitive->lat1,
+					    SL3metaPrimitive->wi2,SL3metaPrimitive->tdc2,SL3metaPrimitive->lat2,
+					    SL3metaPrimitive->wi3,SL3metaPrimitive->tdc3,SL3metaPrimitive->lat3,
+					    SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,
+					    -1
+					    }));
+			    useFitSL3[sl3] = true;
 			    at_least_one_SL3_confirmation=true;
 			}
 		    }
 		}
+                // Start correlation cleaning
+                if (clean_chi2_correlation) {
+		  if (debug) cout << "Pushing back correlated MPs to the MPs collection" << endl; 
+		  removeSharingFits (chamberMetaPrimitives, outMPaths); 
+		}
+                if (clean_chi2_correlation) {
+		  if (debug) cout << "Pushing back confirmed MPs to the complete vector" << endl; 
+		  removeSharingHits (confirmedMetaPrimitives, chamberMetaPrimitives, outMPaths); 
+		}
 	
 		//finish SL3-SL1
-		if(at_least_one_correlation==false){
-		    if(debug) std::cout<<"correlation we found zero correlations, adding both collections as they are to the outMPaths"<<std::endl;
+		if(at_least_one_correlation==false || clean_chi2_correlation){
+		    if(debug && !at_least_one_correlation) std::cout<<"correlation we found zero correlations, adding both collections as they are to the outMPaths"<<std::endl;
 		    if(debug) std::cout<<"correlation sizes:"<<SL1metaPrimitives.size()<<" "<<SL3metaPrimitives.size()<<std::endl;
-		    if (at_least_one_SL1_confirmation == false) {
-		      for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive){
+		    if (at_least_one_SL1_confirmation == false || clean_chi2_correlation) {
+		      sl1 = 0;
+		      for (auto SL1metaPrimitive = SL1metaPrimitives.begin(); SL1metaPrimitive != SL1metaPrimitives.end(); ++SL1metaPrimitive, sl1++){
+			
+			if (useFitSL1 [sl1]) continue;
+
 		  	DTSuperLayerId SLId(SL1metaPrimitive->rawId);
 			DTChamberId(SLId.wheel(),SLId.station(),SLId.sector());
-			outMPaths.push_back(metaPrimitive({ChId.rawId(),SL1metaPrimitive->t0,SL1metaPrimitive->x,SL1metaPrimitive->tanPhi,SL1metaPrimitive->phi,SL1metaPrimitive->phiB,SL1metaPrimitive->chi2,SL1metaPrimitive->quality,
-					SL1metaPrimitive->wi1,SL1metaPrimitive->tdc1,SL1metaPrimitive->lat1,
-					SL1metaPrimitive->wi2,SL1metaPrimitive->tdc2,SL1metaPrimitive->lat2,
-					SL1metaPrimitive->wi3,SL1metaPrimitive->tdc3,SL1metaPrimitive->lat3,
-					SL1metaPrimitive->wi4,SL1metaPrimitive->tdc4,SL1metaPrimitive->lat4,
-					-1,-1,-1,
-					-1,-1,-1,
-					-1,-1,-1,
-					-1,-1,-1,
-					-1
-					}));
+			metaPrimitive newSL1metaPrimitive = {ChId.rawId(),SL1metaPrimitive->t0,SL1metaPrimitive->x,SL1metaPrimitive->tanPhi,SL1metaPrimitive->phi,SL1metaPrimitive->phiB,SL1metaPrimitive->chi2,SL1metaPrimitive->quality,
+                                        SL1metaPrimitive->wi1,SL1metaPrimitive->tdc1,SL1metaPrimitive->lat1,
+                                        SL1metaPrimitive->wi2,SL1metaPrimitive->tdc2,SL1metaPrimitive->lat2,
+                                        SL1metaPrimitive->wi3,SL1metaPrimitive->tdc3,SL1metaPrimitive->lat3,
+                                        SL1metaPrimitive->wi4,SL1metaPrimitive->tdc4,SL1metaPrimitive->lat4,
+                                        -1,-1,-1,
+                                        -1,-1,-1,
+                                        -1,-1,-1,
+                                        -1,-1,-1,
+                                        -1
+                                        };
+
+			bool ok = true; 
+			for (auto & metaPrimitive : chamberMetaPrimitives) {
+			  if (!isNotAPrimo(newSL1metaPrimitive, metaPrimitive)) {ok = false; break;}
+			}			
+			if (!ok) continue;
+
+
+			if (!clean_chi2_correlation) outMPaths.push_back( newSL1metaPrimitive);
+			else normalMetaPrimitives.push_back( newSL1metaPrimitive);
 	  	      }
 		    }
-		    if (at_least_one_SL3_confirmation == false){
-		      for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive){
+		    if (at_least_one_SL3_confirmation == false || clean_chi2_correlation){
+                      sl3 = 0;
+		      for (auto SL3metaPrimitive = SL3metaPrimitives.begin(); SL3metaPrimitive != SL3metaPrimitives.end(); ++SL3metaPrimitive, sl3++){
+			
+			if (useFitSL3 [sl3]) continue;
 			DTSuperLayerId SLId(SL3metaPrimitive->rawId);
 			DTChamberId(SLId.wheel(),SLId.station(),SLId.sector());
-			outMPaths.push_back(metaPrimitive({ChId.rawId(),SL3metaPrimitive->t0,SL3metaPrimitive->x,SL3metaPrimitive->tanPhi,SL3metaPrimitive->phi,SL3metaPrimitive->phiB,SL3metaPrimitive->chi2,SL3metaPrimitive->quality,
+			metaPrimitive newSL3metaPrimitive = {ChId.rawId(),SL3metaPrimitive->t0,SL3metaPrimitive->x,SL3metaPrimitive->tanPhi,SL3metaPrimitive->phi,SL3metaPrimitive->phiB,SL3metaPrimitive->chi2,SL3metaPrimitive->quality,
 					-1,-1,-1,
 					-1,-1,-1,
 					-1,-1,-1,
@@ -451,7 +516,10 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 					SL3metaPrimitive->wi3,SL3metaPrimitive->tdc3,SL3metaPrimitive->lat3,
 					SL3metaPrimitive->wi4,SL3metaPrimitive->tdc4,SL3metaPrimitive->lat4,
 					-1
-					}));
+					};
+
+			if (!clean_chi2_correlation) outMPaths.push_back( newSL3metaPrimitive);
+			else normalMetaPrimitives.push_back( newSL3metaPrimitive);
 		      }
 		    }
 		}
@@ -460,6 +528,17 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 		SL1metaPrimitives.erase(SL1metaPrimitives.begin(),SL1metaPrimitives.end());
 		SL3metaPrimitives.clear();
 		SL3metaPrimitives.erase(SL3metaPrimitives.begin(),SL3metaPrimitives.end());
+
+	        	
+                std::vector<metaPrimitive> auxMetaPrimitives; 	
+                if (clean_chi2_correlation){ 
+		  if (debug) cout << "Pushing back normal MPs to the auxiliar vector" << endl; 
+		  removeSharingHits (normalMetaPrimitives,confirmedMetaPrimitives, auxMetaPrimitives); 
+                }
+		if (clean_chi2_correlation){ 
+		  if (debug) cout << "Pushing back normal MPs to the MPs collection" << endl; 
+		  removeSharingHits (auxMetaPrimitives, chamberMetaPrimitives, outMPaths); 
+		}
 	    }
 	}
     }
@@ -482,13 +561,17 @@ void MuonPathAssociator::removeSharingFits (std::vector<metaPrimitive> &chamberM
       if (!useFit[j]) continue; 
       metaPrimitive first = chamberMPaths[i];
       metaPrimitive second = chamberMPaths[j];
-      if (shareFit (first, second) && first.quality == second.quality) {
-        if (first.chi2 < second.chi2) useFit[j] = false; 
-        else { useFit[i] = false; break;} 
+      if ( shareFit(first, second) ) { 
+        if (first.quality > second.quality) useFit[j] = false; 
+        else if (first.quality < second.quality) useFit[i] = false; 
+        else {
+	  if (first.chi2 < second.chi2) useFit[j] = false; 
+          else { useFit[i] = false; break;} 
+        }
       }
     }
     if (useFit[i]) {
-      if (debug) cout << "Pushing back primitive number " << i << endl; 
+      if (debug) printmPC(chamberMPaths[i]); 
       allMPaths.push_back(chamberMPaths[i]);
     }
   }
@@ -496,6 +579,27 @@ void MuonPathAssociator::removeSharingFits (std::vector<metaPrimitive> &chamberM
 }
 
 
+void MuonPathAssociator::removeSharingHits (std::vector<metaPrimitive> &firstMPaths,
+					    std::vector<metaPrimitive> &secondMPaths,
+				            std::vector<metaPrimitive> &allMPaths)
+{
+  for (auto & firstMP : firstMPaths) {
+    if (debug) cout << "----------------------------------" << endl; 
+    if (debug) cout << "Turn for " << endl; 
+    if (debug) printmPC(firstMP);
+    bool ok = true; 
+    for (auto & secondMP : secondMPaths) {
+      if (debug) cout << "Comparing with " << endl; 
+      if (debug) printmPC(secondMP);  
+      if (!isNotAPrimo(firstMP, secondMP)) { ok = false; break;}
+    }
+    if (ok) {
+      allMPaths.push_back(firstMP);
+      if (debug) printmPC(firstMP);
+    }
+    if (debug) cout << "----------------------------------" << endl; 
+  }
+}
 
 bool MuonPathAssociator::shareFit (metaPrimitive first, metaPrimitive second) {
   bool lay1 = (first.wi1 == second.wi1) && (first.tdc1 = second.tdc1);
@@ -507,15 +611,67 @@ bool MuonPathAssociator::shareFit (metaPrimitive first, metaPrimitive second) {
   bool lay7 = (first.wi7 == second.wi7) && (first.tdc7 = second.tdc7);
   bool lay8 = (first.wi8 == second.wi8) && (first.tdc8 = second.tdc8);
   
-  if (lay1 && lay2 && lay3 && lay4) return true; 
-  else if (lay5 && lay6 && lay7 && lay8) return true;
+  if (lay1 && lay2 && lay3 && lay4) { 
+    if (lay5 || lay6 || lay7 || lay8) return true; 
+    else return false; 
+  }
+  else if (lay5 && lay6 && lay7 && lay8) {
+    if (lay1 || lay2 || lay3 || lay4) return true; 
+    else return false;  
+  }
   else return false; 
 } 
 
+bool MuonPathAssociator::isNotAPrimo (metaPrimitive first, metaPrimitive second) {
+  
+  int hitsSL1 = (first.wi1 != -1) + (first.wi2 != -1) + (first.wi3 != -1) + (first.wi4 != -1); 
+  int hitsSL3 = (first.wi5 != -1) + (first.wi6 != -1) + (first.wi7 != -1) + (first.wi8 != -1); 
+  
+  bool lay1 = (first.wi1 == second.wi1) && (first.tdc1 = second.tdc1) && (first.wi1 != -1);
+  bool lay2 = (first.wi2 == second.wi2) && (first.tdc2 = second.tdc2) && (first.wi2 != -1);
+  bool lay3 = (first.wi3 == second.wi3) && (first.tdc3 = second.tdc3) && (first.wi3 != -1);
+  bool lay4 = (first.wi4 == second.wi4) && (first.tdc4 = second.tdc4) && (first.wi4 != -1);
+  bool lay5 = (first.wi5 == second.wi5) && (first.tdc5 = second.tdc5) && (first.wi5 != -1);
+  bool lay6 = (first.wi6 == second.wi6) && (first.tdc6 = second.tdc6) && (first.wi6 != -1);
+  bool lay7 = (first.wi7 == second.wi7) && (first.tdc7 = second.tdc7) && (first.wi7 != -1);
+  bool lay8 = (first.wi8 == second.wi8) && (first.tdc8 = second.tdc8) && (first.wi8 != -1);
 
-
-
+  if (((!lay1 && !lay2 && !lay3 && !lay4) || hitsSL1 < 3) && ((!lay5 && !lay6 && !lay7 && !lay8) || hitsSL3 < 3)) return true;
+  else return false;
+}
 	
+void MuonPathAssociator::printmPC(metaPrimitive mP){
+  DTChamberId ChId(mP.rawId);
+  std::cout<<ChId<<"\t"
+             <<" "<<setw(2)<<left<<mP.wi1
+             <<" "<<setw(2)<<left<<mP.wi2
+             <<" "<<setw(2)<<left<<mP.wi3
+             <<" "<<setw(2)<<left<<mP.wi4
+             <<" "<<setw(2)<<left<<mP.wi5
+             <<" "<<setw(2)<<left<<mP.wi6
+             <<" "<<setw(2)<<left<<mP.wi7
+             <<" "<<setw(2)<<left<<mP.wi8
+             <<" "<<setw(5)<<left<<mP.tdc1
+             <<" "<<setw(5)<<left<<mP.tdc2
+             <<" "<<setw(5)<<left<<mP.tdc3
+             <<" "<<setw(5)<<left<<mP.tdc4
+             <<" "<<setw(5)<<left<<mP.tdc5
+             <<" "<<setw(5)<<left<<mP.tdc6
+             <<" "<<setw(5)<<left<<mP.tdc7
+             <<" "<<setw(5)<<left<<mP.tdc8
+             <<" "<<setw(2)<<left<<mP.lat1
+             <<" "<<setw(2)<<left<<mP.lat2
+             <<" "<<setw(2)<<left<<mP.lat3
+             <<" "<<setw(2)<<left<<mP.lat4
+             <<" "<<setw(2)<<left<<mP.lat5
+             <<" "<<setw(2)<<left<<mP.lat6
+             <<" "<<setw(2)<<left<<mP.lat7
+             <<" "<<setw(2)<<left<<mP.lat8
+             <<" "<<setw(10)<<right<<mP.x
+             <<" "<<setw(9)<<left<<mP.tanPhi
+             <<" "<<setw(5)<<left<<mP.t0
+             <<" "<<setw(13)<<left<<mP.chi2<<endl;
+}
 /*
   void MuonPathAssociator::associate(MuonPath *mpath) {
   

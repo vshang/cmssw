@@ -56,8 +56,13 @@ class MuonPathAssociator {
   // Other public methods
 
   bool shareFit (metaPrimitive first, metaPrimitive second); 
+  bool isNotAPrimo (metaPrimitive first, metaPrimitive second); 
   void removeSharingFits (std::vector<metaPrimitive> &chamberMPaths,
 			  std::vector<metaPrimitive> &allMPaths);
+  void removeSharingHits (std::vector<metaPrimitive> &firstMPaths,
+			  std::vector<metaPrimitive> &secondMPaths,
+			  std::vector<metaPrimitive> &allMPaths);
+  void printmPC(metaPrimitive mP);
  
   // Public attributes
  edm::ESHandle<DTGeometry> dtGeo;  
