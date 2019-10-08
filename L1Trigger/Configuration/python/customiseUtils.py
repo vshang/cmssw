@@ -201,6 +201,20 @@ def L1TrackTriggerTracklet(process):
     process.schedule.insert(2,process.L1TrackTriggerTracklet_step)
     return process
 
+def L1TrackTriggerHybrid(process):
+    #print "L1T INFO:  run the L1TrackStep with Tracklet."
+    process.load('L1Trigger.TrackFindingTracklet.Tracklet_cfi')
+    process.L1TrackTriggerHybrid_step = cms.Path(process.TTTracksFromTrackletEmulation)
+    process.schedule.insert(2,process.L1TrackTriggerHybrid_step)
+    return process
+
+def L1TrackTriggerDisplacedHybrid(process):
+    #print "L1T INFO:  run the L1TrackStep with Tracklet."
+    process.load('L1Trigger.TrackFindingTracklet.Tracklet_cfi')
+    process.L1TrackTriggerDisplacedHybrid_step = cms.Path(process.TTTracksFromExtendedTrackletEmulation)
+    process.schedule.insert(2,process.L1TrackTriggerDisplacedHybrid_step)
+    return process
+
 def L1TrackTriggerTMTT(process):
     #print "L1T INFO:  run the L1TrackStep with TMTT."
     process.load('L1Trigger.TrackFindingTMTT.TMTrackProducer_Ultimate_cff')
