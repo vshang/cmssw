@@ -68,7 +68,7 @@ L1TMuonBayesMuCorrelatorTrackProducer::L1TMuonBayesMuCorrelatorTrackProducer(con
   //muCorrelatorConfig->setBxToProcess(useStubsFromAdditionalBxs + 1); TODO correct, now does not compile due to const
 
   for(unsigned int ptBin = 0; ptBin < muCorrelatorConfig->getPtHwBins().size(); ++ptBin) {
-    edm::LogImportant("l1tMuBayesEventPrint")<<"ptBin "<<setw(2)<<ptBin<<" range Hw: "<<muCorrelatorConfig->ptBinString(ptBin, 0)<<" = "<<muCorrelatorConfig->ptBinString(ptBin, 1)<<std::endl;
+    edm::LogInfo("l1tMuBayesEventPrint")<<"ptBin "<<setw(2)<<ptBin<<" range Hw: "<<muCorrelatorConfig->ptBinString(ptBin, 0)<<" = "<<muCorrelatorConfig->ptBinString(ptBin, 1)<<std::endl;
   }
 }
 /////////////////////////////////////////////////////
