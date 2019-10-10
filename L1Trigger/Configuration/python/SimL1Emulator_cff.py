@@ -173,6 +173,14 @@ l1pfTauProducer.L1PFObjects = cms.InputTag("l1pfCandidates","PF")
 l1pfTauProducer.L1Neutrals = cms.InputTag("l1pfCandidates")
 phase2_SimL1Emulator += l1pfTauProducer
 
+from L1Trigger.Phase2L1Taus.L1HPSPFTauProducerPF_cff import L1HPSPFTauProducerPF
+l1pfTauProducerv2PF = L1HPSPFTauProducerPF.clone()
+#phase2_SimL1Emulator += l1pfTauProducerv2PF
+
+from L1Trigger.Phase2L1Taus.L1HPSPFTauProducerPuppi_cff import L1HPSPFTauProducerPuppi
+l1pfTauProducerv2Puppi = L1HPSPFTauProducerPuppi.clone()
+#phase2_SimL1Emulator += l1pfTauProducerv2Puppi
+
 # NNTaus
 # ########################################################################
 from L1Trigger.Phase2L1Taus.L1NNTauProducer_cff import *
