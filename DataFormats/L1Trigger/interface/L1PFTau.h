@@ -96,10 +96,13 @@ namespace l1t {
     float rawIso() const{return m_rawIsolation;}
     float chargedIso() const{return m_chargedIsolation;}
     float neutralIso() const{return m_neutralIsolation;}
+    float z0() const{return m_z0;}
     int tauType()const{return m_tauType;}
     int tauIsoQuality()const{return m_tauIsoQual;}
     int tauRelIsoQuality()const{return m_tauIsoQual;}
     float discriminant()const{return m_tauDiscriminant;}
+    
+    float time()const{return m_time;}
 
     void set_strip_p4(LorentzVector input) {m_strip_p4 = input;};
     //void setPtEtaPhiE(float pt, float eta, float phi, float et){m_p4.SetPtEtaPhiE(pt,eta,phi,et);};
@@ -114,6 +117,8 @@ namespace l1t {
     void setChargedIso(float inputIso){m_chargedIsolation = inputIso;};
     void setNeutralIso(float inputIso){m_neutralIsolation = inputIso;};
     void setDiscriminant(float inputDiscriminant){m_tauDiscriminant = inputDiscriminant;};
+    void setZ0(float in_z0){m_z0 = in_z0;}
+    void setTime(float in_time){m_time = in_time;}
 
     void setHWPhi(float inputPhi){
       m_hwPhi = round(inputPhi/0.0174)*0.0174;};
@@ -146,6 +151,8 @@ namespace l1t {
     
     float m_hwPhi;
     float m_hwEta;
+    float m_z0;
+    float m_time;
 
     unsigned m_towerEta;
     int m_towerEtaSide;

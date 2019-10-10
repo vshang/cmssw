@@ -44,7 +44,10 @@ class TauMapper{
 
 	void setMinPi0Pt(double min_pi0pt_in){
 	  m_minpi0pt = min_pi0pt_in;
-	}
+	};	
+	void setIsoDeltaZ(double deltaziso_in){
+	  m_deltaziso = deltaziso_in;
+	};
 	void setSeedChargedHadron(l1t::PFCandidate in){
 	  seedCH = in;
 	  sumChargedIso = 0;
@@ -109,6 +112,7 @@ class TauMapper{
 	float strip_eta;
 	float strip_phi;
 	double m_minpi0pt;
+	double m_deltaziso;
 	
 
 };

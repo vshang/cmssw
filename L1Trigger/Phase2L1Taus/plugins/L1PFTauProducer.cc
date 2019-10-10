@@ -17,6 +17,7 @@
 L1PFTauProducer::L1PFTauProducer(const edm::ParameterSet& cfg) :
   debug(                cfg.getUntrackedParameter<bool>("debug", false)),
   min_pi0pt_(           cfg.getParameter<double>("min_pi0pt")),
+  deltaZ_iso_(           cfg.getParameter<double>("isoDeltaZ")),
   L1PFToken_(           consumes< vector<l1t::PFCandidate> >(cfg.getParameter<edm::InputTag>("L1PFObjects"))),
   L1NeutralToken_(      consumes< vector<l1t::PFCandidate> >(cfg.getParameter<edm::InputTag>("L1Neutrals")) ),
   pvToken_(             consumes<L1TkPrimaryVertexCollection> (cfg.getParameter<edm::InputTag>("L1VertexInputTag")))
@@ -36,6 +37,8 @@ void L1PFTauProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   Float_t l1StripPt_f = 0;
   Float_t l1DM_f      = -10;
   Float_t l1PVDZ_f    = 0;
+  Float_t l1ChargedIso_f    = 0;
+  Float_t l1TauZ_f    = 0;
   reader->TMVA::Reader::AddVariable("l1Pt", &l1Pt_f);
   reader->TMVA::Reader::AddVariable("l1Eta", &l1Eta_f);
   reader->TMVA::Reader::AddVariable("l1StripPt", &l1StripPt_f);
@@ -43,6 +46,8 @@ void L1PFTauProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   reader->TMVA::Reader::AddVariable("l1PVDZ", &l1PVDZ_f);
   reader->TMVA::Reader::AddVariable("l1HoE", &l1HoE_f);
   reader->TMVA::Reader::AddVariable("l1EoH", &l1EoH_f);
+  reader->TMVA::Reader::AddVariable("l1TauZ", &l1TauZ_f);
+  reader->TMVA::Reader::AddVariable("l1ChargedIso", &l1ChargedIso_f);
   std::string CMSSW_BASE(getenv("CMSSW_BASE"));
   std::string weightFile = CMSSW_BASE+"/src/L1Trigger/Phase2L1Taus/data/TMVAClassification_BDT.weights.xml";
   /* Book the MVA methods. */
@@ -137,24 +142,27 @@ void L1PFTauProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     event.push_back(newL1PFTauCollection->at(i).eta());
     event.push_back(newL1PFTauCollection->at(i).strip_p4().pt());
     event.push_back(newL1PFTauCollection->at(i).tauType());
-    event.push_back(newL1PFTauCollection->at(i).p4().z()-zVTX);
+    event.push_back(newL1PFTauCollection->at(i).z0()-zVTX);
     event.push_back(newL1PFTauCollection->at(i).HoE()); //HoE
     event.push_back(newL1PFTauCollection->at(i).EoH()); //EoH
+    event.push_back(newL1PFTauCollection->at(i).z0()); //tauZ
+    event.push_back(newL1PFTauCollection->at(i).chargedIso()); //Charged Iso
     
+    // Dummy check
     if(newL1PFTauCollection->at(i).strip_p4().pt()<500 && newL1PFTauCollection->at(i).HoE() < 500)
       bdtDiscriminant = reader->EvaluateMVA(event, "BDT method");
 
     newL1PFTauCollection->at(i).setDiscriminant(bdtDiscriminant);
 
-    if(bdtDiscriminant>-0.0486184){newL1PFTauCollection->at(i).setPassVLooseIso(true);}
+    if(bdtDiscriminant>-0.353){newL1PFTauCollection->at(i).setPassVLooseIso(true);}
 
-    if(bdtDiscriminant>-0.0435867){newL1PFTauCollection->at(i).setPassLooseIso(true);}
+    if(bdtDiscriminant>-0.308){newL1PFTauCollection->at(i).setPassLooseIso(true);}
     
-    if(bdtDiscriminant>-0.0253954){newL1PFTauCollection->at(i).setPassMediumIso(true);}
+    if(bdtDiscriminant>-0.183){newL1PFTauCollection->at(i).setPassMediumIso(true);}
 
-    if(bdtDiscriminant>-0.005){newL1PFTauCollection->at(i).setPassTightIso(true);}
+    if(bdtDiscriminant>-0.003){newL1PFTauCollection->at(i).setPassTightIso(true);}
 
-    if(newL1PFTauCollection->at(i).pt()>70){
+    if(newL1PFTauCollection->at(i).pt()>80){
       newL1PFTauCollection->at(i).setPassTightIso(true);
       newL1PFTauCollection->at(i).setPassMediumIso(true);
       newL1PFTauCollection->at(i).setPassLooseIso(true);
@@ -182,6 +190,7 @@ void L1PFTauProducer::createTaus(tauMapperCollection &inputCollection){
     for(float iTau_phi = -3.14159; iTau_phi < 3.14159; iTau_phi = iTau_phi + tau_size_phi ){
       TauMapper tempTau; 
       tempTau.setMinPi0Pt(min_pi0pt_);
+      tempTau.setIsoDeltaZ(deltaZ_iso_);
       tempTau.l1PFTau.setHWEta(iTau_eta);
       tempTau.l1PFTau.setHWPhi(iTau_phi);
       tempTau.ClearSeedHadron();

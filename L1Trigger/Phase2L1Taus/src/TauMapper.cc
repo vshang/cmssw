@@ -94,14 +94,26 @@ bool TauMapper::isolationConeContains( l1t::PFCandidate in ){
   float pfCharged_eta = in.eta();
   float pfCharged_phi = in.phi();
 
+  float pfCharged_z = 0;
+  if(in.pfTrack().isNonnull())
+    in.pfTrack()->track()->getPOCA().z();
+
+  //std::cout<<"POCA Z "<<pfCharged_z<<" p4 z: "<<in.p4().z();
+  
   //float seedCH_pt = seedCH.pt();
   float seedCH_eta = seedCH.eta();
   float seedCH_phi = seedCH.phi();
 
+  float seedCH_z =0;
+  if(seedCH.pfTrack().isNonnull())
+    seedCH_z = seedCH.pfTrack()->track()->getPOCA().z();
+  //std::cout<<" Seed Z "<<seedCH_z<<" p4 z: "<< seedCH.p4().z() <<std::endl;
+
   float deltaR = 0.4;
 
 
-  if(fabs(pfCharged_eta-seedCH_eta)+fabs(pfCharged_phi-seedCH_phi) < deltaR)
+  if(fabs(pfCharged_eta-seedCH_eta)+fabs(pfCharged_phi-seedCH_phi) < deltaR && 
+     fabs(pfCharged_z-seedCH_z) < m_deltaziso)
     return true;
 
   return false;
@@ -155,7 +167,7 @@ bool TauMapper::addEG( l1t::PFCandidate in ){
 void TauMapper::process(){
 
   process_strip();
-
+  l1PFTau.setZ0(seedCH.p4().z());
   sumChargedIso += sumEGIso;
   //std::cout<<"seedCH pt: "<< seedCH.pt()<<" eta: "<< seedCH.eta() <<" phi: "<<seedCH.phi()<<std::endl;
   //std::cout<<"   prong2 pt: "<< prong2.pt()<<" eta: "<< prong2.eta() <<" phi: "<<prong2.phi()<<std::endl;
@@ -334,5 +346,5 @@ float TauMapper::weighted_avg_eta(simple_object_t cluster_1, simple_object_t clu
 }
 
 
-TauMapper::TauMapper():m_minpi0pt(0) {};
+TauMapper::TauMapper():m_minpi0pt(0),m_deltaziso(1) {};
 TauMapper::~TauMapper() {};
