@@ -72,6 +72,11 @@ L1TkElectronsEllipticMatchCrystal = L1TkElectronsCrystal.clone(
 )
 
 
+L1TkElectronsElMatchCrystal = L1TkElectronsCrystal.clone()
+L1TkElectronsElMatchCrystal.TrackEGammaMatchType = cms.string("EllipticalCut")
+L1TkElectronsElMatchCrystal.TrackEGammaDeltaEta = cms.vdouble(0.015, 0.025,1e10)
+
+
 
 #endcap
 L1TkElectronsHGC=L1TkElectrons.clone(
