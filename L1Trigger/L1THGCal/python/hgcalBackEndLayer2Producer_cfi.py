@@ -169,7 +169,7 @@ energy_interpretations = cms.VPSet(energy_interpretations_em)
 energy_interpretations_em = cms.PSet(type = cms.string('HGCalTriggerClusterInterpretationEM'),
                                      # layer_containment_corrs = cms.vdouble(0., 0., 1.6144949, 0.92495334, 1.0820811, 0.9753549, 0.9742881, 1.0634482, 1.0599478, 0.9376349, 0.92587173, 0.8003076, 1.0417082, 1.7032381, 2.),
                                      layer_containment_corrs=cms.vdouble(0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.),
-                                     scale_correction_coeff = cms.vdouble(0., 0.),
+                                     scale_correction_coeff = cms.vdouble(34.20, -12.59),
                                      dr_bylayer = cms.vdouble([0.015]*15)
                                      )
 
