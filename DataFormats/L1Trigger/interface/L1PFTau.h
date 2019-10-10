@@ -140,6 +140,10 @@ namespace l1t {
 
     uint16_t m_data;
     unsigned m_tauType;
+    float m_z0;
+    float m_time;
+    unsigned m_EoH;
+    unsigned m_HoE;
     unsigned m_tauIsoQual;
     unsigned m_tauRelIsoQual;
     LorentzVector m_strip_p4;
@@ -151,8 +155,6 @@ namespace l1t {
     
     float m_hwPhi;
     float m_hwEta;
-    float m_z0;
-    float m_time;
 
     unsigned m_towerEta;
     int m_towerEtaSide;
@@ -160,8 +162,6 @@ namespace l1t {
     unsigned m_maxCrystalEta;
     unsigned m_maxCrystalPhi;
     unsigned m_et;
-    unsigned m_EoH;
-    unsigned m_HoE;
 
     float m_rawIsolation;
     float m_chargedIsolation;
