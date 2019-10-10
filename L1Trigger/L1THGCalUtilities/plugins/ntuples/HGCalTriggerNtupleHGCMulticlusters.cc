@@ -170,8 +170,8 @@ void HGCalTriggerNtupleHGCMulticlusters::fill(const edm::Event& e, const edm::Ev
       std::vector<float> iPts(cl3d_itr->interpretations_size());
       std::vector<float> iEnergies(cl3d_itr->interpretations_size());
       for (auto interp = cl3d_itr->interpretations_begin(); interp != cl3d_itr->interpretations_end(); ++interp) {
-        iPts.emplace_back(cl3d_itr->iPt(*interp));
-        iEnergies.emplace_back(cl3d_itr->iEnergy(*interp));
+        iPts[*interp] = cl3d_itr->iPt(*interp);
+        iEnergies[*interp] = cl3d_itr->iEnergy(*interp);
       }
       cl3d_ipt_.push_back(iPts);
       cl3d_ienergy_.push_back(iEnergies);
