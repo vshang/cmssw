@@ -73,7 +73,7 @@ L1TkElectronsEllipticMatchCrystal = L1TkElectronsCrystal.clone(
 
 
 L1TkElectronsEllipticMatchCrystal = L1TkElectronsCrystal.clone()
-L1TkElectronsEllipticMatchCrystal.L1TrackInputTag = cms.InputTag("TTTracksFromTrackletEmulation", "Level1TTTracks")
+# L1TkElectronsEllipticMatchCrystal.L1TrackInputTag = cms.InputTag("TTTracksFromTrackletEmulation", "Level1TTTracks")
 L1TkElectronsEllipticMatchCrystal.TrackEGammaMatchType = cms.string("EllipticalCut")
 L1TkElectronsEllipticMatchCrystal.TrackEGammaDeltaEta = cms.vdouble(0.015, 0.025,1e10)
 
