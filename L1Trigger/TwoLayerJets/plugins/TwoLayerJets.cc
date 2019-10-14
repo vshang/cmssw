@@ -306,6 +306,10 @@ TwoLayerJets::produce(Event& iEvent, const EventSetup& iSetup)
 		float jetPy=jetPt*sin(jetPhi);
 		float jetPz=jetPt*sinh(jetEta);
 		float jetP=jetPt*cosh(jetEta);
+		int totalTighttrk=mzb.clusters[j].numttrks;
+                int totalDisptrk=mzb.clusters[j].numtdtrks;
+                int totalTightDisptrk=mzb.clusters[j].numttdtrks;
+
 		//if(mzb.clusters[j].numttdtrks>=2 && jetPt>5)std::cout<<"Tight Displaced "<<std::endl;
 		//std::cout<<"Jet Eta, phi, pt  "<<jetEta<<", "<<jetPhi<<", "<<jetPt<<std::endl;
 		//std::cout<<"ntracks "<<mzb.clusters[j].numtracks<<std::endl;
@@ -327,15 +331,6 @@ TwoLayerJets::produce(Event& iEvent, const EventSetup& iSetup)
 				L1TrackAssocJet.push_back(L1TrackPtrs[t]);
 			}
 		}
-    	//	if(mzb.clusters[j].numtracks!= (int)L1TrackAssocJet.size())std::cout<<"ntracks "<<mzb.clusters[j].numtracks<<" L1TrackAssocJet "<<L1TrackAssocJet.size()<<std::endl;
-		int totalTighttrk=0;
-		int totalDisptrk=0;
-		int totalTightDisptrk=0;
-		for(unsigned int t=0; t<ttrk.size(); ++t){
-			if(ttrk[t]>0)++totalTighttrk;
-			if(tdtrk[t]>0)++totalDisptrk;
-			if(ttdtrk[t]>0)++totalTightDisptrk;
-		}	
 		///L1TkJetParticleDisp DispCounters(mzb.clusters[j].numtracks,totalTighttrk, totalDisptrk, totalTightDisptrk);
 		L1TkJetParticle trkJet(jetP4,  L1TrackAssocJet, mzb.zbincenter,mzb.clusters[j].numtracks,totalTighttrk, totalDisptrk, totalTightDisptrk);
 		//trkJet.setDispCounters(DispCounters);
