@@ -18,14 +18,13 @@ TwoLayerJets = cms.EDProducer('TwoLayerJets',
 		minTrkJetpT=cms.double(5.),
 		LowpTJetMinTrackMultiplicity=cms.int32(2),
 		HighpTJetMinTrackMultiplicity=cms.int32(3),	
-		DisplacedAlgo=cms.bool(False);
+		DisplacedAlgo=cms.bool(False),
 		NStubs4DisplacedChi2_Loose=cms.double(5.0), ########Displaced track quality flags for loose/tight
 		NStubs4Displacedbend_Loose=cms.double(3.0),	
 		NStubs5DisplacedChi2_Loose=cms.double(3.0), ########Displaced track quality flags for loose/tight
 		NStubs5Displacedbend_Loose=cms.double(3.0),	
-
-		NStubs4Chi2_Tight=cms.double(2.5),
-		NStubs4Displacedbend_Tight=cms.double(3.0)
-		NStubs5Chi2_Tight=cms.double(3.0),
+		NStubs4DisplacedChi2_Tight=cms.double(3.0),
+		NStubs4Displacedbend_Tight=cms.double(3.0),
+		NStubs5DisplacedChi2_Tight=cms.double(2.5),
 		NStubs5Displacedbend_Tight=cms.double(3.0)
 )
