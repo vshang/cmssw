@@ -150,9 +150,11 @@ struct maxzbin {
       float TRK_PTMIN;      // [GeV]
       float TRK_ETAMAX;     // [rad]
       int nPSMin;
-       double minTrkJetpT=5.;
-       int LowpTJetMinTrackMultiplicity=2;
-       int HighpTJetMinTrackMultiplicity=3;
+      double minTrkJetpT=5.;
+      int LowpTJetMinTrackMultiplicity=2;
+      int HighpTJetMinTrackMultiplicity=3;
+      float CHI2_MAX=50;
+      float PromptBendConsistency=1.75;
       //virtual void beginRun(Run const&, EventSetup const&) override;
       //virtual void endRun(Run const&, EventSetup const&) override;
       //virtual void beginLuminosityBlock(LuminosityBlock const&, EventSetup const&) override;
@@ -189,7 +191,8 @@ trackToken(consumes< vector<TTTrack< Ref_Phase2TrackerDigi_> > > (iConfig.getPar
       minTrkJetpT=iConfig.getParameter<double>("minTrkJetpT");
       LowpTJetMinTrackMultiplicity=(int)iConfig.getParameter<int>("LowpTJetMinTrackMultiplicity");
       HighpTJetMinTrackMultiplicity=(int)iConfig.getParameter<int>("HighpTJetMinTrackMultiplicity");
-
+      CHI2_MAX=(float)iConfig.getParameter<double>("CHI2_MAX");
+      PromptBendConsistency=(float)iConfig.getParameter<double>("PromptBendConsistency");
       zstep = 2.0 * maxz / Zbins;
 }
 
@@ -778,22 +781,10 @@ TwoLayerJets::endLuminosityBlock(LuminosityBlock const&, EventSetup const&)
 bool TwoLayerJets::TrackQualityCuts(float trk_pt,int trk_nstub, double trk_chi2,double trk_bconsist){
 bool PassQuality=false;
 
-if(trk_bconsist<1.75 && trk_chi2<50 && trk_nstub>=4)PassQuality=true;
+if(trk_bconsist<PromptBendConsistency && trk_chi2<CHI2_MAX && trk_nstub>=4)PassQuality=true;
 //if(trk_chi2<50 && trk_nstub>=4)PassQuality=true;
 return PassQuality; 
 } 
-/*
-bool TwoLayerJets::TrackQualityCuts(float trk_pt,int trk_nstub, double trk_chi2){
-bool PassQuality=false;
-if(trk_nstub==4 && trk_chi2<15)PassQuality=true;
-if(trk_nstub==5 && trk_chi2<15 && trk_pt<10)PassQuality=true;
-if(trk_nstub==5 && trk_chi2<7 && trk_pt>=10 && trk_pt<40)PassQuality=true;
-if(trk_nstub==5 && trk_chi2<5 && trk_pt>40)PassQuality=true;
-if(trk_nstub==6 && trk_chi2<5 && trk_pt>50)PassQuality=true;
-if(trk_nstub==6 && trk_pt<=50)PassQuality=true;
-return PassQuality;
-}
-*/
 void
 TwoLayerJets::fillDescriptions(ConfigurationDescriptions& descriptions) {
   //The following says we do not know what parameters are allowed so do no validation
