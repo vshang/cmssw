@@ -181,6 +181,13 @@ void Phase1L1TJetProducer::produce(edm::Event& iEvent, const edm::EventSetup& iS
       l1jetVector = this -> _buildJetsFromSeeds(*(this -> _caloGrid), seedsVector);
     }
 
+    // sort by pt
+    std::sort(l1jetVector.begin(), l1jetVector.end(), 
+      [](const reco::CaloJet& jet1, const reco::CaloJet& jet2) {
+          return jet1.pt() > jet2.pt();   
+      }
+    );
+    
     std::unique_ptr< std::vector<reco::CaloJet> > l1jetVectorPtr(new std::vector<reco::CaloJet>(l1jetVector));
     iEvent.put(std::move(l1jetVectorPtr), this -> _outputCollectionName);
   }

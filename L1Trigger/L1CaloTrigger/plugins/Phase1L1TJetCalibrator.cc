@@ -160,6 +160,7 @@ Phase1L1TJetCalibrator::produce(edm::Event& iEvent, const edm::EventSetup& iSetu
 
     #ifdef DEBUG
     if (newCandidate -> pt() < 0) {
+      std::cout << "######################" << std::endl;
       std::cout << "PRE-CALIBRATION " << std::endl;
       std::cout << "\t Jet properties (pt, eta, phi, pile-up): " << candidate.pt() << "\t" << candidate.eta() << "\t" << candidate.phi() << "\t" << candidate.pileup() << std::endl;
       std::cout << "CALIBRATION " << std::endl;
@@ -171,6 +172,13 @@ Phase1L1TJetCalibrator::produce(edm::Event& iEvent, const edm::EventSetup& iSetu
 
     delete newCandidate;
   }
+
+  // finally, sort the collection by pt
+  std::sort(calibratedCollectionPtr -> begin(), calibratedCollectionPtr -> end(), 
+    [](const reco::CaloJet& jet1, const reco::CaloJet& jet2) {
+        return jet1.pt() > jet2.pt();   
+    }
+  );
 
   iEvent.put(std::move(calibratedCollectionPtr), this -> _outputCollectionName);
 
