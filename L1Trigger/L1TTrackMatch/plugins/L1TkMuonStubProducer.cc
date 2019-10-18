@@ -118,10 +118,14 @@ L1TkMuonStubProducer::L1TkMuonStubProducer(const edm::ParameterSet& iConfig) :
       std::string fIn_bounds_name = iConfig.getParameter<edm::FileInPath>("emtfcorr_boundaries").fullPath();
       std::string fIn_theta_name  = iConfig.getParameter<edm::FileInPath>("emtfcorr_theta_windows").fullPath();
       std::string fIn_phi_name    = iConfig.getParameter<edm::FileInPath>("emtfcorr_phi_windows").fullPath();
+      std::string fIn_S1_theta_name  = iConfig.getParameter<edm::FileInPath>("emtfcorr_S1_theta_windows").fullPath();
+      std::string fIn_S1_phi_name    = iConfig.getParameter<edm::FileInPath>("emtfcorr_S1_phi_windows").fullPath();
       auto bounds = L1TkMuCorrDynamicWindows::prepare_corr_bounds(fIn_bounds_name.c_str(), "h_dphi_l");
       TFile* fIn_theta = TFile::Open (fIn_theta_name.c_str());
       TFile* fIn_phi   = TFile::Open (fIn_phi_name.c_str());
-      dwcorr_ = std::unique_ptr<L1TkMuCorrDynamicWindows> (new L1TkMuCorrDynamicWindows(bounds, fIn_theta, fIn_phi));
+      TFile* fIn_S1_theta = TFile::Open (fIn_theta_name.c_str());
+      TFile* fIn_S1_phi   = TFile::Open (fIn_phi_name.c_str());
+      dwcorr_ = std::unique_ptr<L1TkMuCorrDynamicWindows> (new L1TkMuCorrDynamicWindows(bounds, fIn_theta, fIn_phi, fIn_S1_theta, fIn_S1_phi));
 
       // files can be closed since the correlator code clones the TF1s
       fIn_theta->Close();
@@ -211,6 +215,7 @@ L1TkMuonStubProducer::runOnMuonHitCollection(const edm::Handle<EMTFHitCollection
     const L1TTTrackType& matchTk = l1trks[il1ttrack];
     const auto& p3 = matchTk.getMomentum(dwcorr_->get_n_trk_par());
     const auto& tkv3 = matchTk.getPOCA(dwcorr_->get_n_trk_par());
+    const auto& curve = matchTk.getRInv( dwcorr_->get_n_trk_par());
     float p4e = sqrt(0.105658369*0.105658369 + p3.mag2() );
     math::XYZTLorentzVector l1tkp4(p3.x(), p3.y(), p3.z(), p4e);
 
@@ -220,6 +225,12 @@ L1TkMuonStubProducer::runOnMuonHitCollection(const edm::Handle<EMTFHitCollection
     L1TkMuonParticle l1tkmu(l1tkp4, l1muRef, l1tkPtr, trkisol);
     l1tkmu.setTrkzVtx( (float)tkv3.z() );
     
+    // Set curvature
+    l1tkmu.setTrackCurvature(curve);
+    //Set charge
+    int charge =  (curve > 0) ? 1 : -1;
+    l1tkmu.setCharge(charge);
+
     tkMuons.push_back(l1tkmu);
   }
 

@@ -11,8 +11,11 @@ L1TkMuonStub = cms.EDProducer("L1TkMuonStubProducer",
     emtfMatchAlgoVersion = cms.string( 'DynamicWindows' ), # version of matching with Trackes (string ID) :  DynamicWindows
     ###############################################
     ############################################### DynamicWindows algo
-    ##### parameters for the DynamicWindows algo - eventually to put in a separate file, that will override some dummy defaults
+    mu_stub_station = cms.int32(12),
+
     emtfcorr_boundaries     = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_boundaries.root'),
+    emtfcorr_S1_theta_windows  = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_station1_theta_q99.root'),
+    emtfcorr_S1_phi_windows    = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_station1_phi_q99.root'),
     emtfcorr_theta_windows  = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_theta_q99.root'),
     emtfcorr_phi_windows    = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_phi_q99.root'),
     ## block to control the evolution of the matching window vs pt
@@ -23,10 +26,10 @@ L1TkMuonStub = cms.EDProducer("L1TkMuonStubProducer",
     ##      - and a linear interpolation in the middle
     ## facror = 0 --> no changes to the window size
     initial_window_factor   = cms.double(0.0),
-    final_window_factor     = cms.double(0.5),
+    final_window_factor     = cms.double(0.0),
     pt_start_relax          = cms.double(2.0),
     pt_end_relax            = cms.double(6.0),
-    do_relax_factors        = cms.bool(True),
+    do_relax_factors        = cms.bool(False),
     ##
     n_trk_par      = cms.int32(4), # 4 or 5
     min_trk_p      = cms.double(3.5),
@@ -34,52 +37,54 @@ L1TkMuonStub = cms.EDProducer("L1TkMuonStubProducer",
     max_trk_chi2   = cms.double(100.0),
     min_trk_nstubs = cms.int32(4),
     require_BX0    = cms.bool(False),
-    mu_stub_station = cms.int32(2),
-
 
 )
 
 # Station = 1, windows 90
 L1TkMuonStubS1 = L1TkMuonStub.clone(
 
-    emtfcorr_theta_windows  = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_theta_q90.root'),
-    emtfcorr_phi_windows    = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_phi_q90.root'),
     mu_stub_station = cms.int32(1),
 
 )
 
-# Station = 2, windows 90 
+L1TkMuonStubS1_relaxed = L1TkMuonStub.clone(
+
+    mu_stub_station = cms.int32(1),
+    final_window_factor     = cms.double(0.5),
+
+)
+
+# Station = 2
 L1TkMuonStubS2 = L1TkMuonStub.clone(
 
-    emtfcorr_theta_windows  = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_theta_q90.root'),
-    emtfcorr_phi_windows    = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_phi_q90.root'),
     mu_stub_station = cms.int32(2),
 
 )
 
-# Station = 12, windows 90
-L1TkMuonStubS12 = L1TkMuonStub.clone(
+# Station = 12, 
+L1TkMuonStubS12 = L1TkMuonStub.clone()
 
-    emtfcorr_theta_windows  = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_theta_q90.root'),
-    emtfcorr_phi_windows    = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_phi_q90.root'),
+L1TkMuonStubS12_relaxed = L1TkMuonStub.clone(
+
     mu_stub_station = cms.int32(12),
+    final_window_factor     = cms.double(0.5),
+    do_relax_factors        = cms.bool(True),
 
 )
 
-# Station = 12, windows 99
-L1TkMuonStubS12q99 = L1TkMuonStub.clone(
+L1TkMuonStubS12q90q99 = L1TkMuonStub.clone(
 
+    mu_stub_station = cms.int32(12),
+    emtfcorr_S1_theta_windows  = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_station1_theta_q90.root'),
+    emtfcorr_S1_phi_windows    = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_station1_phi_q90.root'),
     emtfcorr_theta_windows  = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_theta_q99.root'),
     emtfcorr_phi_windows    = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_phi_q99.root'),
-    mu_stub_station = cms.int32(12),
 
 )
 
 # Station = 1234, windows 90
 L1TkMuonStubS1234 = L1TkMuonStub.clone(
 
-    emtfcorr_theta_windows  = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_theta_q90.root'),
-    emtfcorr_phi_windows    = cms.FileInPath('L1Trigger/L1TMuon/data/emtf_luts/matching_windows_phi_q90.root'),
     mu_stub_station = cms.int32(1234),
 
 )
