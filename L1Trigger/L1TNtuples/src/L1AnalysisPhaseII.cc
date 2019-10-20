@@ -29,64 +29,40 @@ void L1Analysis::L1AnalysisPhaseII::SetVertices(float z0Puppi, float z0VertexTDR
 }
 
 
-void L1Analysis::L1AnalysisPhaseII::SetTau(const edm::Handle<l1t::TauBxCollection> tau, unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseII::SetCaloTau(const edm::Handle<l1t::TauBxCollection> calotau, unsigned maxL1Extra)
 {
-  for (int ibx = tau->getFirstBX(); ibx <= tau->getLastBX(); ++ibx) {
-    for (l1t::TauBxCollection::const_iterator it=tau->begin(ibx); it!=tau->end(ibx) && l1extra_.nTaus<maxL1Extra; it++){
+  for (int ibx = calotau->getFirstBX(); ibx <= calotau->getLastBX(); ++ibx) {
+    for (l1t::TauBxCollection::const_iterator it=calotau->begin(ibx); it!=calotau->end(ibx) && l1extra_.nCaloTaus<maxL1Extra; it++){
       if (it->pt() > 0){
-	l1extra_.tauEt .push_back(it->et());
-	l1extra_.tauEta.push_back(it->eta());
-	l1extra_.tauPhi.push_back(it->phi());
-	l1extra_.tauIEt .push_back(it->hwPt());
-	l1extra_.tauIEta.push_back(it->hwEta());
-	l1extra_.tauIPhi.push_back(it->hwPhi());
-	l1extra_.tauIso.push_back(it->hwIso());
-	l1extra_.tauBx .push_back(ibx);
-	l1extra_.tauTowerIPhi.push_back(it->towerIPhi());
-	l1extra_.tauTowerIEta.push_back(it->towerIEta());
-	l1extra_.tauRawEt.push_back(it->rawEt());
-	l1extra_.tauIsoEt.push_back(it->isoEt());
-	l1extra_.tauNTT.push_back(it->nTT());
-	l1extra_.tauHasEM.push_back(it->hasEM());
-	l1extra_.tauIsMerged.push_back(it->isMerged());
-	l1extra_.tauHwQual.push_back(it->hwQual());
-	l1extra_.nTaus++;
+	l1extra_.caloTauEt .push_back(it->et());
+	l1extra_.caloTauEta.push_back(it->eta());
+	l1extra_.caloTauPhi.push_back(it->phi());
+	l1extra_.caloTauIEt .push_back(it->hwPt());
+	l1extra_.caloTauIEta.push_back(it->hwEta());
+	l1extra_.caloTauIPhi.push_back(it->hwPhi());
+	l1extra_.caloTauIso.push_back(it->hwIso());
+	l1extra_.caloTauBx .push_back(ibx);
+	l1extra_.caloTauTowerIPhi.push_back(it->towerIPhi());
+	l1extra_.caloTauTowerIEta.push_back(it->towerIEta());
+	l1extra_.caloTauRawEt.push_back(it->rawEt());
+	l1extra_.caloTauIsoEt.push_back(it->isoEt());
+	l1extra_.caloTauNTT.push_back(it->nTT());
+	l1extra_.caloTauHasEM.push_back(it->hasEM());
+	l1extra_.caloTauIsMerged.push_back(it->isMerged());
+	l1extra_.caloTauHwQual.push_back(it->hwQual());
+	l1extra_.nCaloTaus++;
       }
     }
   }
 }
 
 
-void L1Analysis::L1AnalysisPhaseII::SetJet(const edm::Handle<l1t::JetBxCollection> jet, unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseII::SetCaloJet(const edm::Handle<l1t::JetBxCollection> jet, unsigned maxL1Extra, float caloJetHTT)
 {
-  for (int ibx = jet->getFirstBX(); ibx <= jet->getLastBX(); ++ibx) {
-    for (l1t::JetBxCollection::const_iterator it=jet->begin(ibx); it!=jet->end(ibx) && l1extra_.nJets<maxL1Extra; it++){
-      if (it->pt() > 0){
-	l1extra_.jetEt .push_back(it->et());
-	l1extra_.jetEta.push_back(it->eta());
-	l1extra_.jetPhi.push_back(it->phi());
-	l1extra_.jetIEt .push_back(it->hwPt());
-	l1extra_.jetIEta.push_back(it->hwEta());
-	l1extra_.jetIPhi.push_back(it->hwPhi());
-	l1extra_.jetBx .push_back(ibx);
-	l1extra_.jetRawEt.push_back(it->rawEt());
-	l1extra_.jetSeedEt.push_back(it->seedEt());
-	l1extra_.jetTowerIEta.push_back(it->towerIEta());
-	l1extra_.jetTowerIPhi.push_back(it->towerIPhi());
-	l1extra_.jetPUEt.push_back(it->puEt());
-	l1extra_.jetPUDonutEt0.push_back(it->puDonutEt(0));
-	l1extra_.jetPUDonutEt1.push_back(it->puDonutEt(1));
-	l1extra_.jetPUDonutEt2.push_back(it->puDonutEt(2));
-	l1extra_.jetPUDonutEt3.push_back(it->puDonutEt(3));
-	l1extra_.nJets++;
-      }
-    }
-  }
-}
 
+  double mHT30_px=0, mHT30_py=0, HT30=0;
+  double mHT30_3p5_px=0, mHT30_3p5_py=0, HT30_3p5=0;
 
-void L1Analysis::L1AnalysisPhaseII::SetCaloJet(const edm::Handle<l1t::JetBxCollection> jet, unsigned maxL1Extra)
-{
   for (int ibx = jet->getFirstBX(); ibx <= jet->getLastBX(); ++ibx) {
     for (l1t::JetBxCollection::const_iterator it=jet->begin(ibx); it!=jet->end(ibx) && l1extra_.nCaloJets<maxL1Extra; it++){
       if (it->pt() > 0){
@@ -95,9 +71,36 @@ void L1Analysis::L1AnalysisPhaseII::SetCaloJet(const edm::Handle<l1t::JetBxColle
       l1extra_.caloJetPhi.push_back(it->phi());
       l1extra_.caloJetBx .push_back(ibx);
       l1extra_.nCaloJets++;
+
+      if(it->et()>30 && fabs(it->eta())<2.4) {
+                  HT30+=it->et();
+                  mHT30_px+=it->px();
+                  mHT30_py+=it->py();
+      }
+      if(it->et()>30 && fabs(it->eta())<3.5) {
+                  HT30_3p5+=it->et();
+                  mHT30_3p5_px+=it->px();
+                  mHT30_3p5_py+=it->py();
+      }
       }
     }
   }
+
+  l1extra_.caloJetHTDefault= caloJetHTT;
+
+  l1extra_.caloJetMHTEt.push_back( sqrt(mHT30_px*mHT30_px+mHT30_py*mHT30_py) );
+  l1extra_.caloJetMHTPhi.push_back( atan(mHT30_py/mHT30_px) );
+  l1extra_.caloJetHT.push_back( HT30 );
+
+  l1extra_.caloJetMHTEt.push_back( sqrt(mHT30_3p5_px*mHT30_3p5_px+mHT30_3p5_py*mHT30_3p5_py) );
+  l1extra_.caloJetMHTPhi.push_back( atan(mHT30_3p5_py/mHT30_3p5_px) );
+  l1extra_.caloJetHT.push_back( HT30_3p5 );
+
+  l1extra_.nCaloJetMHT=2;
+
+
+
+
 }
 
 
@@ -160,22 +163,6 @@ void L1Analysis::L1AnalysisPhaseII::SetMuonKF(const edm::Handle<l1t::RegionalMuo
   //                        const int hwSign() const { return m_hwSign; };
 
 
-void L1Analysis::L1AnalysisPhaseII::SetSum(const edm::Handle<l1t::EtSumBxCollection> sums, unsigned maxL1Extra)
-{
-  for (int ibx = sums->getFirstBX(); ibx <= sums->getLastBX(); ++ibx) {
-    for (l1t::EtSumBxCollection::const_iterator it=sums->begin(ibx); it!=sums->end(ibx) && l1extra_.nSums<maxL1Extra; it++) {
-      int type = static_cast<int>( it->getType() ); 
-      l1extra_.sumType. push_back( type ); 
-      l1extra_.sumEt. push_back( it->et() ); 
-      l1extra_.sumPhi.push_back( it->phi() );
-      l1extra_.sumIEt. push_back( it->hwPt() ); 
-      l1extra_.sumIPhi.push_back( it->hwPhi() );
-      l1extra_.sumBx. push_back( ibx );
-      l1extra_.nSums++;
-    }
-  }
-}
-
 //EG (seeded by Phase 2 Objects )
 void L1Analysis::L1AnalysisPhaseII::SetEG(const edm::Handle<l1t::EGammaBxCollection> EG, const edm::Handle<l1t::EGammaBxCollection> EGHGC,unsigned maxL1Extra)
 {
@@ -197,7 +184,7 @@ void L1Analysis::L1AnalysisPhaseII::SetEG(const edm::Handle<l1t::EGammaBxCollect
   }
 
   for(l1t::EGammaBxCollection::const_iterator it=EGHGC->begin(); it!=EGHGC->end() && l1extra_.nEG<maxL1Extra; it++){
-    if (it->et() > 10){
+    if (it->et() > 5){
     l1extra_.EGEt .push_back(it->et());
     l1extra_.EGEta.push_back(it->eta());
     l1extra_.EGPhi.push_back(it->phi());
@@ -205,7 +192,7 @@ void L1Analysis::L1AnalysisPhaseII::SetEG(const edm::Handle<l1t::EGammaBxCollect
     l1extra_.EGHwQual.push_back(it->hwQual());
     l1extra_.EGBx.push_back(0);//it->bx());
     l1extra_.EGHGC.push_back(1);
-    bool quality= (it->hwQual() ==2 ) ;
+    bool quality= (it->hwQual() ==3 ) ;
     l1extra_.EGPassesLooseTrackID.push_back(quality);  
     l1extra_.EGPassesPhotonID.push_back(quality);
     l1extra_.nEG++;
@@ -253,7 +240,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::L1TkElectronP
     l1extra_.tkElectronEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkElectronBx.push_back(0);//it->bx());
     l1extra_.tkElectronHGC.push_back(1);
-    bool quality= (it->getEGRef()->hwQual() ==2 ) ;
+    bool quality= (it->getEGRef()->hwQual() ==3 ) ;
     l1extra_.tkElectronPassesLooseTrackID.push_back(quality);
     l1extra_.tkElectronPassesPhotonID.push_back(quality);
     l1extra_.nTkElectrons++;
@@ -300,7 +287,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEGLoose(const edm::Handle<l1t::L1TkElec
     l1extra_.tkElectronLooseEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkElectronLooseBx.push_back(0);//it->bx());
     l1extra_.tkElectronLooseHGC.push_back(1);
-    bool quality= (it->getEGRef()->hwQual() ==2 ) ;
+    bool quality= (it->getEGRef()->hwQual() ==3 ) ;
     l1extra_.tkElectronLoosePassesLooseTrackID.push_back(quality);
     l1extra_.tkElectronLoosePassesPhotonID.push_back(quality);
     l1extra_.nTkElectronsLoose++;
@@ -343,7 +330,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEM(const edm::Handle<l1t::L1TkEmParticl
     l1extra_.tkPhotonEGRefEta.push_back(it->getEGRef()->eta());
     l1extra_.tkPhotonEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkPhotonHGC.push_back( 1 );
-    bool quality= (it->getEGRef()->hwQual() ==2 ) ;
+    bool quality= (it->getEGRef()->hwQual() ==3 ) ;
     l1extra_.tkPhotonPassesLooseTrackID.push_back(quality);
     l1extra_.tkPhotonPassesPhotonID.push_back(quality);
     l1extra_.nTkPhotons++;
@@ -358,7 +345,6 @@ void L1Analysis::L1AnalysisPhaseII::SetTrkTau(const edm::Handle<l1t::L1TrkTauPar
     l1extra_.tkTauEt.push_back(it->et());
     l1extra_.tkTauEta.push_back(it->eta());
     l1extra_.tkTauPhi.push_back(it->phi());
-    // l1extra_.tkTauTrkIso.push_back(it->getVtxIso());
     l1extra_.tkTauTrkIso.push_back(it->getIso());
     l1extra_.tkTauBx.push_back(0);//it->bx());
     l1extra_.nTkTau++;
@@ -387,7 +373,6 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEGTau(const edm::Handle<l1t::L1TkEGTauP
     l1extra_.tkEGTauEt.push_back(it->et());
     l1extra_.tkEGTauEta.push_back(it->eta());
     l1extra_.tkEGTauPhi.push_back(it->phi());
-    // l1extra_.tkEGTauTrkIso.push_back(it->getVtxIso());
     l1extra_.tkEGTauTrkIso.push_back(it->getIso());
     l1extra_.tkEGTauBx.push_back(0);//it->bx());
     l1extra_.nTkEGTau++;
@@ -545,10 +530,8 @@ void L1Analysis::L1AnalysisPhaseII::SetPFJetForMET(const edm::Handle<l1t::PFJetC
 
 void L1Analysis::L1AnalysisPhaseII::SetPFJet(const edm::Handle<l1t::PFJetCollection> PFJet, unsigned maxL1Extra)
 {
-  double mHT15_px=0, mHT15_py=0, HT15=0;
-  double mHT20_px=0, mHT20_py=0, HT20=0;
   double mHT30_px=0, mHT30_py=0, HT30=0;
-  double mHT30_15_px=0, mHT30_15_py=0, HT30_15=0;
+  double mHT30_3p5_px=0, mHT30_3p5_py=0, HT30_3p5=0;
 
   for(l1t::PFJetCollection::const_iterator it=PFJet->begin(); it!=PFJet->end() && l1extra_.nPuppiJets<maxL1Extra; it++){
     l1extra_.puppiJetEt .push_back(it->pt());
@@ -558,45 +541,29 @@ void L1Analysis::L1AnalysisPhaseII::SetPFJet(const edm::Handle<l1t::PFJetCollect
 //    l1extra_.puppiJetzVtx.push_back(it->getJetVtx());
     l1extra_.puppiJetBx .push_back(0);//it->bx());
     l1extra_.nPuppiJets++;
-    if(it->pt()>15 && fabs(it->eta())<2.4) { // this needs to be done in a nicer way
-                   HT15+=it->pt();
-                  mHT15_px+=it->px();
-                  mHT15_py+=it->py();
-    }
-    if(it->pt()>20 && fabs(it->eta())<2.4) {
-                  HT20+=it->pt();
-                  mHT20_px+=it->px();
-                  mHT20_py+=it->py();
 
-    }
     if(it->pt()>30 && fabs(it->eta())<2.4) { 
                   HT30+=it->pt();
                   mHT30_px+=it->px();
                   mHT30_py+=it->py();
       }
-    if(it->pt()>30 && fabs(it->eta())<1.5) {
-                  HT30_15+=it->pt();
-                  mHT30_15_px+=it->px();
-                  mHT30_15_py+=it->py();
+    if(it->pt()>30 && fabs(it->eta())<3.5) {
+                  HT30_3p5+=it->pt();
+                  mHT30_3p5_px+=it->px();
+                  mHT30_3p5_py+=it->py();
       }
+
+
   }
-  l1extra_.puppiMHTEt.push_back( sqrt(mHT15_px*mHT15_px+mHT15_py*mHT15_py) );
-  l1extra_.puppiMHTPhi.push_back( atan(mHT15_py/mHT15_px) );
-  l1extra_.puppiHT.push_back( HT15 );
-
-  l1extra_.puppiMHTEt.push_back( sqrt(mHT20_px*mHT20_px+mHT20_py*mHT20_py) );
-  l1extra_.puppiMHTPhi.push_back( atan(mHT20_py/mHT20_px) );
-  l1extra_.puppiHT.push_back( HT20 );
-
   l1extra_.puppiMHTEt.push_back( sqrt(mHT30_px*mHT30_px+mHT30_py*mHT30_py) );
   l1extra_.puppiMHTPhi.push_back( atan(mHT30_py/mHT30_px) );
   l1extra_.puppiHT.push_back( HT30 );
 
-  l1extra_.puppiMHTEt.push_back( sqrt(mHT30_15_px*mHT30_15_px+mHT30_15_py*mHT30_15_py) );
-  l1extra_.puppiMHTPhi.push_back( atan(mHT30_15_py/mHT30_15_px) );
-  l1extra_.puppiHT.push_back( HT30_15 );
+  l1extra_.puppiMHTEt.push_back( sqrt(mHT30_3p5_px*mHT30_3p5_px+mHT30_3p5_py*mHT30_3p5_py) );
+  l1extra_.puppiMHTPhi.push_back( atan(mHT30_3p5_py/mHT30_3p5_px) );
+  l1extra_.puppiHT.push_back( HT30_3p5 );
 
-  l1extra_.nPuppiMHT=4;
+  l1extra_.nPuppiMHT=2;
 
 }
 
@@ -665,3 +632,230 @@ void L1Analysis::L1AnalysisPhaseII::SetPFTaus(const edm::Handle< vector<l1t::L1P
       }
 
 }
+
+
+void L1Analysis::L1AnalysisPhaseII::SetNNTaus(const edm::Handle< vector<l1t::PFTau> >  l1nnTaus,  unsigned maxL1Extra)
+{
+ 
+      for (unsigned int i=0; i<l1nnTaus->size() && l1extra_.nNNTaus<maxL1Extra; i++){
+                   if(l1nnTaus->at(i).pt()<10) continue;
+                   l1extra_.nnTauEt.push_back(l1nnTaus->at(i).pt());
+                   l1extra_.nnTauEta.push_back(l1nnTaus->at(i).eta());
+                   l1extra_.nnTauPhi.push_back(l1nnTaus->at(i).phi());
+                   l1extra_.nnTauChg.push_back(l1nnTaus->at(i).charge());
+                   l1extra_.nnTauChargedIso.push_back(l1nnTaus->at(i).chargedIso());
+                   l1extra_.nnTauFullIso.push_back(l1nnTaus->at(i).fullIso());
+                   l1extra_.nnTauID.push_back(l1nnTaus->at(i).id());
+                   l1extra_.nnTauPassLooseNN.push_back(l1nnTaus->at(i).passLooseNN());
+                   l1extra_.nnTauPassLoosePF.push_back(l1nnTaus->at(i).passLoosePF());
+                   l1extra_.nnTauPassTightPF.push_back(l1nnTaus->at(i).passTightPF());
+                   l1extra_.nnTauPassTightNN.push_back(l1nnTaus->at(i).passTightNN());
+                   l1extra_.nNNTaus++;
+      }
+ 
+}
+
+
+
+void L1Analysis::L1AnalysisPhaseII::SetBsCands (const      edm::Handle< std::vector<l1t::L1TkBsCandidate>>  l1TkBs,    unsigned maxL1Extra, int kind)
+{
+      for (unsigned int i=0; i<l1TkBs->size() && l1extra_.nTkBsCands<maxL1Extra; i++){
+           l1extra_.tkBsCandPt.push_back(l1TkBs->at(i).pt());
+           l1extra_.tkBsCandMass.push_back(l1TkBs->at(i).p4().M());
+           l1extra_.tkBsCandEta.push_back(l1TkBs->at(i).eta());
+           l1extra_.tkBsCandPhi.push_back(l1TkBs->at(i).phi());
+           l1extra_.tkBsCandPhi1Pt.push_back(l1TkBs->at(i).getPhiCandidate(0).pt());
+           l1extra_.tkBsCandPhi2Pt.push_back(l1TkBs->at(i).getPhiCandidate(1).pt());
+           l1extra_.tkBsCandPhi1Mass.push_back(l1TkBs->at(i).getPhiCandidate(0).p4().M());
+           l1extra_.tkBsCandPhi2Mass.push_back(l1TkBs->at(i).getPhiCandidate(1).p4().M());
+           l1extra_.tkBsCandPhi1Phi.push_back(l1TkBs->at(i).getPhiCandidate(0).phi());
+           l1extra_.tkBsCandPhi2Phi.push_back(l1TkBs->at(i).getPhiCandidate(1).phi());
+           l1extra_.tkBsCandPhi1Eta.push_back(l1TkBs->at(i).getPhiCandidate(0).eta());
+           l1extra_.tkBsCandPhi2Eta.push_back(l1TkBs->at(i).getPhiCandidate(1).eta());
+           l1extra_.tkBsCandDRPhiPair.push_back(l1TkBs->at(i).dRPhiPair());
+           l1extra_.tkBsCandDxyPhiPair.push_back(l1TkBs->at(i).dxyPhiPair());
+           l1extra_.tkBsCandDzPhiPair.push_back(l1TkBs->at(i).dRPhiPair());
+           l1extra_.tkBsCandKind.push_back(kind);
+           l1extra_.nTkBsCands++; 
+      }
+
+
+}
+
+void L1Analysis::L1AnalysisPhaseII::SetDiMuonTk(const edm::Handle<l1t::L1TkMuonParticleCollection> muon, unsigned maxL1Extra)
+{
+
+  for(l1t::L1TkMuonParticleCollection::const_iterator it=muon->begin(); it!=muon->end(); it++){
+       for(l1t::L1TkMuonParticleCollection::const_iterator it2=it+1; it2!=muon->end(); it2++){
+            if (it==it2) continue;
+            double dz=it->getTrkzVtx()-it2->getTrkzVtx();
+
+            // Compute the centers of the circles
+            double ra=1./it->getTrkPtr()->getRInv(); // I am assuming this is correct, not sure 
+            // centres and radii of track circles
+              // double phi = momentum.phi();
+              //   // xc = signed_r*sin(phi) + position.x();
+              //   // yc = -signed_r*cos(phi) + position.y();
+            double xca=ra*sin(it->getTrkPtr()->getMomentum(4).phi())+it->getTrkPtr()->getPOCA(4).x(); // that 4 should not be harcoded 
+            double yca=-ra*cos(it->getTrkPtr()->getMomentum(4).phi())+it->getTrkPtr()->getPOCA(4).y();      
+
+            double rb=1./it2->getTrkPtr()->getRInv(); // I am assuming this is correct, not sure 
+            double xcb=rb*sin(it2->getTrkPtr()->getMomentum(4).phi())+it2->getTrkPtr()->getPOCA(4).x();
+            double ycb=-rb*cos(it2->getTrkPtr()->getMomentum(4).phi())+it2->getTrkPtr()->getPOCA(4).y();   
+
+            // points of closest approach in transverse plane
+            // First check the circles cross
+               double xg1, yg1, xg2, yg2;
+
+             // transverseCoord  start function - move to separate cc/h
+            int flag = transverseCoord(xca, yca, ra, xcb, ycb, rb, xg1, yg1, xg2, yg2); 
+
+            if (flag==0) continue;
+
+            GlobalPoint positionA= it->getTrkPtr()->getPOCA(4) ;//GlobalPoint(xga, yga, zga);
+            GlobalPoint positionB= it2->getTrkPtr()->getPOCA(4) ; //GlobalPoint(xga, yga, zga);
+            GlobalVector momentumA=it->getTrkPtr()->getMomentum(4);
+            GlobalVector momentumB=it2->getTrkPtr()->getMomentum(4);
+            double xga, yga, zga, xgb, ygb, zgb;
+
+            if (flag == 1) {
+             // two crossing points on each track in transverse plane
+             // select point for which z-coordinates on the 2 tracks are the closest
+             double za1 = zCoord(momentumA, positionA, ra, xca, yca, xg1, yg1);
+             double zb1 = zCoord(momentumB, positionB, rb, xcb, ycb, xg1, yg1);
+             double za2 = zCoord(momentumA, positionA, ra, xca, yca, xg2, yg2);
+             double zb2 = zCoord(momentumB, positionB, rb, xcb, ycb, xg2, yg2);
+
+             if (abs(zb1 - za1) < abs(zb2 - za2)) {
+               xga = xg1; yga = yg1; zga = za1; zgb = zb1;
+             }
+             else {
+               xga = xg2; yga = yg2; zga = za2; zgb = zb2;
+             }
+             xgb = xga; ygb = yga;
+           }
+           else {
+             // one point of closest approach on each track in transverse plane
+                xga = xg1; yga = yg1;
+                zga = zCoord(momentumA, positionA, ra, xca, yca, xga, yga);
+                xgb = xg2; ygb = yg2;
+                zgb = zCoord(momentumB, positionB, rb, xcb, ycb, xgb, ygb);
+              }
+
+            GlobalPoint  posA = GlobalPoint(xga, yga, zga);
+            GlobalPoint  posB = GlobalPoint(xgb, ygb, zgb);
+
+            std::cout<<dz<<"  "<<it->pt()<<"  "<<ra<<"  "<<xca<<"   "<<yca<<" ; "<<it2->pt()<<"  "<<rb<<"  "<<xcb<<"   "<<ycb<<"  ->"<< flag<<"  --->" <<(posB - posA).mag()<<std::endl;  // this is not working ? 
+  }
+ }
+}
+
+int 
+L1Analysis::L1AnalysisPhaseII::transverseCoord(double cxa, double cya, double ra, 
+				       double cxb, double cyb, double rb, 
+				       double & xg1, double & yg1, 
+				       double & xg2, double & yg2)
+{
+  int flag = 0;
+  double x1, y1, x2, y2;
+
+  // new reference frame with origin in (cxa, cya) and x-axis 
+  // directed from (cxa, cya) to (cxb, cyb)
+
+  double d_ab = sqrt((cxb - cxa)*(cxb - cxa) + (cyb - cya)*(cyb - cya));
+  if (d_ab == 0) { // concentric circles
+    return 0;
+  }
+  // elements of rotation matrix
+  double u = (cxb - cxa) / d_ab;
+  double v = (cyb - cya) / d_ab;
+
+  // conditions for circle intersection
+  if (d_ab <= ra + rb && d_ab >= abs(rb - ra)) {
+
+    // circles cross each other
+    flag = 1;
+
+    // triangle (ra, rb, d_ab)
+    double cosphi = (ra*ra - rb*rb + d_ab*d_ab) / (2*ra*d_ab);
+    double sinphi2 = 1. - cosphi*cosphi;
+    if (sinphi2 < 0.) { sinphi2 = 0.; cosphi = 1.; }
+
+    // intersection points in new frame
+    double sinphi = sqrt(sinphi2);
+    x1 = ra*cosphi; y1 = ra*sinphi; x2 = x1; y2 = -y1;
+  } 
+  else if (d_ab > ra + rb) {
+
+    // circles are external to each other
+    flag = 2;
+
+    // points of closest approach in new frame 
+    // are on line between 2 centers
+    x1 = ra; y1 = 0; x2 = d_ab - rb; y2 = 0;
+  }
+  else if (d_ab < abs(rb - ra)) {
+
+    // circles are inside each other
+    flag = 2;
+
+    // points of closest approach in new frame are on line between 2 centers
+    // choose 2 closest points
+    double sign = 1.;
+    if (ra <= rb) sign = -1.;
+    x1 = sign*ra; y1 = 0; x2 = d_ab + sign*rb; y2 = 0;
+  }
+  else {
+    return 0;
+  }
+
+  // intersection points in global frame, transverse plane
+  xg1 = u*x1 - v*y1 + cxa; yg1 = v*x1 + u*y1 + cya;
+  xg2 = u*x2 - v*y2 + cxa; yg2 = v*x2 + u*y2 + cya;
+
+  return flag;
+}
+
+
+double 
+L1Analysis::L1AnalysisPhaseII::zCoord(const GlobalVector& mom, 
+			      const GlobalPoint& pos, 
+			      double r, double xc, double yc, 
+			      double xg, double yg)
+{
+
+  // starting point
+  double x = pos.x(); double y = pos.y(); double z = pos.z();
+
+  double px = mom.x(); double py = mom.y(); double pz = mom.z();
+
+  // rotation angle phi from starting point to crossing point (absolute value)
+  // -- compute sin(phi/2) if phi smaller than pi/4, 
+  // -- cos(phi) if phi larger than pi/4
+  double phi = 0.;
+  double sinHalfPhi = sqrt((x-xg)*(x-xg) + (y-yg)*(y-yg))/(2*r);
+  if (sinHalfPhi < 0.383) { // sin(pi/8)
+    phi = 2*asin(sinHalfPhi);
+  }
+  else {
+    double cosPhi = ((x-xc)*(xg-xc) + (y-yc)*(yg-yc))/(r*r);
+    if (std::abs(cosPhi) > 1) cosPhi = (cosPhi > 0 ? 1 : -1);
+    phi = abs(acos(cosPhi));
+  }
+  // -- sign of phi
+  double signPhi = ((x - xc)*(yg - yc) - (xg - xc)*(y - yc) > 0) ? 1. : -1.;
+
+  // sign of track angular momentum
+  // if rotation is along angular momentum, delta z is along pz
+  double signOmega = ((x - xc)*py - (y - yc)*px > 0) ? 1. : -1.;
+
+  // delta z
+  // -- |dz| = |cos(theta) * path along helix|
+  //         = |cos(theta) * arc length along circle / sin(theta)|
+  double dz = signPhi*signOmega*(pz/mom.transverse())*phi*r;
+
+  return z + dz;
+}
+
+
+

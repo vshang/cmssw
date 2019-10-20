@@ -58,6 +58,10 @@
 #include "DataFormats/Phase2L1ParticleFlow/interface/PFCandidate.h" 
 
 #include "DataFormats/L1Trigger/interface/L1PFTau.h"
+#include "DataFormats/Phase2L1ParticleFlow/interface/PFTau.h"
+
+#include "DataFormats/L1TrackTrigger/interface/L1TkBsCandidate.h"
+#include "DataFormats/L1TrackTrigger/interface/L1TkBsCandidateFwd.h"
 
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
 
@@ -75,15 +79,16 @@ namespace L1Analysis
 
 
     // Old style objects (Phase I)
-    void SetTau  (const edm::Handle<l1t::TauBxCollection>    tau,  unsigned maxL1Extra);
-    void SetJet  (const edm::Handle<l1t::JetBxCollection>    jet,  unsigned maxL1Extra);
-    void SetSum  (const edm::Handle<l1t::EtSumBxCollection>  sums, unsigned maxL1Extra);
+//    void SetJet  (const edm::Handle<l1t::JetBxCollection>    jet,  unsigned maxL1Extra);
+//    void SetSum  (const edm::Handle<l1t::EtSumBxCollection>  sums, unsigned maxL1Extra);
     void SetMuon (const edm::Handle<l1t::MuonBxCollection>   muon, unsigned maxL1Extra);
 
     // Add new standalone objects 
     void SetEG   (const edm::Handle<l1t::EGammaBxCollection> EG,  const edm::Handle<l1t::EGammaBxCollection> EGHGC, unsigned maxL1Extra);
     void SetMuonKF (const edm::Handle<l1t::RegionalMuonCandBxCollection>   muonKF, unsigned maxL1Extra, unsigned int muonDetector);
-    void SetCaloJet  (const edm::Handle<l1t::JetBxCollection>    calojet,  unsigned maxL1Extra);
+    void SetCaloJet  (const edm::Handle<l1t::JetBxCollection>    calojet,  unsigned maxL1Extra, float caloJetHTT);
+    void SetCaloTau  (const edm::Handle<l1t::TauBxCollection>    calotau,  unsigned maxL1Extra);
+
 
     // Add L1TrackTriggerObjects
     void SetTkEG   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEG,  const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGHGC,    unsigned maxL1Extra);
@@ -111,9 +116,24 @@ namespace L1Analysis
 
     // Add new PFTau
     void SetPFTaus  (const      edm::Handle< std::vector<l1t::L1PFTau>>  l1pfTaus,    unsigned maxL1Extra);
+    void SetNNTaus  (const      edm::Handle< std::vector<l1t::PFTau>>  l1nnTaus,    unsigned maxL1Extra);
 
+    void SetBsCands (const      edm::Handle< std::vector<l1t::L1TkBsCandidate>>  l1TkBs,    unsigned maxL1Extra, int kind);
 
     L1AnalysisPhaseIIDataFormat * getData() {return &l1extra_;}
+
+    // DiObjects
+    void SetDiMuonTk(const edm::Handle<l1t::L1TkMuonParticleCollection> muon, unsigned maxL1Extra); 
+
+    static int transverseCoord(double cxa, double cya, double ra,
+                       double cxb, double cyb, double rb,
+                       double & xg1, double & yg1,
+                       double & xg2, double & yg2)  dso_internal;
+
+    // Computes z-coordinate on helix at given transverse coordinates
+    static double zCoord(const GlobalVector& mom, const GlobalPoint& pos,
+                        double r, double xc, double yc, double xg, double yg)  dso_internal;
+
 
 
 

@@ -2,10 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
 
-   jetToken = cms.untracked.InputTag("simCaloStage2Digis"),
    muonToken = cms.untracked.InputTag("simGmtStage2Digis"),
-   sumToken = cms.untracked.InputTag("simCaloStage2Digis"),
-   tauTokens = cms.untracked.VInputTag("simCaloStage2Digis"),
 
    egTokenBarrel = cms.InputTag("L1EGammaClusterEmuProducer","L1EGammaCollectionBXVEmulator"),
    tkEGTokenBarrel = cms.InputTag("L1TkElectronsCrystal","EG"),
@@ -33,9 +30,14 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
 
    ak4L1PF = cms.InputTag("ak4PFL1PuppiCorrected"),
 #   ak4L1PFForMET = cms.InputTag("ak4PFL1PuppiForMETCorrected"),
-   l1PFCandidates = cms.InputTag("l1pfCandidates","Puppi"),
 
+   l1PFCandidates = cms.InputTag("l1pfCandidates","Puppi"),
+#   l1PFCandidates = cms.InputTag("l1pfCandidates","PF"),
+
+
+   caloTauToken = cms.InputTag("L1CaloJetProducer","L1CaloTauCollectionBXV"),
    caloJetToken = cms.InputTag("L1CaloJetProducer","L1CaloJetCollectionBXV"),
+   caloJetHTTToken = cms.InputTag("L1CaloJetHTTProducer","CaloJetHTT"),
  
    muonKalman = cms.InputTag("simKBmtfDigis","BMTF"),
    muonOverlap = cms.InputTag("simOmtfDigis","OMTF"),
@@ -49,8 +51,13 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    l1TkPrimaryVertex= cms.InputTag("L1TkPrimaryVertex",""),
 
    L1PFTauToken = cms.InputTag("l1pfTauProducer","L1PFTaus"),   
+   L1NNTauToken = cms.InputTag("l1NNTauProducerPuppi","L1PFTausNN"),
 
-   maxL1Extra = cms.uint32(20)
+   L1TkBsCandsToken = cms.InputTag("l1TkBsCandidates"),
+   L1TkBsCandsLooseToken = cms.InputTag("l1TkBsCandidatesLooseWP"),
+   L1TkBsCandsTightToken = cms.InputTag("l1TkBsCandidatesTightWP"),
+
+   maxL1Extra = cms.uint32(50)
 )
 
 #### Gen level tree

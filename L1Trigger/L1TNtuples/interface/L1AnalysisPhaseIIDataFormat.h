@@ -29,47 +29,35 @@ namespace L1Analysis
       nL1TkPVs=0;
       nVertices=0;
 
-      nTaus = 0;
-      tauEt.clear();
-      tauEta.clear();
-      tauPhi.clear(); 
-      tauIEt.clear();
-      tauIEta.clear();
-      tauIPhi.clear(); 
-      tauIso.clear();
-      tauBx.clear();
-      tauTowerIPhi.clear();
-      tauTowerIEta.clear();
-      tauRawEt.clear();
-      tauIsoEt.clear();
-      tauNTT.clear();
-      tauHasEM.clear();
-      tauIsMerged.clear();
-      tauHwQual.clear();
-
-      nJets = 0;
-      jetEt.clear();
-      jetEta.clear();
-      jetPhi.clear();
-      jetIEt.clear();
-      jetIEta.clear();
-      jetIPhi.clear();
-      jetBx.clear();
-      jetTowerIPhi.clear();
-      jetTowerIEta.clear();
-      jetRawEt.clear();
-      jetSeedEt.clear();
-      jetPUEt.clear();
-      jetPUDonutEt0.clear();
-      jetPUDonutEt1.clear();
-      jetPUDonutEt2.clear();
-      jetPUDonutEt3.clear();
+      nCaloTaus = 0;
+      caloTauEt.clear();
+      caloTauEta.clear();
+      caloTauPhi.clear(); 
+      caloTauIEt.clear();
+      caloTauIEta.clear();
+      caloTauIPhi.clear(); 
+      caloTauIso.clear();
+      caloTauBx.clear();
+      caloTauTowerIPhi.clear();
+      caloTauTowerIEta.clear();
+      caloTauRawEt.clear();
+      caloTauIsoEt.clear();
+      caloTauNTT.clear();
+      caloTauHasEM.clear();
+      caloTauIsMerged.clear();
+      caloTauHwQual.clear();
 
       nCaloJets = 0;
       caloJetEt.clear();
       caloJetEta.clear();
       caloJetPhi.clear();
       caloJetBx.clear();
+      
+      caloJetHTDefault = 0;
+      caloJetHT.clear();
+      caloJetMHTEt.clear();
+      caloJetMHTPhi.clear();
+      nCaloJetMHT=0;
 
       nGlobalMuons = 0;
       globalMuonPt.clear();
@@ -101,16 +89,6 @@ namespace L1Analysis
       standaloneMuonBx.clear();
       standaloneMuonRegion.clear();
       standaloneMuonDXY.clear();
-
-
-
-      nSums = 0;
-      sumType.clear();
-      sumEt.clear();
-      sumPhi.clear();
-      sumIEt.clear();
-      sumIPhi.clear();
-      sumBx.clear(); 
 
       nEG = 0;
       EGEt.clear();
@@ -325,6 +303,37 @@ namespace L1Analysis
       pfTauPassesMediumIso.clear();
       pfTauChg.clear();
 
+      nNNTaus = 0;
+      nnTauEt.clear();
+      nnTauEta.clear();
+      nnTauPhi.clear();
+      nnTauChg.clear();
+      nnTauChargedIso.clear();
+      nnTauFullIso.clear();    
+      nnTauID.clear();         
+      nnTauPassLooseNN.clear();   
+      nnTauPassLoosePF.clear(); 
+      nnTauPassTightPF.clear();   
+      nnTauPassTightNN.clear();
+
+      nTkBsCands=0;
+      tkBsCandPt.clear();
+      tkBsCandEta.clear();
+      tkBsCandPhi.clear();
+      tkBsCandMass.clear();
+      tkBsCandPhi1Pt.clear();
+      tkBsCandPhi2Pt.clear();
+      tkBsCandPhi1Eta.clear();
+      tkBsCandPhi2Eta.clear();
+      tkBsCandPhi1Phi.clear();
+      tkBsCandPhi2Phi.clear();
+      tkBsCandPhi1Mass.clear();
+      tkBsCandPhi2Mass.clear();
+      tkBsCandDRPhiPair.clear(); 
+      tkBsCandDxyPhiPair.clear();
+      tkBsCandDzPhiPair.clear(); 
+      tkBsCandKind.clear();
+
     }
  
     double z0Puppi;
@@ -335,48 +344,35 @@ namespace L1Analysis
     std::vector<double>  z0L1TkPV;
     std::vector<double>  sumL1TkPV;
  
-    unsigned short int nTaus;
-    std::vector<double> tauEt;
-    std::vector<double> tauEta;
-    std::vector<double> tauPhi;
-    std::vector<short int> tauIEt;
-    std::vector<short int> tauIEta;
-    std::vector<short int> tauIPhi;
-    std::vector<short int> tauIso;
-    std::vector<short int> tauBx;
-    std::vector<short int> tauTowerIPhi;
-    std::vector<short int> tauTowerIEta;
-    std::vector<short int> tauRawEt;    
-    std::vector<short int> tauIsoEt;
-    std::vector<short int> tauNTT;
-    std::vector<short int> tauHasEM;
-    std::vector<short int> tauIsMerged;
-    std::vector<short int> tauHwQual;
-
-    unsigned short int nJets;
-    std::vector<double> jetEt;
-    std::vector<double> jetEta;
-    std::vector<double> jetPhi;
-    std::vector<short int> jetIEt;
-    std::vector<short int> jetIEta;
-    std::vector<short int> jetIPhi;
-    std::vector<short int> jetBx;
-    std::vector<short int> jetTowerIPhi;
-    std::vector<short int> jetTowerIEta;
-    std::vector<short int> jetRawEt;    
-    std::vector<short int> jetSeedEt;
-    std::vector<short int> jetPUEt;
-    std::vector<short int> jetPUDonutEt0;
-    std::vector<short int> jetPUDonutEt1;
-    std::vector<short int> jetPUDonutEt2;
-    std::vector<short int> jetPUDonutEt3;
-
+    unsigned short int nCaloTaus;
+    std::vector<double> caloTauEt;
+    std::vector<double> caloTauEta;
+    std::vector<double> caloTauPhi;
+    std::vector<short int> caloTauIEt;
+    std::vector<short int> caloTauIEta;
+    std::vector<short int> caloTauIPhi;
+    std::vector<short int> caloTauIso;
+    std::vector<short int> caloTauBx;
+    std::vector<short int> caloTauTowerIPhi;
+    std::vector<short int> caloTauTowerIEta;
+    std::vector<short int> caloTauRawEt;    
+    std::vector<short int> caloTauIsoEt;
+    std::vector<short int> caloTauNTT;
+    std::vector<short int> caloTauHasEM;
+    std::vector<short int> caloTauIsMerged;
+    std::vector<short int> caloTauHwQual;
 
     unsigned short int nCaloJets;
     std::vector<double> caloJetEt;
     std::vector<double> caloJetEta;
     std::vector<double> caloJetPhi;
     std::vector<short int> caloJetBx;
+
+    float caloJetHTDefault;
+    std::vector<double> caloJetHT;
+    std::vector<double> caloJetMHTEt;
+    std::vector<double> caloJetMHTPhi;
+    unsigned int nCaloJetMHT;
 
 
     unsigned short int nGlobalMuons;
@@ -411,15 +407,6 @@ namespace L1Analysis
     std::vector<unsigned int>     standaloneMuonRegion;
 
 
-    unsigned short int nSums;
-    std::vector<short int> sumType;
-    std::vector<double> sumEt;
-    std::vector<double> sumPhi;
-    std::vector<short int> sumIEt;
-    std::vector<short int> sumIPhi;
-    std::vector<double> sumBx;
-
- 
     unsigned int nEG;
     std::vector<double> EGEt;
     std::vector<double> EGEta;
@@ -636,6 +623,36 @@ namespace L1Analysis
     std::vector<unsigned int> pfTauPassesMediumIso;
     std::vector<int> pfTauChg;
 
+    unsigned int nNNTaus;
+    std::vector<double>   nnTauEt;
+    std::vector<double>   nnTauEta;
+    std::vector<double>   nnTauPhi;
+    std::vector<int>   nnTauChg;
+    std::vector<double>   nnTauChargedIso;
+    std::vector<double>   nnTauFullIso;
+    std::vector<unsigned int>   nnTauID;
+    std::vector<unsigned int>   nnTauPassLooseNN;
+    std::vector<unsigned int>   nnTauPassLoosePF;
+    std::vector<unsigned int>   nnTauPassTightPF;
+    std::vector<unsigned int>   nnTauPassTightNN;
+
+   unsigned int nTkBsCands;
+   std::vector<double> tkBsCandPt;
+   std::vector<double> tkBsCandEta;
+   std::vector<double> tkBsCandPhi;
+   std::vector<double> tkBsCandMass;
+   std::vector<double> tkBsCandPhi1Pt;
+   std::vector<double> tkBsCandPhi2Pt;
+   std::vector<double> tkBsCandPhi1Eta;
+   std::vector<double> tkBsCandPhi2Eta;
+   std::vector<double> tkBsCandPhi1Phi;
+   std::vector<double> tkBsCandPhi2Phi;
+   std::vector<double> tkBsCandPhi1Mass;
+   std::vector<double> tkBsCandPhi2Mass;
+   std::vector<double> tkBsCandDRPhiPair;    
+   std::vector<double> tkBsCandDxyPhiPair;   
+   std::vector<double> tkBsCandDzPhiPair;    
+   std::vector<int>    tkBsCandKind;
 
   }; 
 }

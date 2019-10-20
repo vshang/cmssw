@@ -11,6 +11,7 @@
 #include "DataFormats/Common/interface/Ptr.h"
 
 #include "DataFormats/L1Trigger/interface/L1Candidate.h"
+#include "DataFormats/L1TrackTrigger/interface/L1TkPhiCandidate.h"
 #include "DataFormats/L1TrackTrigger/interface/L1TkPhiCandidateFwd.h"
 #include "DataFormats/L1TrackTrigger/interface/TTTypes.h"
 
