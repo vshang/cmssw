@@ -78,11 +78,17 @@ private:
   bool hasPosRF(int wh,int sec) {    return  wh>0 || (wh==0 && sec%4>1); }
   
   // Private attributes
-  double dT0_correlate_TP;
-  double minx_match_2digis;
-  double chi2corTh;
   Bool_t debug;
   Bool_t clean_chi2_correlation;
+  Bool_t useBX_correlation;
+  double dT0_correlate_TP;
+  double dBX_correlate_TP;
+  double dTanPsi_correlate_TP;
+  double minx_match_2digis;
+  double chi2corTh;
+  Bool_t use_LSB;
+  double tanPsi_precision; 
+  double x_precision; 
 
   //shift
   edm::FileInPath shift_filename;

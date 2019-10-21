@@ -7,12 +7,21 @@ from L1Trigger.DTPhase2Trigger.PseudoBayesGrouping_cfi            import PseudoB
 dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                digiTag = cms.InputTag("CalibratedDigis"),
                                                trigger_with_sl = cms.untracked.int32(4),
-                                               tanPhiTh = cms.untracked.double(1.),
-                                               chi2Th = cms.untracked.double(0.01), #in cm^2
+                                               use_normal_chi2 = cms.untracked.bool(True),
+                                               tanPhiTh = cms.untracked.double(999.), #Removing TanPsi filter in SliceTest, as FW doesnt use it
+                                               #tanPhiTh = cms.untracked.double(1.),
+                                               chi2Th = cms.untracked.double(0.03), #in cm^2 SliceTest JM 
+                                               #chi2Th = cms.untracked.double(0.01), #in cm^2
                                                chi2corTh = cms.untracked.double(0.1), #in cm^2
                                                do_correlation = cms.untracked.bool(True),
-                                               clean_chi2_correlation = cms.untracked.bool(True),
-                                               dT0_correlate_TP = cms.untracked.double(25.),
+                                               useBX_correlation = cms.untracked.bool(True),
+                                               dT0_correlate_TP = cms.untracked.double(25.), 
+                                               dBX_correlate_TP = cms.untracked.int32(0), 
+                                               dTanPsi_correlate_TP = cms.untracked.double(620./4096.),
+					       clean_chi2_correlation = cms.untracked.bool(True),
+					       use_LSB = cms.untracked.bool(False),
+					       tanPsi_precision = cms.untracked.double(1./4096.),
+					       x_precision = cms.untracked.double(0.025),
                                                #minx_match_2digis = cms.untracked.double(2.1),
                                                minx_match_2digis = cms.untracked.double(1.),
                                                p2_df = cms.untracked.int32(2), #0 for phase-1, 1 for slice-test, 2 for phase-2 carlo-federica
@@ -30,6 +39,9 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                #debugging
                                                debug = cms.untracked.bool(False),
                                                dump  = cms.untracked.bool(False),
+                                               #Print hits and prims for tecno30
+					       printPython  = cms.untracked.bool(False),
+                                               printHits  = cms.untracked.bool(False),
                                                #RPC
                                                rpcRecHits = cms.untracked.InputTag("rpcRecHits"),
                                                useRPC = cms.untracked.bool(False),
