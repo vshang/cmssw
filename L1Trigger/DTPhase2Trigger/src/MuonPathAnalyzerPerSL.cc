@@ -16,7 +16,7 @@ MuonPathAnalyzerPerSL::MuonPathAnalyzerPerSL(const ParameterSet& pset) :
     chiSquareThreshold(50),
     debug(pset.getUntrackedParameter<Bool_t>("debug")),
     chi2Th(pset.getUntrackedParameter<double>("chi2Th")),
-    tanPhiTh(pset.getUntrackedParameter<double>("tanPhiTh"))
+    tanPhiTh(pset.getUntrackedParameter<double>("tanPhiTh")),
     use_LSB(pset.getUntrackedParameter<Bool_t>("use_LSB")),
     tanPsi_precision(pset.getUntrackedParameter<double>("tanPsi_precision")),
     x_precision(pset.getUntrackedParameter<double>("x_precision"))
