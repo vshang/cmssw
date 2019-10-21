@@ -165,11 +165,12 @@ CalibratedDigis::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  if(flat_calib_!=0)
 	      newTime = digiTime - 325                     + 25.0*iEvent.eventAuxiliary().bunchCrossing() + float(timeOffset_);
 	  else {
-	      //if (iEvent.eventAuxiliary().run() == 1) //FIX MC 
-		  if (scenario == 0) //FIX MC 
-		      newTime = digiTime + 25.0*400;
-		  else 
-		      newTime = digiTime - theSync->offset(wireId) + 25.0*iEvent.eventAuxiliary().bunchCrossing() + float(timeOffset_); 
+	      if (scenario == 0) //FIX MC 
+	          newTime = digiTime + 25.0*400;
+	      else if (scenario == 2) //FIX SliceTest 
+	          newTime = digiTime;
+	      else 
+	          newTime = digiTime - theSync->offset(wireId) + 25.0*iEvent.eventAuxiliary().bunchCrossing() + float(timeOffset_); 
 	  }
 	  DTDigi newDigi(wire, newTime, number);
 	  mydigis.insertDigi(layerId,newDigi);
