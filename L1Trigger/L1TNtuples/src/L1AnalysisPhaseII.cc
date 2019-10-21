@@ -192,7 +192,7 @@ void L1Analysis::L1AnalysisPhaseII::SetEG(const edm::Handle<l1t::EGammaBxCollect
     l1extra_.EGHwQual.push_back(it->hwQual());
     l1extra_.EGBx.push_back(0);//it->bx());
     l1extra_.EGHGC.push_back(1);
-    bool quality= (it->hwQual() ==3 ) ;
+    bool quality= (it->hwQual() ==5 ) ;
     l1extra_.EGPassesLooseTrackID.push_back(quality);  
     l1extra_.EGPassesPhotonID.push_back(quality);
     l1extra_.nEG++;
@@ -240,7 +240,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::L1TkElectronP
     l1extra_.tkElectronEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkElectronBx.push_back(0);//it->bx());
     l1extra_.tkElectronHGC.push_back(1);
-    bool quality= (it->getEGRef()->hwQual() ==3 ) ;
+    bool quality= (it->getEGRef()->hwQual() ==5 ) ;
     l1extra_.tkElectronPassesLooseTrackID.push_back(quality);
     l1extra_.tkElectronPassesPhotonID.push_back(quality);
     l1extra_.nTkElectrons++;
@@ -248,49 +248,49 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::L1TkElectronP
 
 }
 
-void L1Analysis::L1AnalysisPhaseII::SetTkEGLoose(const edm::Handle<l1t::L1TkElectronParticleCollection> tkElectronLoose, const edm::Handle<l1t::L1TkElectronParticleCollection> tkElectronLooseHGC,unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseII::SetTkEGV2(const edm::Handle<l1t::L1TkElectronParticleCollection> tkElectronV2, const edm::Handle<l1t::L1TkElectronParticleCollection> tkElectronV2HGC,unsigned maxL1Extra)
 {
-  for(l1t::L1TkElectronParticleCollection::const_iterator it=tkElectronLoose->begin(); it!=tkElectronLoose->end() && l1extra_.nTkElectronsLoose<maxL1Extra; it++){
+  for(l1t::L1TkElectronParticleCollection::const_iterator it=tkElectronV2->begin(); it!=tkElectronV2->end() && l1extra_.nTkElectronsV2<maxL1Extra; it++){
     if (it->et() > 5){
-    l1extra_.tkElectronLooseEt .push_back(it->et());
-    l1extra_.tkElectronLooseEta.push_back(it->eta());
-    l1extra_.tkElectronLoosePhi.push_back(it->phi());
+    l1extra_.tkElectronV2Et .push_back(it->et());
+    l1extra_.tkElectronV2Eta.push_back(it->eta());
+    l1extra_.tkElectronV2Phi.push_back(it->phi());
         int chargeFromCurvature = (it->trackCurvature() > 0)? 1 : -1 ; // ThisIsACheck
-    l1extra_.tkElectronLooseChg.push_back(chargeFromCurvature);
-    l1extra_.tkElectronLoosezVtx.push_back(it->getTrkzVtx());
-    l1extra_.tkElectronLooseTrkIso.push_back(it->getTrkIsol());
-    l1extra_.tkElectronLooseHwQual.push_back(it->getEGRef()->hwQual());
-    l1extra_.tkElectronLooseEGRefPt.push_back(it->getEGRef()->et());
-    l1extra_.tkElectronLooseEGRefEta.push_back(it->getEGRef()->eta());
-    l1extra_.tkElectronLooseEGRefPhi.push_back(it->getEGRef()->phi());
-    l1extra_.tkElectronLooseBx.push_back(0);//it->bx());
-    l1extra_.tkElectronLooseHGC.push_back(0);
+    l1extra_.tkElectronV2Chg.push_back(chargeFromCurvature);
+    l1extra_.tkElectronV2zVtx.push_back(it->getTrkzVtx());
+    l1extra_.tkElectronV2TrkIso.push_back(it->getTrkIsol());
+    l1extra_.tkElectronV2HwQual.push_back(it->getEGRef()->hwQual());
+    l1extra_.tkElectronV2EGRefPt.push_back(it->getEGRef()->et());
+    l1extra_.tkElectronV2EGRefEta.push_back(it->getEGRef()->eta());
+    l1extra_.tkElectronV2EGRefPhi.push_back(it->getEGRef()->phi());
+    l1extra_.tkElectronV2Bx.push_back(0);//it->bx());
+    l1extra_.tkElectronV2HGC.push_back(0);
     bool quality=( ( it->getEGRef()->hwQual() >> 1 ) & 1   )> 0;  
-    l1extra_.tkElectronLoosePassesLooseTrackID.push_back(quality);
+    l1extra_.tkElectronV2PassesLooseTrackID.push_back(quality);
     quality=( ( it->getEGRef()->hwQual() >> 2 ) & 1   )> 0;  
-    l1extra_.tkElectronLoosePassesPhotonID.push_back(quality);
-    l1extra_.nTkElectronsLoose++;
+    l1extra_.tkElectronV2PassesPhotonID.push_back(quality);
+    l1extra_.nTkElectronsV2++;
   }}
 
-  for(l1t::L1TkElectronParticleCollection::const_iterator it=tkElectronLooseHGC->begin(); it!=tkElectronLooseHGC->end() && l1extra_.nTkElectronsLoose<maxL1Extra; it++){
+  for(l1t::L1TkElectronParticleCollection::const_iterator it=tkElectronV2HGC->begin(); it!=tkElectronV2HGC->end() && l1extra_.nTkElectronsV2<maxL1Extra; it++){
     if (it->et() > 5){
-    l1extra_.tkElectronLooseEt .push_back(it->et());
-    l1extra_.tkElectronLooseEta.push_back(it->eta());
-    l1extra_.tkElectronLoosePhi.push_back(it->phi());
+    l1extra_.tkElectronV2Et .push_back(it->et());
+    l1extra_.tkElectronV2Eta.push_back(it->eta());
+    l1extra_.tkElectronV2Phi.push_back(it->phi());
         int chargeFromCurvature = (it->trackCurvature() > 0)? 1 : -1 ; // ThisIsACheck
-    l1extra_.tkElectronLooseChg.push_back(chargeFromCurvature);
-    l1extra_.tkElectronLoosezVtx.push_back(it->getTrkzVtx());
-    l1extra_.tkElectronLooseTrkIso.push_back(it->getTrkIsol());
-    l1extra_.tkElectronLooseHwQual.push_back(it->getEGRef()->hwQual());
-    l1extra_.tkElectronLooseEGRefPt.push_back(it->getEGRef()->et());
-    l1extra_.tkElectronLooseEGRefEta.push_back(it->getEGRef()->eta());
-    l1extra_.tkElectronLooseEGRefPhi.push_back(it->getEGRef()->phi());
-    l1extra_.tkElectronLooseBx.push_back(0);//it->bx());
-    l1extra_.tkElectronLooseHGC.push_back(1);
-    bool quality= (it->getEGRef()->hwQual() ==3 ) ;
-    l1extra_.tkElectronLoosePassesLooseTrackID.push_back(quality);
-    l1extra_.tkElectronLoosePassesPhotonID.push_back(quality);
-    l1extra_.nTkElectronsLoose++;
+    l1extra_.tkElectronV2Chg.push_back(chargeFromCurvature);
+    l1extra_.tkElectronV2zVtx.push_back(it->getTrkzVtx());
+    l1extra_.tkElectronV2TrkIso.push_back(it->getTrkIsol());
+    l1extra_.tkElectronV2HwQual.push_back(it->getEGRef()->hwQual());
+    l1extra_.tkElectronV2EGRefPt.push_back(it->getEGRef()->et());
+    l1extra_.tkElectronV2EGRefEta.push_back(it->getEGRef()->eta());
+    l1extra_.tkElectronV2EGRefPhi.push_back(it->getEGRef()->phi());
+    l1extra_.tkElectronV2Bx.push_back(0);//it->bx());
+    l1extra_.tkElectronV2HGC.push_back(1);
+    bool quality= (it->getEGRef()->hwQual() ==5 ) ;
+    l1extra_.tkElectronV2PassesLooseTrackID.push_back(quality);
+    l1extra_.tkElectronV2PassesPhotonID.push_back(quality);
+    l1extra_.nTkElectronsV2++;
   }}
 
 
@@ -330,7 +330,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEM(const edm::Handle<l1t::L1TkEmParticl
     l1extra_.tkPhotonEGRefEta.push_back(it->getEGRef()->eta());
     l1extra_.tkPhotonEGRefPhi.push_back(it->getEGRef()->phi());
     l1extra_.tkPhotonHGC.push_back( 1 );
-    bool quality= (it->getEGRef()->hwQual() ==3 ) ;
+    bool quality= (it->getEGRef()->hwQual() ==5 ) ;
     l1extra_.tkPhotonPassesLooseTrackID.push_back(quality);
     l1extra_.tkPhotonPassesPhotonID.push_back(quality);
     l1extra_.nTkPhotons++;
@@ -511,6 +511,49 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMHT(const edm::Handle<l1t::L1TkHTMissPa
 
 }
 
+void L1Analysis::L1AnalysisPhaseII::SetL1PfPhase1L1TJet(const      edm::Handle< std::vector<reco::CaloJet> >  l1L1PFPhase1L1Jet,    unsigned maxL1Extra){
+
+   double mHT30_px=0, mHT30_py=0, HT30=0;
+  double mHT30_3p5_px=0, mHT30_3p5_py=0, HT30_3p5=0; 
+
+
+    for (reco::CaloJetCollection::const_iterator it=l1L1PFPhase1L1Jet->begin(); it!=l1L1PFPhase1L1Jet->end() && l1extra_.nPfPhase1L1Jets<maxL1Extra; it++){
+      if (it->pt() > 0){
+      l1extra_.pfPhase1L1JetEt .push_back(it->et());
+      l1extra_.pfPhase1L1JetEta.push_back(it->eta());
+      l1extra_.pfPhase1L1JetPhi.push_back(it->phi());
+//      l1extra_.pfPhase1L1JetBx .push_back(0);
+      l1extra_.nPfPhase1L1Jets++;
+ 
+    if(it->et()>30 && fabs(it->eta())<2.4) {
+                  HT30+=it->et();
+                  mHT30_px+=it->px();
+                  mHT30_py+=it->py();
+      }
+    if(it->et()>30 && fabs(it->eta())<3.5) {
+                  HT30_3p5+=it->et();
+                  mHT30_3p5_px+=it->px();
+                  mHT30_3p5_py+=it->py();
+      }
+
+
+
+   }  
+  }  
+
+  l1extra_.nPfPhase1L1MHT=2;
+
+  l1extra_.pfPhase1L1MHTEt.push_back( sqrt(mHT30_px*mHT30_px+mHT30_py*mHT30_py) );
+  l1extra_.pfPhase1L1MHTPhi.push_back( atan(mHT30_py/mHT30_px) );
+  l1extra_.pfPhase1L1HT.push_back( HT30 );
+
+  l1extra_.pfPhase1L1MHTEt.push_back( sqrt(mHT30_3p5_px*mHT30_3p5_px+mHT30_3p5_py*mHT30_3p5_py) );
+  l1extra_.pfPhase1L1MHTPhi.push_back( atan(mHT30_3p5_py/mHT30_3p5_px) );
+  l1extra_.pfPhase1L1HT.push_back( HT30_3p5 );
+
+
+}
+
 
 /*
 void L1Analysis::L1AnalysisPhaseII::SetPFJetForMET(const edm::Handle<l1t::PFJetCollection> PFJet, unsigned maxL1Extra)
@@ -628,6 +671,8 @@ void L1Analysis::L1AnalysisPhaseII::SetPFTaus(const edm::Handle< vector<l1t::L1P
                    isoflag=l1pfTaus->at(i).tauRelIsoQuality();
                    l1extra_.pfTauRelIsoFlag.push_back(isoflag);
                    l1extra_.pfTauPassesMediumIso.push_back(l1pfTaus->at(i).passMediumIso());
+
+                   l1extra_.pfTauZ0.push_back(l1pfTaus->at(i).z0());
                    l1extra_.nPFTaus++;
       }
 
@@ -682,6 +727,7 @@ void L1Analysis::L1AnalysisPhaseII::SetBsCands (const      edm::Handle< std::vec
 
 }
 
+/*
 void L1Analysis::L1AnalysisPhaseII::SetDiMuonTk(const edm::Handle<l1t::L1TkMuonParticleCollection> muon, unsigned maxL1Extra)
 {
 
@@ -745,7 +791,7 @@ void L1Analysis::L1AnalysisPhaseII::SetDiMuonTk(const edm::Handle<l1t::L1TkMuonP
             GlobalPoint  posA = GlobalPoint(xga, yga, zga);
             GlobalPoint  posB = GlobalPoint(xgb, ygb, zgb);
 
-            std::cout<<dz<<"  "<<it->pt()<<"  "<<ra<<"  "<<xca<<"   "<<yca<<" ; "<<it2->pt()<<"  "<<rb<<"  "<<xcb<<"   "<<ycb<<"  ->"<< flag<<"  --->" <<(posB - posA).mag()<<std::endl;  // this is not working ? 
+//            std::cout<<dz<<"  "<<it->pt()<<"  "<<ra<<"  "<<xca<<"   "<<yca<<" ; "<<it2->pt()<<"  "<<rb<<"  "<<xcb<<"   "<<ycb<<"  ->"<< flag<<"  --->" <<(posB - posA).mag()<<std::endl;  // this is not working ? 
   }
  }
 }
@@ -856,6 +902,6 @@ L1Analysis::L1AnalysisPhaseII::zCoord(const GlobalVector& mom,
 
   return z + dz;
 }
-
+*/
 
 

@@ -6,12 +6,12 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
 
    egTokenBarrel = cms.InputTag("L1EGammaClusterEmuProducer","L1EGammaCollectionBXVEmulator"),
    tkEGTokenBarrel = cms.InputTag("L1TkElectronsCrystal","EG"),
-   tkEGLooseTokenBarrel = cms.InputTag("L1TkElectronsLooseCrystal","EG"),
+   tkEGV2TokenBarrel = cms.InputTag("L1TkElectronsEllipticMatchCrystal","EG"),
    tkEMTokenBarrel = cms.InputTag("L1TkPhotonsCrystal","EG"),
 
    egTokenHGC = cms.InputTag("l1EGammaEEProducer","L1EGammaCollectionBXVWithCuts"),
    tkEGTokenHGC = cms.InputTag("L1TkElectronsHGC","EG"),
-   tkEGLooseTokenHGC = cms.InputTag("L1TkElectronsLooseHGC","EG"),
+   tkEGV2TokenHGC = cms.InputTag("L1TkElectronsEllipticMatchHGC","EG"),
    tkEMTokenHGC = cms.InputTag("L1TkPhotonsHGC","EG"),
 
    tkTauToken     = cms.InputTag("L1TrackerTaus","TrkTau"), # ?
@@ -30,6 +30,8 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
 
    ak4L1PF = cms.InputTag("ak4PFL1PuppiCorrected"),
 #   ak4L1PFForMET = cms.InputTag("ak4PFL1PuppiForMETCorrected"),
+
+   l1pfPhase1L1TJetToken  = cms.InputTag("l1pfPhase1L1TJetProducer" ,  "UncalibratedPhase1L1TJetFromPfCandidates"), 
 
    l1PFCandidates = cms.InputTag("l1pfCandidates","Puppi"),
 #   l1PFCandidates = cms.InputTag("l1pfCandidates","PF"),

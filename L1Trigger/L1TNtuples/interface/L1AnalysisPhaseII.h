@@ -63,6 +63,8 @@
 #include "DataFormats/L1TrackTrigger/interface/L1TkBsCandidate.h"
 #include "DataFormats/L1TrackTrigger/interface/L1TkBsCandidateFwd.h"
 
+#include "DataFormats/JetReco/interface/CaloJet.h"
+
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
 
 namespace L1Analysis
@@ -92,7 +94,7 @@ namespace L1Analysis
 
     // Add L1TrackTriggerObjects
     void SetTkEG   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEG,  const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGHGC,    unsigned maxL1Extra);
-    void SetTkEGLoose   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGLoose, const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGLooseHGc,    unsigned maxL1Extra);
+    void SetTkEGV2   (const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGV2, const  edm::Handle<l1t::L1TkElectronParticleCollection>   tkEGV2HGc,    unsigned maxL1Extra);
     void SetTkEM   (const  edm::Handle<l1t::L1TkEmParticleCollection>   tkEM,  const  edm::Handle<l1t::L1TkEmParticleCollection>   tkEMHGC,    unsigned maxL1Extra);
     void SetTkGlbMuon (const  edm::Handle<l1t::L1TkGlbMuonParticleCollection> TkGlbMuon,   unsigned maxL1Extra);
     void SetTkMuon (const  edm::Handle<l1t::L1TkMuonParticleCollection> TkMuon,   unsigned maxL1Extra);
@@ -112,6 +114,10 @@ namespace L1Analysis
     void SetL1METPF(const edm::Handle< std::vector<reco::PFMET> > l1MetPF);
     void SetPFObjects(const edm::Handle< vector<l1t::PFCandidate> > l1pfCandidates,unsigned maxL1Extra);
 //    void SetPFJetForMET  (const      edm::Handle<l1t::PFJetCollection>  PFJet,    unsigned maxL1Extra); // this needs to be done better 
+
+    // reco::caloJet collection for "Phase1L1Jets" ...
+    void SetL1PfPhase1L1TJet(const      edm::Handle< std::vector<reco::CaloJet> >  l1L1PFPhase1L1Jet,    unsigned maxL1Extra);
+
 
 
     // Add new PFTau

@@ -52,7 +52,17 @@ namespace L1Analysis
       caloJetEta.clear();
       caloJetPhi.clear();
       caloJetBx.clear();
-      
+     
+      nPfPhase1L1Jets = 0;
+      pfPhase1L1JetEt.clear();
+      pfPhase1L1JetEta.clear();
+      pfPhase1L1JetPhi.clear();
+
+      pfPhase1L1HT.clear();
+      pfPhase1L1MHTEt.clear();
+      pfPhase1L1MHTPhi.clear();
+      nPfPhase1L1MHT=0;
+ 
       caloJetHTDefault = 0;
       caloJetHT.clear();
       caloJetMHTEt.clear();
@@ -120,21 +130,21 @@ namespace L1Analysis
 
 
 
-      nTkElectronsLoose = 0;
-      tkElectronLooseEt.clear();
-      tkElectronLooseEta.clear();
-      tkElectronLoosePhi.clear();
-      tkElectronLooseChg.clear();
-      tkElectronLooseBx.clear();
-      tkElectronLooseTrkIso.clear();
-      tkElectronLoosezVtx.clear();
-      tkElectronLooseHwQual.clear();
-      tkElectronLooseEGRefPt.clear();
-      tkElectronLooseEGRefEta.clear();
-      tkElectronLooseEGRefPhi.clear();
-      tkElectronLooseHGC.clear();
-      tkElectronLoosePassesLooseTrackID.clear();         
-      tkElectronLoosePassesPhotonID.clear();
+      nTkElectronsV2 = 0;
+      tkElectronV2Et.clear();
+      tkElectronV2Eta.clear();
+      tkElectronV2Phi.clear();
+      tkElectronV2Chg.clear();
+      tkElectronV2Bx.clear();
+      tkElectronV2TrkIso.clear();
+      tkElectronV2zVtx.clear();
+      tkElectronV2HwQual.clear();
+      tkElectronV2EGRefPt.clear();
+      tkElectronV2EGRefEta.clear();
+      tkElectronV2EGRefPhi.clear();
+      tkElectronV2HGC.clear();
+      tkElectronV2PassesLooseTrackID.clear();         
+      tkElectronV2PassesPhotonID.clear();
 
       nTkPhotons = 0;
       tkPhotonEt.clear();
@@ -302,6 +312,8 @@ namespace L1Analysis
       pfTauRelIsoFlag.clear();
       pfTauPassesMediumIso.clear();
       pfTauChg.clear();
+      pfTauZ0.clear();
+
 
       nNNTaus = 0;
       nnTauEt.clear();
@@ -367,6 +379,16 @@ namespace L1Analysis
     std::vector<double> caloJetEta;
     std::vector<double> caloJetPhi;
     std::vector<short int> caloJetBx;
+
+    unsigned short int nPfPhase1L1Jets;
+    std::vector<double> pfPhase1L1JetEt;
+    std::vector<double> pfPhase1L1JetEta;
+    std::vector<double> pfPhase1L1JetPhi;
+
+    std::vector<double> pfPhase1L1HT;
+    std::vector<double> pfPhase1L1MHTEt;
+    std::vector<double> pfPhase1L1MHTPhi;
+     unsigned int nPfPhase1L1MHT;
 
     float caloJetHTDefault;
     std::vector<double> caloJetHT;
@@ -435,21 +457,21 @@ namespace L1Analysis
     std::vector<unsigned int> tkElectronPassesLooseTrackID;
     std::vector<unsigned int> tkElectronPassesPhotonID;
 
-    unsigned int nTkElectronsLoose;
-    std::vector<double> tkElectronLooseEt;
-    std::vector<double> tkElectronLooseEta;
-    std::vector<double> tkElectronLoosePhi;
-    std::vector<double> tkElectronLooseChg;
-    std::vector<int>    tkElectronLooseBx;
-    std::vector<double> tkElectronLooseTrkIso;
-    std::vector<double> tkElectronLoosezVtx;
-    std::vector<double> tkElectronLooseHwQual;
-    std::vector<double>   tkElectronLooseEGRefPt;
-    std::vector<double>   tkElectronLooseEGRefEta;
-    std::vector<double>   tkElectronLooseEGRefPhi;
-    std::vector<unsigned int> tkElectronLooseHGC;
-    std::vector<unsigned int> tkElectronLoosePassesLooseTrackID;
-    std::vector<unsigned int> tkElectronLoosePassesPhotonID;
+    unsigned int nTkElectronsV2;
+    std::vector<double> tkElectronV2Et;
+    std::vector<double> tkElectronV2Eta;
+    std::vector<double> tkElectronV2Phi;
+    std::vector<double> tkElectronV2Chg;
+    std::vector<int>    tkElectronV2Bx;
+    std::vector<double> tkElectronV2TrkIso;
+    std::vector<double> tkElectronV2zVtx;
+    std::vector<double> tkElectronV2HwQual;
+    std::vector<double>   tkElectronV2EGRefPt;
+    std::vector<double>   tkElectronV2EGRefEta;
+    std::vector<double>   tkElectronV2EGRefPhi;
+    std::vector<unsigned int> tkElectronV2HGC;
+    std::vector<unsigned int> tkElectronV2PassesLooseTrackID;
+    std::vector<unsigned int> tkElectronV2PassesPhotonID;
 
     unsigned int nTkPhotons;
     std::vector<double> tkPhotonEt;
@@ -622,6 +644,7 @@ namespace L1Analysis
     std::vector<unsigned int> pfTauRelIsoFlag;
     std::vector<unsigned int> pfTauPassesMediumIso;
     std::vector<int> pfTauChg;
+    std::vector<double> pfTauZ0;
 
     unsigned int nNNTaus;
     std::vector<double>   nnTauEt;
