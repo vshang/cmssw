@@ -18,6 +18,7 @@ MuonPathAssociator::MuonPathAssociator(const ParameterSet& pset) {
     tanPsi_precision = pset.getUntrackedParameter<double>("tanPsi_precision");
     x_precision      = pset.getUntrackedParameter<double>("x_precision");
     useBX_correlation= pset.getUntrackedParameter<Bool_t>("useBX_correlation");
+    allow_confirmation= pset.getUntrackedParameter<Bool_t>("allow_confirmation");
     dT0_correlate_TP = pset.getUntrackedParameter<double>("dT0_correlate_TP");
     dBX_correlate_TP = pset.getUntrackedParameter<int>("dBX_correlate_TP");
     dTanPsi_correlate_TP = pset.getUntrackedParameter<double>("dTanPsi_correlate_TP");
@@ -242,7 +243,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 
 		    
 	  
-		    if(at_least_one_correlation==false){//no correlation was found, trying with pairs of two digis in the other SL
+		    if(at_least_one_correlation==false && allow_confirmation == true){//no correlation was found, trying with pairs of two digis in the other SL
 			int matched_digis=0;
 			double minx=minx_match_2digis;
 			double min2x=minx_match_2digis;
@@ -359,7 +360,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			}
 		    } */
 	 	    if (useFitSL3[sl3]) continue; 
-		    if(at_least_one_correlation==false || clean_chi2_correlation){//no correlation was found, trying with pairs of two digis in the other SL
+		    if( ( at_least_one_correlation==false || clean_chi2_correlation ) && allow_confirmation){//no correlation was found, trying with pairs of two digis in the other SL
 	    
 			int matched_digis=0;
 			double minx=minx_match_2digis;

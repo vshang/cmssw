@@ -81,6 +81,7 @@ private:
   Bool_t debug;
   Bool_t clean_chi2_correlation;
   Bool_t useBX_correlation;
+  Bool_t allow_confirmation;
   double dT0_correlate_TP;
   double dBX_correlate_TP;
   double dTanPsi_correlate_TP;
