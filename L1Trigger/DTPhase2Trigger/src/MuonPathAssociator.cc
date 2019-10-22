@@ -136,7 +136,7 @@ void MuonPathAssociator::correlateMPaths(edm::Handle<DTDigiCollection> dtdigis,
 			if (useBX_correlation){
 			    if(abs(round(SL1metaPrimitive->t0/25.)-round(SL3metaPrimitive->t0/25.)) > dBX_correlate_TP) continue; //BX match
 			} else {
-		            if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) > dT0_correlate_TP) continue; //time match
+		            if(fabs(SL1metaPrimitive->t0-SL3metaPrimitive->t0) >= dT0_correlate_TP) continue; //time match
 			}
 		        double PosSL1=SL1metaPrimitive->x;
 			double PosSL3=SL3metaPrimitive->x;

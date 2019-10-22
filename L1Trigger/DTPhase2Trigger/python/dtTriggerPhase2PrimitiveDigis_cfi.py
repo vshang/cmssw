@@ -36,9 +36,6 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                #debugging
                                                debug = cms.untracked.bool(False),
                                                dump  = cms.untracked.bool(False),
-                                               #Print hits and prims for tecno30
-					       printPython  = cms.untracked.bool(False),
-                                               printHits  = cms.untracked.bool(False),
                                                #RPC
                                                rpcRecHits = cms.untracked.InputTag("rpcRecHits"),
                                                useRPC = cms.untracked.bool(False),
