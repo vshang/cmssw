@@ -7,7 +7,6 @@ from L1Trigger.DTPhase2Trigger.PseudoBayesGrouping_cfi            import PseudoB
 dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                digiTag = cms.InputTag("CalibratedDigis"),
                                                trigger_with_sl = cms.untracked.int32(4),
-                                               use_normal_chi2 = cms.untracked.bool(True),
                                                tanPhiTh = cms.untracked.double(1.),
                                                chi2Th = cms.untracked.double(0.01), #in cm^2
                                                chi2corTh = cms.untracked.double(0.1), #in cm^2
@@ -17,6 +16,7 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                dBX_correlate_TP = cms.untracked.int32(0), 
                                                dTanPsi_correlate_TP = cms.untracked.double(99999.),
 					       clean_chi2_correlation = cms.untracked.bool(True),
+                                               allow_confirmation = cms.untracked.bool(True),
 					       use_LSB = cms.untracked.bool(False),
 					       tanPsi_precision = cms.untracked.double(1./4096.),
 					       x_precision = cms.untracked.double(0.025),
