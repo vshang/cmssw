@@ -17,12 +17,12 @@ dtTriggerPhase2PrimitiveDigis = cms.EDProducer("DTTrigPhase2Prod",
                                                dTanPsi_correlate_TP = cms.untracked.double(99999.),
 					       clean_chi2_correlation = cms.untracked.bool(True),
                                                allow_confirmation = cms.untracked.bool(True),
-					       use_LSB = cms.untracked.bool(False),
+					       use_LSB = cms.untracked.bool(True),
 					       tanPsi_precision = cms.untracked.double(1./4096.),
-					       x_precision = cms.untracked.double(0.025),
+					       x_precision = cms.untracked.double(0.004),
                                                minx_match_2digis = cms.untracked.double(1.),
                                                p2_df = cms.untracked.int32(2), #0 for phase-1, 1 for slice-test, 2 for phase-2 carlo-federica
-                                               scenario = cms.untracked.int32(1), #0 for mc, 1 for data, 2 for slice test
+                                               scenario = cms.untracked.int32(0), #0 for mc, 1 for data, 2 for slice test
                                                filter_cousins = cms.untracked.bool(True),
                                                apply_txt_ttrig_bc0 = cms.untracked.bool(False),
 
