@@ -407,6 +407,9 @@ void L1Analysis::L1AnalysisPhaseII::SetTkCaloJet(const edm::Handle<l1t::L1TkJetP
   }
 }
 
+
+
+
 void L1Analysis::L1AnalysisPhaseII::SetTkMuon(const edm::Handle<l1t::L1TkMuonParticleCollection> muon, unsigned maxL1Extra)
 {
 
@@ -448,6 +451,9 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubs(const edm::Handle<l1t::L1TkMu
 
   for(l1t::L1TkMuonParticleCollection::const_iterator it=muon->begin(); it!=muon->end() && l1extra_.nTkMuonStubs<maxL1Extra; it++){
 
+    if (muonDetector==1 && fabs(it->eta())>=0.9) continue;
+    if (muonDetector==3 && fabs(it->eta())<1.2) continue;
+
     l1extra_.tkMuonStubsPt .push_back( it->pt());
     l1extra_.tkMuonStubsEta.push_back(it->eta());
     l1extra_.tkMuonStubsPhi.push_back(it->phi());
@@ -460,6 +466,49 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubs(const edm::Handle<l1t::L1TkMu
     l1extra_.tkMuonStubsRegion.push_back(muonDetector);
     l1extra_.nTkMuonStubs++;
   }
+}
+
+void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubsOMTF(const edm::Handle<l1t::BayesMuCorrTrackBxCollection> muon, unsigned maxL1Extra, unsigned int muonDetector)
+{
+
+  for (int ibx = muon->getFirstBX(); ibx <= muon->getLastBX(); ++ibx) {
+   for(l1t::BayesMuCorrTrackBxCollection::const_iterator it=muon->begin(ibx); it!=muon->end(ibx) && l1extra_.nTkMuonStubs<maxL1Extra; it++){
+
+    // filtering to avoid overlaps
+    if (fabs(it->eta())<0.9 || fabs(it->eta())>=1.2) continue;
+
+    l1extra_.tkMuonStubsPt .push_back( it->pt());
+    l1extra_.tkMuonStubsEta.push_back(it->eta());
+    l1extra_.tkMuonStubsPhi.push_back(it->phi());
+    l1extra_.tkMuonStubsChg.push_back(it->hwSign());
+    l1extra_.tkMuonStubsTrkIso.push_back(0);
+    l1extra_.tkMuonStubszVtx.push_back(it->getTtTrackPtr()->getPOCA(4).z());
+    l1extra_.tkMuonStubsBx .push_back(ibx);
+    l1extra_.tkMuonStubsQual .push_back(1);
+    l1extra_.tkMuonStubsBarrelStubs.push_back(0);
+    l1extra_.tkMuonStubsRegion.push_back(muonDetector);
+    l1extra_.nTkMuonStubs++;
+   }
+  }
+
+}
+
+void L1Analysis::L1AnalysisPhaseII::SetHSCP(const edm::Handle<l1t::BayesMuCorrTrackBxCollection> muon, unsigned maxL1Extra)
+{
+
+  for (int ibx = muon->getFirstBX(); ibx <= muon->getLastBX(); ++ibx) {
+   for(l1t::BayesMuCorrTrackBxCollection::const_iterator it=muon->begin(ibx); it!=muon->end(ibx) && l1extra_.nTkHSCPs<maxL1Extra; it++){
+
+    l1extra_.tkHSCPsPt .push_back( it->pt());
+    l1extra_.tkHSCPsEta.push_back(it->eta());
+    l1extra_.tkHSCPsPhi.push_back(it->phi());
+    l1extra_.tkHSCPsChg.push_back(it->hwSign());
+    l1extra_.tkHSCPszVtx.push_back(it->getTtTrackPtr()->getPOCA(4).z());
+    l1extra_.tkHSCPsBx .push_back(ibx);
+    l1extra_.nTkHSCPs++;
+   }
+  }
+
 }
 
 
@@ -677,6 +726,24 @@ void L1Analysis::L1AnalysisPhaseII::SetPFTaus(const edm::Handle< vector<l1t::L1P
       }
 
 }
+
+
+void L1Analysis::L1AnalysisPhaseII::SetHPSPFTaus(const edm::Handle<l1t::L1HPSPFTauCollection >  l1HPSPFTaus,  unsigned maxL1Extra)
+{     
+
+      for (unsigned int i=0; i<l1HPSPFTaus->size() && l1extra_.nHPSTaus<maxL1Extra; i++){
+                   if(l1HPSPFTaus->at(i).pt()<10) continue;
+                   l1extra_.hpsTauEt.push_back(l1HPSPFTaus->at(i).pt());
+                   l1extra_.hpsTauEta.push_back(l1HPSPFTaus->at(i).eta());
+                   l1extra_.hpsTauPhi.push_back(l1HPSPFTaus->at(i).phi());
+                   l1extra_.hpsTauChg.push_back(l1HPSPFTaus->at(i).charge());
+                   l1extra_.hpsTauType.push_back(l1HPSPFTaus->at(i).tauType());
+                   l1extra_.hpsTauPassTightRelIso.push_back(l1HPSPFTaus->at(i).passTightRelIso());
+                   l1extra_.nHPSTaus++;
+      }
+
+}
+
 
 
 void L1Analysis::L1AnalysisPhaseII::SetNNTaus(const edm::Handle< vector<l1t::PFTau> >  l1nnTaus,  unsigned maxL1Extra)

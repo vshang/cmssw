@@ -60,12 +60,19 @@
 #include "DataFormats/L1Trigger/interface/L1PFTau.h"
 #include "DataFormats/Phase2L1ParticleFlow/interface/PFTau.h"
 
+#include "DataFormats/Phase2L1Taus/interface/L1HPSPFTau.h"
+#include "DataFormats/Phase2L1Taus/interface/L1HPSPFTauFwd.h"
+
 #include "DataFormats/L1TrackTrigger/interface/L1TkBsCandidate.h"
 #include "DataFormats/L1TrackTrigger/interface/L1TkBsCandidateFwd.h"
+
+#include "DataFormats/L1TMuon/interface/BayesMuCorrelatorTrack.h" 
 
 #include "DataFormats/JetReco/interface/CaloJet.h"
 
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
+
+
 
 namespace L1Analysis
 {
@@ -99,10 +106,14 @@ namespace L1Analysis
     void SetTkGlbMuon (const  edm::Handle<l1t::L1TkGlbMuonParticleCollection> TkGlbMuon,   unsigned maxL1Extra);
     void SetTkMuon (const  edm::Handle<l1t::L1TkMuonParticleCollection> TkMuon,   unsigned maxL1Extra);
     void SetTkMuonStubs (const  edm::Handle<l1t::L1TkMuonParticleCollection> TkMuon,   unsigned maxL1Extra,unsigned int muonDetector);
+    void SetTkMuonStubsOMTF (const  edm::Handle<l1t::BayesMuCorrTrackBxCollection> TkMuonOMTF,   unsigned maxL1Extra,unsigned int muonDetector);
+
+    void SetHSCP (const  edm::Handle<l1t::BayesMuCorrTrackBxCollection> TkMuonHSCP,   unsigned maxL1Extra);
 
     void SetTrkTau  (const  edm::Handle<l1t::L1TrkTauParticleCollection> tkTau, unsigned maxL1Extra);
     void SetCaloTkTau  (const  edm::Handle<l1t::L1CaloTkTauParticleCollection> CaloTkTau, unsigned maxL1Extra);
     void SetTkEGTau  (const  edm::Handle<l1t::L1TkEGTauParticleCollection> TkEGTau, unsigned maxL1Extra);
+
 
     void SetTkJet  (const  edm::Handle<l1t::L1TkJetParticleCollection>  tkTrackerJet,    unsigned maxL1Extra);
     void SetTkCaloJet  (const  edm::Handle<l1t::L1TkJetParticleCollection>  tkCaloJet,    unsigned maxL1Extra);
@@ -123,6 +134,7 @@ namespace L1Analysis
     // Add new PFTau
     void SetPFTaus  (const      edm::Handle< std::vector<l1t::L1PFTau>>  l1pfTaus,    unsigned maxL1Extra);
     void SetNNTaus  (const      edm::Handle< std::vector<l1t::PFTau>>  l1nnTaus,    unsigned maxL1Extra);
+    void SetHPSPFTaus  (const  edm::Handle<l1t::L1HPSPFTauCollection> HPSPFTau, unsigned maxL1Extra);
 
     void SetBsCands (const      edm::Handle< std::vector<l1t::L1TkBsCandidate>>  l1TkBs,    unsigned maxL1Extra, int kind);
 

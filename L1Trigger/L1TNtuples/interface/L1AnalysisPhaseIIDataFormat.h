@@ -88,7 +88,6 @@ namespace L1Analysis
       globalMuonTfMuonIdx.clear();
       globalMuonBx.clear();
 
-
       nStandaloneMuons = 0;
       standaloneMuonPt.clear();
       standaloneMuonPt2.clear();
@@ -249,6 +248,14 @@ namespace L1Analysis
       tkMuonStubsBarrelStubs.clear();
       tkMuonStubsRegion.clear();
 
+      nTkHSCPs = 0;
+      tkHSCPsPt.clear();
+      tkHSCPsEta.clear();
+      tkHSCPsPhi.clear();
+      tkHSCPsChg.clear();
+      tkHSCPsBx.clear();
+      tkHSCPszVtx.clear();
+
       // TrackerMet
       nTrackerMet = 0;
       trackerMetSumEt.clear();
@@ -327,6 +334,16 @@ namespace L1Analysis
       nnTauPassLoosePF.clear(); 
       nnTauPassTightPF.clear();   
       nnTauPassTightNN.clear();
+
+      nHPSTaus = 0;
+      hpsTauEt.clear();
+      hpsTauEta.clear();
+      hpsTauPhi.clear();
+      hpsTauChg.clear();
+      hpsTauPassTightRelIso.clear();
+      hpsTauType.clear();
+
+
 
       nTkBsCands=0;
       tkBsCandPt.clear();
@@ -580,6 +597,14 @@ namespace L1Analysis
     std::vector<double>   tkMuonStubsBarrelStubs;
     std::vector<unsigned int>   tkMuonStubsRegion;
 
+    unsigned int nTkHSCPs;
+    std::vector<double>   tkHSCPsPt;
+    std::vector<double>   tkHSCPsEta;
+    std::vector<double>   tkHSCPsPhi;
+    std::vector<int>      tkHSCPsChg;
+    std::vector<int>      tkHSCPsBx;
+    std::vector<double>   tkHSCPszVtx;
+
     unsigned int nTrackerMet;
     std::vector<double> trackerMetSumEt;
     std::vector<double> trackerMetEt;
@@ -658,6 +683,16 @@ namespace L1Analysis
     std::vector<unsigned int>   nnTauPassLoosePF;
     std::vector<unsigned int>   nnTauPassTightPF;
     std::vector<unsigned int>   nnTauPassTightNN;
+
+    unsigned int nHPSTaus;
+    std::vector<double>   hpsTauEt;
+    std::vector<double>   hpsTauEta;
+    std::vector<double>   hpsTauPhi;
+    std::vector<int>   hpsTauChg;
+    std::vector<double>   hpsTauPassTightRelIso;
+    std::vector<unsigned int>   hpsTauType;
+
+
 
    unsigned int nTkBsCands;
    std::vector<double> tkBsCandPt;
