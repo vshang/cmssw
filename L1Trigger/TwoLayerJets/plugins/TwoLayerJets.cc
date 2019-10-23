@@ -116,7 +116,7 @@ struct maxzbin {
       typedef vector< L1TTTrackType > L1TTTrackCollectionType;
      
       static void fillDescriptions(ConfigurationDescriptions& descriptions);
-      bool TrackQualityCuts(float trk_pt,int trk_nstub, double trk_chi2,double trk_bconsist);
+      bool TrackQualityCuts(float trk_pt,int trk_nstub, float trk_chi2,float trk_bconsist,float trk_d0);
       //bool TrackQualityCuts(float trk_pt,int trk_nstub, double trk_chi2);
       //Clustering Steps
       void L2_cluster(vector< Ptr< L1TTTrackType > > L1TrackPtrs, vector<int>ttrk, vector<int>tdtrk,vector<int>ttdtrk, maxzbin &mzb);
@@ -297,7 +297,7 @@ TwoLayerJets::produce(Event& iEvent, const EventSetup& iSetup)
 	if(nPS<nPSMin)continue;
 	//trk_stubPt=trk_stubPt/tracknstubs;
         //need min pT, eta, z cut
-	if(!TrackQualityCuts(trackpT,tracknstubs,trackchi2/(2*tracknstubs-L1Tk_nPar),trk_stubPt))continue;
+	if(!TrackQualityCuts(trackpT,tracknstubs,trackchi2/(2*tracknstubs-L1Tk_nPar),trk_stubPt, fabs(trk_d0)))continue;
     	if(fabs(iterL1Track->getPOCA(L1Tk_nPar).z())>maxz)continue;
     	if(fabs(iterL1Track->getMomentum(L1Tk_nPar).eta())>TRK_ETAMAX)continue;
     	if(iterL1Track->getMomentum(L1Tk_nPar).perp()<TRK_PTMIN)continue;
@@ -802,12 +802,12 @@ TwoLayerJets::endLuminosityBlock(LuminosityBlock const&, EventSetup const&)
 //}
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 
-bool TwoLayerJets::TrackQualityCuts(float trk_pt,int trk_nstub, double trk_chi2,double trk_bconsist){
+bool TwoLayerJets::TrackQualityCuts(float trk_pt,int trk_nstub, float trk_chi2,float trk_bconsist, float trk_d0){
 bool PassQuality=false;
 
 if(trk_bconsist<PromptBendConsistency && trk_chi2<CHI2_MAX && trk_nstub>=4 && !DisplacedAlgo)PassQuality=true;
-if(DisplacedAlgo && trk_bconsist<NStubs4Displacedbend_Tight && trk_chi2<NStubs4DisplacedChi2_Tight  && trk_nstub==4)PassQuality=true;
-if(DisplacedAlgo && trk_bconsist<NStubs4Displacedbend_Loose && trk_chi2<NStubs4DisplacedChi2_Loose  && trk_nstub==4)PassQuality=true;
+if(DisplacedAlgo && trk_bconsist<NStubs4Displacedbend_Tight && trk_chi2<NStubs4DisplacedChi2_Tight  && trk_nstub==4 && trk_d0<=D0_CutNstubs4)PassQuality=true;
+if(DisplacedAlgo && trk_bconsist<NStubs4Displacedbend_Loose && trk_chi2<NStubs4DisplacedChi2_Loose  && trk_nstub==4 && trk_d0>D0_CutNstubs4)PassQuality=true;
 if(DisplacedAlgo && trk_bconsist<NStubs5Displacedbend_Loose && trk_chi2<NStubs5DisplacedChi2_Loose  && trk_nstub>4)PassQuality=true;
 //if(trk_chi2<50 && trk_nstub>=4)PassQuality=true;
 return PassQuality; 
