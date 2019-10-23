@@ -806,6 +806,7 @@ bool TwoLayerJets::TrackQualityCuts(float trk_pt,int trk_nstub, double trk_chi2,
 bool PassQuality=false;
 
 if(trk_bconsist<PromptBendConsistency && trk_chi2<CHI2_MAX && trk_nstub>=4 && !DisplacedAlgo)PassQuality=true;
+if(DisplacedAlgo && trk_bconsist<NStubs4Displacedbend_Tight && trk_chi2<NStubs4DisplacedChi2_Tight  && trk_nstub==4)PassQuality=true;
 if(DisplacedAlgo && trk_bconsist<NStubs4Displacedbend_Loose && trk_chi2<NStubs4DisplacedChi2_Loose  && trk_nstub==4)PassQuality=true;
 if(DisplacedAlgo && trk_bconsist<NStubs5Displacedbend_Loose && trk_chi2<NStubs5DisplacedChi2_Loose  && trk_nstub>4)PassQuality=true;
 //if(trk_chi2<50 && trk_nstub>=4)PassQuality=true;
