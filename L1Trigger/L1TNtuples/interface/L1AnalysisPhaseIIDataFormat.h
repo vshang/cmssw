@@ -342,7 +342,7 @@ namespace L1Analysis
       hpsTauChg.clear();
       hpsTauPassTightRelIso.clear();
       hpsTauType.clear();
-
+      hpsTauZ0.clear();
 
 
       nTkBsCands=0;
@@ -691,6 +691,7 @@ namespace L1Analysis
     std::vector<int>   hpsTauChg;
     std::vector<double>   hpsTauPassTightRelIso;
     std::vector<unsigned int>   hpsTauType;
+    std::vector<double>   hpsTauZ0;
 
 
 

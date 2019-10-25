@@ -739,6 +739,7 @@ void L1Analysis::L1AnalysisPhaseII::SetHPSPFTaus(const edm::Handle<l1t::L1HPSPFT
                    l1extra_.hpsTauChg.push_back(l1HPSPFTaus->at(i).charge());
                    l1extra_.hpsTauType.push_back(l1HPSPFTaus->at(i).tauType());
                    l1extra_.hpsTauPassTightRelIso.push_back(l1HPSPFTaus->at(i).passTightRelIso());
+                   l1extra_.hpsTauZ0.push_back(l1HPSPFTaus->at(i).primaryVertex()->z0()); 
                    l1extra_.nHPSTaus++;
       }
 
