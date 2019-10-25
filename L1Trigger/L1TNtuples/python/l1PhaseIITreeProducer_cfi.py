@@ -31,7 +31,8 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    ak4L1PF = cms.InputTag("ak4PFL1PuppiCorrected"),
 #   ak4L1PFForMET = cms.InputTag("ak4PFL1PuppiForMETCorrected"),
 
-   l1pfPhase1L1TJetToken  = cms.InputTag("l1pfPhase1L1TJetProducer" ,  "UncalibratedPhase1L1TJetFromPfCandidates"), 
+#   l1pfPhase1L1TJetToken  = cms.InputTag("Phase1L1TJetProducer" ,  "UncalibratedPhase1L1TJetFromPfCandidates"), 
+   l1pfPhase1L1TJetToken  = cms.InputTag("Phase1L1TJetCalibrator" ,   "Phase1L1TJetFromPfCandidates"),
 
    l1PFCandidates = cms.InputTag("l1pfCandidates","Puppi"),
 #   l1PFCandidates = cms.InputTag("l1pfCandidates","PF"),
