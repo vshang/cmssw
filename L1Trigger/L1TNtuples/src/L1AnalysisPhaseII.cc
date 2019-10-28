@@ -480,7 +480,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubsOMTF(const edm::Handle<l1t::Ba
     l1extra_.tkMuonStubsPt .push_back( it->pt());
     l1extra_.tkMuonStubsEta.push_back(it->eta());
     l1extra_.tkMuonStubsPhi.push_back(it->phi());
-    l1extra_.tkMuonStubsChg.push_back(it->hwSign());
+    l1extra_.tkMuonStubsChg.push_back(  pow(-1,it->hwSign() )  );
     l1extra_.tkMuonStubsTrkIso.push_back(0);
     l1extra_.tkMuonStubszVtx.push_back(it->getTtTrackPtr()->getPOCA(4).z());
     l1extra_.tkMuonStubsBx .push_back(ibx);
