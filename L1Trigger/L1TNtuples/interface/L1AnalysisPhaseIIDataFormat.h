@@ -335,6 +335,21 @@ namespace L1Analysis
       nnTauPassTightPF.clear();   
       nnTauPassTightNN.clear();
 
+      nNNTauPFs = 0;
+      nnTauPFEt.clear();
+      nnTauPFEta.clear();
+      nnTauPFPhi.clear();
+      nnTauPFChg.clear();
+      nnTauPFChargedIso.clear();
+      nnTauPFFullIso.clear();
+      nnTauPFID.clear();
+      nnTauPFPassLooseNN.clear();
+      nnTauPFPassLoosePF.clear();
+      nnTauPFPassTightPF.clear();
+      nnTauPFPassTightNN.clear();
+
+
+
       nHPSTaus = 0;
       hpsTauEt.clear();
       hpsTauEta.clear();
@@ -683,6 +698,21 @@ namespace L1Analysis
     std::vector<unsigned int>   nnTauPassLoosePF;
     std::vector<unsigned int>   nnTauPassTightPF;
     std::vector<unsigned int>   nnTauPassTightNN;
+
+
+    unsigned int nNNTauPFs;
+    std::vector<double>   nnTauPFEt;
+    std::vector<double>   nnTauPFEta;
+    std::vector<double>   nnTauPFPhi;
+    std::vector<int>   nnTauPFChg;
+    std::vector<double>   nnTauPFChargedIso;
+    std::vector<double>   nnTauPFFullIso;
+    std::vector<unsigned int>   nnTauPFID;
+    std::vector<unsigned int>   nnTauPFPassLooseNN;
+    std::vector<unsigned int>   nnTauPFPassLoosePF;
+    std::vector<unsigned int>   nnTauPFPassTightPF;
+    std::vector<unsigned int>   nnTauPFPassTightNN;
+
 
     unsigned int nHPSTaus;
     std::vector<double>   hpsTauEt;

@@ -135,6 +135,7 @@ namespace L1Analysis
     void SetPFTaus  (const      edm::Handle< std::vector<l1t::L1PFTau>>  l1pfTaus,    unsigned maxL1Extra);
     void SetNNTaus  (const      edm::Handle< std::vector<l1t::PFTau>>  l1nnTaus,    unsigned maxL1Extra);
     void SetHPSPFTaus  (const  edm::Handle<l1t::L1HPSPFTauCollection> HPSPFTau, unsigned maxL1Extra);
+    void SetNNTauPFs  (const      edm::Handle< std::vector<l1t::PFTau>>  l1nnTauPFs,    unsigned maxL1Extra);
 
     void SetBsCands (const      edm::Handle< std::vector<l1t::L1TkBsCandidate>>  l1TkBs,    unsigned maxL1Extra, int kind);
 
