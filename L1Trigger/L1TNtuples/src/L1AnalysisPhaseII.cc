@@ -706,7 +706,7 @@ void L1Analysis::L1AnalysisPhaseII::SetPFTaus(const edm::Handle< vector<l1t::L1P
 {
 
       for (unsigned int i=0; i<l1pfTaus->size() && l1extra_.nPFTaus<maxL1Extra; i++){
-                   if(l1pfTaus->at(i).pt()<10) continue;
+                   if(l1pfTaus->at(i).pt()<1) continue;
                    l1extra_.pfTauEt.push_back(l1pfTaus->at(i).pt());
                    l1extra_.pfTauEta.push_back(l1pfTaus->at(i).eta());
                    l1extra_.pfTauPhi.push_back(l1pfTaus->at(i).phi());
@@ -732,7 +732,7 @@ void L1Analysis::L1AnalysisPhaseII::SetHPSPFTaus(const edm::Handle<l1t::L1HPSPFT
 {     
 
       for (unsigned int i=0; i<l1HPSPFTaus->size() && l1extra_.nHPSTaus<maxL1Extra; i++){
-                   if(l1HPSPFTaus->at(i).pt()<10) continue;
+                   if(l1HPSPFTaus->at(i).pt()<1) continue;
                    l1extra_.hpsTauEt.push_back(l1HPSPFTaus->at(i).pt());
                    l1extra_.hpsTauEta.push_back(l1HPSPFTaus->at(i).eta());
                    l1extra_.hpsTauPhi.push_back(l1HPSPFTaus->at(i).phi());
@@ -751,7 +751,7 @@ void L1Analysis::L1AnalysisPhaseII::SetNNTaus(const edm::Handle< vector<l1t::PFT
 {
  
       for (unsigned int i=0; i<l1nnTaus->size() && l1extra_.nNNTaus<maxL1Extra; i++){
-                   if(l1nnTaus->at(i).pt()<10) continue;
+                   if(l1nnTaus->at(i).pt()<1) continue;
                    l1extra_.nnTauEt.push_back(l1nnTaus->at(i).pt());
                    l1extra_.nnTauEta.push_back(l1nnTaus->at(i).eta());
                    l1extra_.nnTauPhi.push_back(l1nnTaus->at(i).phi());
@@ -772,7 +772,7 @@ void L1Analysis::L1AnalysisPhaseII::SetNNTauPFs(const edm::Handle< vector<l1t::P
 {
 
       for (unsigned int i=0; i<l1nnTauPFs->size() && l1extra_.nNNTauPFs<maxL1Extra; i++){
-                   if(l1nnTauPFs->at(i).pt()<10) continue;
+                   if(l1nnTauPFs->at(i).pt()<1) continue;
                    l1extra_.nnTauPFEt.push_back(l1nnTauPFs->at(i).pt());
                    l1extra_.nnTauPFEta.push_back(l1nnTauPFs->at(i).eta());
                    l1extra_.nnTauPFPhi.push_back(l1nnTauPFs->at(i).phi());
