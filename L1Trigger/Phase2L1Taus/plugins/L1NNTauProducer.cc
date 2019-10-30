@@ -66,7 +66,8 @@ void L1NNTauProducer::addTau(l1t::PFCandidate &iCand,const l1t::PFCandidateColle
       lTot += pVec;
       if(deltaR(iCand,l1PFCand) < fTauSize && (l1PFCand.id() == l1t::PFCandidate::Electron  || l1PFCand.id() == l1t::PFCandidate::ChargedHadron  || l1PFCand.id() == l1t::PFCandidate::Photon) ) {
 	lId++;
-	if( l1PFCand.id() == l1t::PFCandidate::Electron  || l1PFCand.id() == l1t::PFCandidate::ChargedHadron ) lCand += pVec;
+	//if( l1PFCand.id() == l1t::PFCandidate::Electron  || l1PFCand.id() == l1t::PFCandidate::ChargedHadron ) 
+      lCand += pVec;
       }
       pfTauCands.push_back(l1PFCand);
     }
