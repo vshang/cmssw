@@ -26,7 +26,6 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(100)
 )
-
 #process.Timing = cms.Service("Timing",
           #summaryOnly = cms.untracked.bool(False),
           #useJobReport = cms.untracked.bool(True)
