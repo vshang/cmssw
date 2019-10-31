@@ -159,6 +159,10 @@ namespace L1Analysis
 
   private :
     L1AnalysisPhaseIIDataFormat l1extra_;
+    int tk_nFitParams_=4 ; // Harcoding this, choosing 4,
+                              // to not have to store the chosen fitParams for all objects in this tree producer as a configuration.
+                              // (it would be cleaner if all objects save the Z directly as well as the pointer to the track, or if
+                              // it is clear that the default is 4 unless specifically stated)
   }; 
 }
 #endif

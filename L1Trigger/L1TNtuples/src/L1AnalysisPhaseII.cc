@@ -347,6 +347,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTrkTau(const edm::Handle<l1t::L1TrkTauPar
     l1extra_.tkTauPhi.push_back(it->phi());
     l1extra_.tkTauTrkIso.push_back(it->getIso());
     l1extra_.tkTauBx.push_back(0);//it->bx());
+    l1extra_.tkTauzVtx.push_back( it->getSeedTrk()->getPOCA(tk_nFitParams_).z() );
     l1extra_.nTkTau++;
   }
 }
@@ -361,6 +362,7 @@ void L1Analysis::L1AnalysisPhaseII::SetCaloTkTau(const edm::Handle<l1t::L1CaloTk
     l1extra_.caloTkTauPhi.push_back(it->phi());
     l1extra_.caloTkTauTrkIso.push_back(it->getVtxIso());
     l1extra_.caloTkTauBx.push_back(0);//it->bx());
+    l1extra_.caloTkTauzVtx.push_back( it->getSeedTrk()->getPOCA(tk_nFitParams_).z() );
     l1extra_.nCaloTkTau++;
   }
 }
@@ -375,6 +377,8 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEGTau(const edm::Handle<l1t::L1TkEGTauP
     l1extra_.tkEGTauPhi.push_back(it->phi());
     l1extra_.tkEGTauTrkIso.push_back(it->getIso());
     l1extra_.tkEGTauBx.push_back(0);//it->bx());
+    l1extra_.tkEGTauzVtx.push_back( it->getSeedTrk()->getPOCA(tk_nFitParams_).z() ); 
+    //std::cout<<tk_nFitParams_<<"  "<<it->getSeedTrk()->getPOCA(tk_nFitParams_).z() <<std::endl;  
     l1extra_.nTkEGTau++;
   }
 }
@@ -482,7 +486,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubsOMTF(const edm::Handle<l1t::Ba
     l1extra_.tkMuonStubsPhi.push_back(it->phi());
     l1extra_.tkMuonStubsChg.push_back(  pow(-1,it->hwSign() )  );
     l1extra_.tkMuonStubsTrkIso.push_back(0);
-    l1extra_.tkMuonStubszVtx.push_back(it->getTtTrackPtr()->getPOCA(4).z());
+    l1extra_.tkMuonStubszVtx.push_back(it->getTtTrackPtr()->getPOCA(tk_nFitParams_).z());
     l1extra_.tkMuonStubsBx .push_back(ibx);
     l1extra_.tkMuonStubsQual .push_back(1);
     l1extra_.tkMuonStubsBarrelStubs.push_back(0);
@@ -503,7 +507,7 @@ void L1Analysis::L1AnalysisPhaseII::SetHSCP(const edm::Handle<l1t::BayesMuCorrTr
     l1extra_.tkHSCPsEta.push_back(it->eta());
     l1extra_.tkHSCPsPhi.push_back(it->phi());
     l1extra_.tkHSCPsChg.push_back(it->hwSign());
-    l1extra_.tkHSCPszVtx.push_back(it->getTtTrackPtr()->getPOCA(4).z());
+    l1extra_.tkHSCPszVtx.push_back(it->getTtTrackPtr()->getPOCA(tk_nFitParams_).z());
     l1extra_.tkHSCPsBx .push_back(ibx);
     l1extra_.nTkHSCPs++;
    }
@@ -675,7 +679,7 @@ void L1Analysis::L1AnalysisPhaseII::SetPFObjects(const edm::Handle< vector<l1t::
                   l1extra_.pfMuonChg.push_back(l1pfCandidates->at(i).charge());
                   l1extra_.pfMuonEta.push_back(l1pfCandidates->at(i).eta());
                   l1extra_.pfMuonPhi.push_back(l1pfCandidates->at(i).phi());
-                  l1extra_.pfMuonzVtx.push_back(l1pfCandidates->at(i).pfTrack()->track()->getPOCA(4).z()); // check with Giovanni, there has to be a cleaner way to do this. nParam_=4 should not be hardcoded
+                  l1extra_.pfMuonzVtx.push_back(l1pfCandidates->at(i).pfTrack()->track()->getPOCA(tk_nFitParams_).z()); // check with Giovanni, there has to be a cleaner way to do this. nParam_=4 should not be hardcoded
                   l1extra_.nPFMuons++;
             }
       }
@@ -690,7 +694,7 @@ void L1Analysis::L1AnalysisPhaseII::SetPFObjects(const edm::Handle< vector<l1t::
                   l1extra_.pfCandEta.push_back(l1pfCandidates->at(i).eta());
                   l1extra_.pfCandPhi.push_back(l1pfCandidates->at(i).phi());
                   if (l1pfCandidates->at(i).id()==0) {
-                      l1extra_.pfCandzVtx.push_back(l1pfCandidates->at(i).pfTrack()->track()->getPOCA(4).z()); 
+                      l1extra_.pfCandzVtx.push_back(l1pfCandidates->at(i).pfTrack()->track()->getPOCA(tk_nFitParams_).z()); 
                   } else {
                       l1extra_.pfCandzVtx.push_back(9999.0);
                   };
