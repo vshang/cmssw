@@ -71,6 +71,8 @@ public:
 
 private:
   virtual void produce(edm::Event&, const edm::EventSetup&);
+  
+  void makeMuonsME0Extended(const edm::Handle<EMTFHitCollection>& , L1TkMuonParticleCollection& ) const;
 
   // algo for endcap regions using dynamic windows for making the match trk + muStub
   void runOnMuonHitCollection(const edm::Handle<EMTFHitCollection>&,
@@ -112,6 +114,7 @@ L1TkMuonStubProducer::L1TkMuonStubProducer(const edm::ParameterSet& iConfig) :
    
 
    produces<L1TkMuonParticleCollection>();
+   produces<L1TkMuonParticleCollection>("ME0Ext");
 
    // initializations
    if (emtfMatchAlgoVersion_ == kDynamicWindows)
@@ -173,6 +176,7 @@ L1TkMuonStubProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
   iEvent.getByToken(trackToken, l1tksH);
 
   L1TkMuonParticleCollection oc_endcap_tkmuonStub;
+  L1TkMuonParticleCollection oc_me0Extended_tkmuonStub;
 
   // process each of the MTF collections separately! -- we don't want to filter the muons
   //if (emtfMatchAlgoVersion_ == kDynamicWindows) 
@@ -186,10 +190,74 @@ L1TkMuonStubProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
     oc_tkmuon->insert(oc_tkmuon->end(), p.begin(), p.end());
   }
 
+   makeMuonsME0Extended(l1emtfHCH,oc_me0Extended_tkmuonStub);
+
+  // now combine all trk muons into a single output collection!
+  std::unique_ptr<L1TkMuonParticleCollection> oc_me0Ext(new L1TkMuonParticleCollection());
+  for (const auto& p : {oc_me0Extended_tkmuonStub}){
+    oc_me0Ext->insert(oc_me0Ext->end(), p.begin(), p.end());
+  }
+   
   // put the new track+muon objects in the event!
   iEvent.put( std::move(oc_tkmuon));
+  // put the new me0  objects in the event!
+  iEvent.put( std::move(oc_me0Ext),"ME0Ext");
 };
 
+
+void
+L1TkMuonStubProducer::makeMuonsME0Extended(const edm::Handle<EMTFHitCollection>& muonStubH, L1TkMuonParticleCollection& tkMuons) const
+
+{
+  const EMTFHitCollection& l1muStubs = (*muonStubH.product());
+
+  // collection for cleaned stubs
+  EMTFHitCollection cleanedStubs;
+
+  // reserve to size of original coolection
+  cleanedStubs.reserve(l1muStubs.size());
+
+  // fill collection of cleaned stubs
+  cleanStubs(l1muStubs, cleanedStubs);
+
+
+  for (auto muStub : cleanedStubs) {
+
+    if(muStub.Subsystem() != EMTFHit::kME0) continue;
+
+    
+    float stubBend = muStub.Bend();
+    stubBend *= 3.63/1000.; // in rad
+    float pt = 0.25 * 1.0 / abs(stubBend); // in GeV (scale by ~1/4)
+
+    float eta = muStub.Eta_sim();
+    float phi = muStub.Phi_sim() * TMath::Pi()/180.;
+
+    if(abs(eta) < 2.4) continue;
+
+    if(pt < 5.0) continue;
+    
+    // build a L1Candidate
+    reco::Candidate::PolarLorentzVector muonLV(pt,eta,phi,0);
+    L1TkMuonParticle muon(muonLV);
+
+    int charge = 1;
+    if(stubBend > 0) charge = -1;
+
+    int quality = muStub.Quality();
+
+    
+    muon.setCharge(charge);
+    muon.setQuality(quality);
+
+    // store 
+    //cout << "Storing ME0 muon pt = " << pt << endl;
+    tkMuons.push_back( muon);
+
+  }
+
+  return;
+}
 
 void
 L1TkMuonStubProducer::runOnMuonHitCollection(const edm::Handle<EMTFHitCollection>& muonStubH,
