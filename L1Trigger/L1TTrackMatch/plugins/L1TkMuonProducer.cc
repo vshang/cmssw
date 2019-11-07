@@ -315,6 +315,11 @@ void L1TkMuonProducer::produce(edm::StreamID, edm::Event& iEvent, const edm::Eve
     mantradf_tracks = product_to_trkvec(*l1tksH.product());
   }
 
+  std::vector<L1TkMuMantraDF::track_df> mantradf_tracks; // if needed, just encode once for all trk finders
+  if (bmtfMatchAlgoVersion_ == kMantra || omtfMatchAlgoVersion_ == kMantra || emtfMatchAlgoVersion_ == kMantra){
+      mantradf_tracks = product_to_trkvec(*l1tksH.product());
+  }
+    
   // process each of the MTF collections separately! -- we don't want to filter the muons
 
   // ----------------------------------------------------- barrel
