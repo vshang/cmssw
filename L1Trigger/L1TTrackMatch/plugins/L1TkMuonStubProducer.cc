@@ -236,6 +236,7 @@ L1TkMuonStubProducer::makeMuonsME0Extended(const edm::Handle<EMTFHitCollection>&
     if(abs(eta) < 2.4) continue;
 
     if(pt < 5.0) continue;
+    if (pt > 200) pt=200;  // saturate to remove inf pt
     
     // build a L1Candidate
     reco::Candidate::PolarLorentzVector muonLV(pt,eta,phi,0);
