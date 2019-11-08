@@ -236,6 +236,7 @@ L1TkMuonStubProducer::makeMuonsME0Extended(const edm::Handle<EMTFHitCollection>&
     if(abs(eta) < 2.4) continue;
 
     if(pt < 5.0) continue;
+    if (pt > 80) pt=80;  // saturate to remove inf pt due to limited bend angle resolution
     
     // build a L1Candidate
     reco::Candidate::PolarLorentzVector muonLV(pt,eta,phi,0);
