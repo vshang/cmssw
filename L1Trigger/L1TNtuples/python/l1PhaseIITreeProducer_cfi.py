@@ -14,39 +14,34 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    tkEGV2TokenHGC = cms.InputTag("L1TkElectronsEllipticMatchHGC","EG"),
    tkEMTokenHGC = cms.InputTag("L1TkPhotonsHGC","EG"),
 
-   tkTauToken     = cms.InputTag("L1TrackerTaus","TkTau"), # ?
+   tkTauToken     = cms.InputTag("L1TrackerTaus","TrkTau"), # ?
    caloTkTauToken = cms.InputTag("L1TkCaloTaus","CaloTk"), # ?
    tkEGTauToken   = cms.InputTag("L1TkEGTaus","TkEG"), # ?
 
    TkGlbMuonToken = cms.InputTag("L1TkGlbMuons",""),
-   TkMuonToken = cms.InputTag("L1TkMuons",""),                                            
-   #TkMuonStubsTokenBMTF = cms.InputTag("l1TPSMuons",""), #Changed to this by Mike, then to 
- #  TkMuonStubsTokenBMTF = cms.InputTag("l1StubMatchedMuons",""),  # by Vlad... 
- #  TkMuonStubsTokenEMTF = cms.InputTag("l1TkMuonStubEndCapS12",""),
- #  TkMuonStubsTokenOMTF = cms.InputTag("l1TkMuonStubOverlap","MuonTracks"),
- #  TkMuonStubsTokenME0 = cms.InputTag("l1TkMuonStubEndCap","ME0Ext"),
+   TkMuonToken = cms.InputTag("L1TkMuons",""),
 
- #  TkMuonStubsTokenHSCP = cms.InputTag("l1TkMuonStubOverlap","HscpTracks"),
+#   TkMuonStubsTokenBMTF = cms.InputTag("l1StubMatchedMuons",""),  # These are not in 11_1_2 yet
+#   TkMuonStubsTokenEMTF = cms.InputTag("l1TkMuonStubEndCapS12",""),
+#   TkMuonStubsTokenOMTF = cms.InputTag("l1TkMuonStubOverlap","MuonTracks"),
+#   TkMuonStubsTokenME0 = cms.InputTag("l1TkMuonStubEndCap","ME0Ext"),
+#   TkMuonStubsTokenHSCP = cms.InputTag("l1TkMuonStubOverlap","HscpTracks"),
 
-   tkTrackerJetToken = cms.InputTag("TwoLayerJets", "L1TwoLayerJets"),                                            
+   tkTrackerJetToken = cms.InputTag("TwoLayerJets", "L1TwoLayerJets"),
    tkCaloJetToken = cms.InputTag("L1TkCaloJets","L1TkCaloJets"),
    tkMetToken = cms.InputTag("L1TrackerEtMiss","trkMET"),
    tkMhtTokens = cms.VInputTag( cms.InputTag("L1TrackerHTMiss","L1TrackerHTMiss") ),
 
    ak4L1PF = cms.InputTag("ak4PFL1PuppiCorrected"),
-#   ak4L1PFForMET = cms.InputTag("ak4PFL1PuppiForMETCorrected"),
 
-#   l1pfPhase1L1TJetToken  = cms.InputTag("Phase1L1TJetProducer" ,  "UncalibratedPhase1L1TJetFromPfCandidates"), 
-#   l1pfPhase1L1TJetToken  = cms.InputTag("Phase1L1TJetCalibrator" ,   "Phase1L1TJetFromPfCandidates"),
+#   l1pfPhase1L1TJetToken  = cms.InputTag("Phase1L1TJetCalibrator" ,   "Phase1L1TJetFromPfCandidates"), # not there yet either
 
    l1PFCandidates = cms.InputTag("l1pfCandidates","Puppi"),
-#   l1PFCandidates = cms.InputTag("l1pfCandidates","PF"),
-
 
    caloTauToken = cms.InputTag("L1CaloJetProducer","L1CaloTauCollectionBXV"),
    caloJetToken = cms.InputTag("L1CaloJetProducer","L1CaloJetCollectionBXV"),
    caloJetHTTToken = cms.InputTag("L1CaloJetHTTProducer","CaloJetHTT"),
- 
+
    muonKalman = cms.InputTag("simKBmtfDigis","BMTF"),
    muonOverlap = cms.InputTag("simOmtfDigis","OMTF"),
    muonEndcap = cms.InputTag("simEmtfDigis","EMTF"),
@@ -58,11 +53,11 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    l1vertices = cms.InputTag("VertexProducer","l1vertices"),
    l1TkPrimaryVertex= cms.InputTag("L1TkPrimaryVertex",""),
 
- #  L1PFTauToken = cms.InputTag("l1pfTauProducer","L1PFTaus"),   
+#   L1PFTauToken = cms.InputTag("l1pfTauProducer","L1PFTaus"),  # not there
    L1NNTauToken = cms.InputTag("l1NNTauProducerPuppi","L1PFTausNN"),
    L1NNTauPFToken = cms.InputTag("l1NNTauProducer","L1PFTausNN"),
 
- #  L1HPSPFTauToken = cms.InputTag("L1HPSPFTauProducerPF",""),
+#   L1HPSPFTauToken = cms.InputTag("L1HPSPFTauProducerPF",""),
 
    L1TkBsCandsToken = cms.InputTag("l1TkBsCandidates"),
    L1TkBsCandsLooseToken = cms.InputTag("l1TkBsCandidatesLooseWP"),

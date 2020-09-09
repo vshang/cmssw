@@ -93,6 +93,7 @@ Implementation:
 #include "TTree.h"
 
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseII.h"
+#include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
 
 //
 // class declaration
@@ -169,7 +170,7 @@ class L1PhaseIITreeProducer : public edm::EDAnalyzer {
 
                 edm::EDGetTokenT<std::vector<reco::PFMET> > l1PFMet_;
 
-                edm::EDGetTokenT<std::vector<reco::CaloJet> > l1pfPhase1L1TJetToken_; // why are these caloJets??? 
+                //edm::EDGetTokenT<std::vector<reco::CaloJet> > l1pfPhase1L1TJetToken_; // why are these caloJets??? 
 
                 edm::EDGetTokenT<float> z0PuppiToken_;
                 //edm::EDGetTokenT<l1t::VertexCollection> l1vertextdrToken_;
@@ -237,7 +238,7 @@ L1PhaseIITreeProducer::L1PhaseIITreeProducer(const edm::ParameterSet& iConfig){
 
         ak4L1PF_ = consumes<std::vector<l1t::PFJet> > (iConfig.getParameter<edm::InputTag>("ak4L1PF"));
 
-        l1pfPhase1L1TJetToken_ = consumes<std::vector<reco::CaloJet> > (iConfig.getParameter<edm::InputTag>("l1pfPhase1L1TJetToken"));
+        //l1pfPhase1L1TJetToken_ = consumes<std::vector<reco::CaloJet> > (iConfig.getParameter<edm::InputTag>("l1pfPhase1L1TJetToken"));
 
         muonKalman_ = consumes<l1t::RegionalMuonCandBxCollection> (iConfig.getParameter<edm::InputTag>("muonKalman"));
         muonOverlap_ = consumes<l1t::RegionalMuonCandBxCollection> (iConfig.getParameter<edm::InputTag>("muonOverlap"));
@@ -374,8 +375,8 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         edm::Handle< std::vector<reco::PFMET> > l1PFMet;
         iEvent.getByToken(l1PFMet_, l1PFMet);
 
-        edm::Handle<  std::vector<reco::CaloJet>  > l1pfPhase1L1TJet;
-        iEvent.getByToken(l1pfPhase1L1TJetToken_,  l1pfPhase1L1TJet);
+      //  edm::Handle<  std::vector<reco::CaloJet>  > l1pfPhase1L1TJet;
+      //  iEvent.getByToken(l1pfPhase1L1TJetToken_,  l1pfPhase1L1TJet);
 
 
         // now also fill vertices 
@@ -530,11 +531,11 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         }
 
 
-        if (l1pfPhase1L1TJet.isValid()){
-                l1Extra->SetL1PfPhase1L1TJet(l1pfPhase1L1TJet, maxL1Extra_);
-        } else {
-                edm::LogWarning("MissingProduct") << "L1PhaseII l1pfPhase1L1TJets not found. Branch will not be filled" << std::endl;
-        }
+      //  if (l1pfPhase1L1TJet.isValid()){
+      //          l1Extra->SetL1PfPhase1L1TJet(l1pfPhase1L1TJet, maxL1Extra_);
+      //  } else {
+       //         edm::LogWarning("MissingProduct") << "L1PhaseII l1pfPhase1L1TJets not found. Branch will not be filled" << std::endl;
+       // }
 
         if (TkGlbMuon.isValid()){
                 l1Extra->SetTkGlbMuon(TkGlbMuon, maxL1Extra_);
