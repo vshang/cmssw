@@ -21,12 +21,12 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    TkGlbMuonToken = cms.InputTag("L1TkGlbMuons",""),
    TkMuonToken = cms.InputTag("L1TkMuons",""),                                            
    #TkMuonStubsTokenBMTF = cms.InputTag("l1TPSMuons",""), #Changed to this by Mike, then to 
-   TkMuonStubsTokenBMTF = cms.InputTag("l1StubMatchedMuons",""),  # by Vlad... 
-   TkMuonStubsTokenEMTF = cms.InputTag("l1TkMuonStubEndCapS12",""),
-   TkMuonStubsTokenOMTF = cms.InputTag("l1TkMuonStubOverlap","MuonTracks"),
-   TkMuonStubsTokenME0 = cms.InputTag("l1TkMuonStubEndCap","ME0Ext"),
+ #  TkMuonStubsTokenBMTF = cms.InputTag("l1StubMatchedMuons",""),  # by Vlad... 
+ #  TkMuonStubsTokenEMTF = cms.InputTag("l1TkMuonStubEndCapS12",""),
+ #  TkMuonStubsTokenOMTF = cms.InputTag("l1TkMuonStubOverlap","MuonTracks"),
+ #  TkMuonStubsTokenME0 = cms.InputTag("l1TkMuonStubEndCap","ME0Ext"),
 
-   TkMuonStubsTokenHSCP = cms.InputTag("l1TkMuonStubOverlap","HscpTracks"),
+ #  TkMuonStubsTokenHSCP = cms.InputTag("l1TkMuonStubOverlap","HscpTracks"),
 
    tkTrackerJetToken = cms.InputTag("TwoLayerJets", "L1TwoLayerJets"),                                            
    tkCaloJetToken = cms.InputTag("L1TkCaloJets","L1TkCaloJets"),
@@ -37,7 +37,7 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
 #   ak4L1PFForMET = cms.InputTag("ak4PFL1PuppiForMETCorrected"),
 
 #   l1pfPhase1L1TJetToken  = cms.InputTag("Phase1L1TJetProducer" ,  "UncalibratedPhase1L1TJetFromPfCandidates"), 
-   l1pfPhase1L1TJetToken  = cms.InputTag("Phase1L1TJetCalibrator" ,   "Phase1L1TJetFromPfCandidates"),
+#   l1pfPhase1L1TJetToken  = cms.InputTag("Phase1L1TJetCalibrator" ,   "Phase1L1TJetFromPfCandidates"),
 
    l1PFCandidates = cms.InputTag("l1pfCandidates","Puppi"),
 #   l1PFCandidates = cms.InputTag("l1pfCandidates","PF"),
@@ -58,11 +58,11 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    l1vertices = cms.InputTag("VertexProducer","l1vertices"),
    l1TkPrimaryVertex= cms.InputTag("L1TkPrimaryVertex",""),
 
-   L1PFTauToken = cms.InputTag("l1pfTauProducer","L1PFTaus"),   
+ #  L1PFTauToken = cms.InputTag("l1pfTauProducer","L1PFTaus"),   
    L1NNTauToken = cms.InputTag("l1NNTauProducerPuppi","L1PFTausNN"),
    L1NNTauPFToken = cms.InputTag("l1NNTauProducer","L1PFTausNN"),
 
-   L1HPSPFTauToken = cms.InputTag("L1HPSPFTauProducerPF",""),
+ #  L1HPSPFTauToken = cms.InputTag("L1HPSPFTauProducerPF",""),
 
    L1TkBsCandsToken = cms.InputTag("l1TkBsCandidates"),
    L1TkBsCandsLooseToken = cms.InputTag("l1TkBsCandidatesLooseWP"),
