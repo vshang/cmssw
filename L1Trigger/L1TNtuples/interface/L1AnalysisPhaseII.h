@@ -71,6 +71,7 @@
 #include "DataFormats/JetReco/interface/CaloJet.h"
 
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
+#include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIStep1DataFormat.h"
 
 
 
@@ -140,6 +141,8 @@ namespace L1Analysis
     void SetBsCands (const      edm::Handle< std::vector<l1t::TkBsCandidate>>  l1TkBs,    unsigned maxL1Extra, int kind);
 
     L1AnalysisPhaseIIDataFormat * getData() {return &l1extra_;}
+    L1AnalysisPhaseIIStep1DataFormat * getStep1Data() {return &l1Step1extra_;}
+
 
     // DiObjects
     void SetDiMuonTk(const edm::Handle<l1t::TkMuonCollection> muon, unsigned maxL1Extra); 
@@ -159,6 +162,7 @@ namespace L1Analysis
 
   private :
     L1AnalysisPhaseIIDataFormat l1extra_;
+    L1AnalysisPhaseIIStep1DataFormat l1Step1extra_;
     int tk_nFitParams_=4 ; // Harcoding this, choosing 4,
                               // to not have to store the chosen fitParams for all objects in this tree producer as a configuration.
                               // (it would be cleaner if all objects save the Z directly as well as the pointer to the track, or if

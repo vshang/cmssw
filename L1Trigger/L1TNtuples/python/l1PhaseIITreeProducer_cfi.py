@@ -1,17 +1,17 @@
 import FWCore.ParameterSet.Config as cms
 
-l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
+l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeStep1Producer",
 
    muonToken = cms.untracked.InputTag("simGmtStage2Digis"),
 
-   egTokenBarrel = cms.InputTag("L1EGammaClusterEmuProducer","L1EGammaCollectionBXVEmulator"),
-   tkEGTokenBarrel = cms.InputTag("L1TkElectronsCrystal","EG"),
-   tkEGV2TokenBarrel = cms.InputTag("L1TkElectronsEllipticMatchCrystal","EG"),
+   egTokenBarrel = cms.InputTag("L1EGammaClusterEmuProducer",""),
+   ######tkEGTokenBarrel = cms.InputTag("L1TkElectronsCrystal","EG"), ##REMOVED
+   tkEGTokenBarrel = cms.InputTag("L1TkElectronsEllipticMatchCrystal","EG"),
    tkEMTokenBarrel = cms.InputTag("L1TkPhotonsCrystal","EG"),
 
    egTokenHGC = cms.InputTag("l1EGammaEEProducer","L1EGammaCollectionBXVWithCuts"),
-   tkEGTokenHGC = cms.InputTag("L1TkElectronsHGC","EG"),
-   tkEGV2TokenHGC = cms.InputTag("L1TkElectronsEllipticMatchHGC","EG"),
+   ########tkEGTokenHGC = cms.InputTag("L1TkElectronsHGC","EG"), ###REMOVED
+   tkEGTokenHGC = cms.InputTag("L1TkElectronsEllipticMatchHGC","EG"),
    tkEMTokenHGC = cms.InputTag("L1TkPhotonsHGC","EG"),
 
    tkTauToken     = cms.InputTag("L1TrackerTaus","TrkTau"), # ?
@@ -42,9 +42,9 @@ l1PhaseIITree = cms.EDAnalyzer("L1PhaseIITreeProducer",
    caloJetToken = cms.InputTag("L1CaloJetProducer","L1CaloJetCollectionBXV"),
    caloJetHTTToken = cms.InputTag("L1CaloJetHTTProducer","CaloJetHTT"),
 
-   muonKalman = cms.InputTag("simKBmtfDigis","BMTF"),
-   muonOverlap = cms.InputTag("simOmtfDigis","OMTF"),
-   muonEndcap = cms.InputTag("simEmtfDigis","EMTF"),
+#   muonsKalman = cms.InputTag("simKBmtfDigis","BMTF"),
+#   muonOverlap = cms.InputTag("simOmtfDigis","OMTF"),
+#   muonEndcap = cms.InputTag("simEmtfDigis","EMTF"),
 
    l1PFMet = cms.InputTag("l1PFMetPuppi"),
 
