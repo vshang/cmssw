@@ -71,18 +71,15 @@
 #include "DataFormats/JetReco/interface/CaloJet.h"
 
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
-#include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIStep1DataFormat.h"
-
-
 
 namespace L1Analysis
 {
-  class L1AnalysisPhaseII 
+  class L1AnalysisPhaseIIExtended 
   {
   public:
-    L1AnalysisPhaseII();
-    ~L1AnalysisPhaseII();
-    void Reset() {l1extra_.Reset(); l1extraExtended_.Reset();}
+    L1AnalysisPhaseIIExtended();
+    ~L1AnalysisPhaseIIExtended();
+    void Reset() {l1extra_.Reset();}
 
     // Fill DZ of Vertex, different algorithms
     void SetVertices(float z0Puppi, const edm::Handle<std::vector<l1t::TkPrimaryVertex> > TkPrimaryVertex);
@@ -140,9 +137,7 @@ namespace L1Analysis
 
     void SetBsCands (const      edm::Handle< std::vector<l1t::TkBsCandidate>>  l1TkBs,    unsigned maxL1Extra, int kind);
 
-    L1AnalysisPhaseIIDataFormat * getData() {return &l1extraExtended_;}
-    L1AnalysisPhaseIIStep1DataFormat * getStep1Data() {return &l1extra_;}
-
+    L1AnalysisPhaseIIDataFormat * getData() {return &l1extra_;}
 
     // DiObjects
     void SetDiMuonTk(const edm::Handle<l1t::TkMuonCollection> muon, unsigned maxL1Extra); 
@@ -161,8 +156,7 @@ namespace L1Analysis
 
 
   private :
-    L1AnalysisPhaseIIDataFormat l1extraExtended_;
-    L1AnalysisPhaseIIStep1DataFormat l1extra_;
+    L1AnalysisPhaseIIDataFormat l1extra_;
     int tk_nFitParams_=4 ; // Harcoding this, choosing 4,
                               // to not have to store the chosen fitParams for all objects in this tree producer as a configuration.
                               // (it would be cleaner if all objects save the Z directly as well as the pointer to the track, or if

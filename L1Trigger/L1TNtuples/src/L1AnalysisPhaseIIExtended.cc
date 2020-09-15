@@ -1,16 +1,16 @@
-#include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseII.h"
+#include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIExtended.h"
 #include "L1Trigger/L1TMuon/interface/MicroGMTConfiguration.h"
 
-L1Analysis::L1AnalysisPhaseII::L1AnalysisPhaseII()
+L1Analysis::L1AnalysisPhaseIIExtended::L1AnalysisPhaseIIExtended()
 {
 }
 
-L1Analysis::L1AnalysisPhaseII::~L1AnalysisPhaseII()
+L1Analysis::L1AnalysisPhaseIIExtended::~L1AnalysisPhaseIIExtended()
 {
 
 }
 
-void L1Analysis::L1AnalysisPhaseII::SetVertices(float z0Puppi, const edm::Handle< std::vector<l1t::TkPrimaryVertex> > TkPrimaryVertex){
+void L1Analysis::L1AnalysisPhaseIIExtended::SetVertices(float z0Puppi, const edm::Handle< std::vector<l1t::TkPrimaryVertex> > TkPrimaryVertex){
       l1extra_.z0Puppi=z0Puppi;
 
       for (unsigned int i=0; i<TkPrimaryVertex->size() ; i++){
@@ -23,7 +23,7 @@ void L1Analysis::L1AnalysisPhaseII::SetVertices(float z0Puppi, const edm::Handle
 }
 
 
-void L1Analysis::L1AnalysisPhaseII::SetCaloTau(const edm::Handle<l1t::TauBxCollection> calotau, unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetCaloTau(const edm::Handle<l1t::TauBxCollection> calotau, unsigned maxL1Extra)
 {
   for (int ibx = calotau->getFirstBX(); ibx <= calotau->getLastBX(); ++ibx) {
     for (l1t::TauBxCollection::const_iterator it=calotau->begin(ibx); it!=calotau->end(ibx) && l1extra_.nCaloTaus<maxL1Extra; it++){
@@ -50,8 +50,8 @@ void L1Analysis::L1AnalysisPhaseII::SetCaloTau(const edm::Handle<l1t::TauBxColle
   }
 }
 
-/*
-void L1Analysis::L1AnalysisPhaseII::SetCaloJet(const edm::Handle<l1t::JetBxCollection> jet, unsigned maxL1Extra, float caloJetHTT)
+
+void L1Analysis::L1AnalysisPhaseIIExtended::SetCaloJet(const edm::Handle<l1t::JetBxCollection> jet, unsigned maxL1Extra, float caloJetHTT)
 {
 
   double mHT30_px=0, mHT30_py=0, HT30=0;
@@ -96,9 +96,9 @@ void L1Analysis::L1AnalysisPhaseII::SetCaloJet(const edm::Handle<l1t::JetBxColle
 
 
 }
-*/
-/*
-void L1Analysis::L1AnalysisPhaseII::SetMuon(const edm::Handle<l1t::MuonBxCollection> muon, unsigned maxL1Extra)
+
+
+void L1Analysis::L1AnalysisPhaseIIExtended::SetMuon(const edm::Handle<l1t::MuonBxCollection> muon, unsigned maxL1Extra)
 {
   for (int ibx = muon->getFirstBX(); ibx <= muon->getLastBX(); ++ibx) {
     for (l1t::MuonBxCollection::const_iterator it=muon->begin(ibx); it!=muon->end(ibx) && l1extra_.nGlobalMuons<maxL1Extra; it++){
@@ -126,7 +126,7 @@ void L1Analysis::L1AnalysisPhaseII::SetMuon(const edm::Handle<l1t::MuonBxCollect
   }
 }
 
-void L1Analysis::L1AnalysisPhaseII::SetMuonKF(const edm::Handle<l1t::RegionalMuonCandBxCollection> standaloneMuon, unsigned maxL1Extra, unsigned int muonDetector)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetMuonKF(const edm::Handle<l1t::RegionalMuonCandBxCollection> standaloneMuon, unsigned maxL1Extra, unsigned int muonDetector)
 {
   for (int ibx = standaloneMuon->getFirstBX(); ibx <= standaloneMuon->getLastBX(); ++ibx) {
     for (l1t::RegionalMuonCandBxCollection::const_iterator it=standaloneMuon->begin(ibx); it!=standaloneMuon->end(ibx) && l1extra_.nStandaloneMuons<maxL1Extra; it++){
@@ -156,9 +156,9 @@ void L1Analysis::L1AnalysisPhaseII::SetMuonKF(const edm::Handle<l1t::RegionalMuo
   //                        /// Get charge sign bit (charge = (-1)^(sign))
   //                        const int hwSign() const { return m_hwSign; };
 
-*/
+
 //EG (seeded by Phase 2 Objects )
-void L1Analysis::L1AnalysisPhaseII::SetEG(const edm::Handle<l1t::EGammaBxCollection> EG, const edm::Handle<l1t::EGammaBxCollection> EGHGC,unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetEG(const edm::Handle<l1t::EGammaBxCollection> EG, const edm::Handle<l1t::EGammaBxCollection> EGHGC,unsigned maxL1Extra)
 {
   for(l1t::EGammaBxCollection::const_iterator it=EG->begin(); it!=EG->end() && l1extra_.nEG<maxL1Extra; it++){
     if (it->et() > 5){
@@ -195,7 +195,7 @@ void L1Analysis::L1AnalysisPhaseII::SetEG(const edm::Handle<l1t::EGammaBxCollect
 }
 
 // TrkEG (seeded by Phase 2 Objects)
-void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::TkElectronCollection> tkElectron, const edm::Handle<l1t::TkElectronCollection> tkElectronHGC,  unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkEG(const edm::Handle<l1t::TkElectronCollection> tkElectron, const edm::Handle<l1t::TkElectronCollection> tkElectronHGC,  unsigned maxL1Extra)
 {
   for(l1t::TkElectronCollection::const_iterator it=tkElectron->begin(); it!=tkElectron->end() && l1extra_.nTkElectrons<maxL1Extra; it++){
     if (it->et() > 5){
@@ -243,8 +243,56 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::TkElectronCol
 }
 
 
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkEGV2(const edm::Handle<l1t::TkElectronCollection> tkElectronV2, const edm::Handle<l1t::TkElectronCollection> tkElectronV2HGC,unsigned maxL1Extra)
+{
+  for(l1t::TkElectronCollection::const_iterator it=tkElectronV2->begin(); it!=tkElectronV2->end() && l1extra_.nTkElectronsV2<maxL1Extra; it++){
+    if (it->et() > 5){
+    l1extra_.tkElectronV2Et .push_back(it->et());
+    l1extra_.tkElectronV2Eta.push_back(it->eta());
+    l1extra_.tkElectronV2Phi.push_back(it->phi());
+        int chargeFromCurvature = (it->trackCurvature() > 0)? 1 : -1 ; // ThisIsACheck
+    l1extra_.tkElectronV2Chg.push_back(chargeFromCurvature);
+    l1extra_.tkElectronV2zVtx.push_back(it->trkzVtx());
+    l1extra_.tkElectronV2TrkIso.push_back(it->trkIsol());
+    l1extra_.tkElectronV2HwQual.push_back(it->EGRef()->hwQual());
+    l1extra_.tkElectronV2EGRefPt.push_back(it->EGRef()->et());
+    l1extra_.tkElectronV2EGRefEta.push_back(it->EGRef()->eta());
+    l1extra_.tkElectronV2EGRefPhi.push_back(it->EGRef()->phi());
+    l1extra_.tkElectronV2Bx.push_back(0);//it->bx());
+    l1extra_.tkElectronV2HGC.push_back(0);
+    bool quality=( ( it->EGRef()->hwQual() >> 1 ) & 1   )> 0;  
+    l1extra_.tkElectronV2PassesLooseTrackID.push_back(quality);
+    quality=( ( it->EGRef()->hwQual() >> 2 ) & 1   )> 0;  
+    l1extra_.tkElectronV2PassesPhotonID.push_back(quality);
+    l1extra_.nTkElectronsV2++;
+  }}
 
-void L1Analysis::L1AnalysisPhaseII::SetTkEM(const edm::Handle<l1t::TkEmCollection> tkPhoton, const edm::Handle<l1t::TkEmCollection> tkPhotonHGC, unsigned maxL1Extra)
+  for(l1t::TkElectronCollection::const_iterator it=tkElectronV2HGC->begin(); it!=tkElectronV2HGC->end() && l1extra_.nTkElectronsV2<maxL1Extra; it++){
+    if (it->et() > 5){
+    l1extra_.tkElectronV2Et .push_back(it->et());
+    l1extra_.tkElectronV2Eta.push_back(it->eta());
+    l1extra_.tkElectronV2Phi.push_back(it->phi());
+        int chargeFromCurvature = (it->trackCurvature() > 0)? 1 : -1 ; // ThisIsACheck
+    l1extra_.tkElectronV2Chg.push_back(chargeFromCurvature);
+    l1extra_.tkElectronV2zVtx.push_back(it->trkzVtx());
+    l1extra_.tkElectronV2TrkIso.push_back(it->trkIsol());
+    l1extra_.tkElectronV2HwQual.push_back(it->EGRef()->hwQual());
+    l1extra_.tkElectronV2EGRefPt.push_back(it->EGRef()->et());
+    l1extra_.tkElectronV2EGRefEta.push_back(it->EGRef()->eta());
+    l1extra_.tkElectronV2EGRefPhi.push_back(it->EGRef()->phi());
+    l1extra_.tkElectronV2Bx.push_back(0);//it->bx());
+    l1extra_.tkElectronV2HGC.push_back(1);
+    bool quality= (it->EGRef()->hwQual() ==5 ) ;
+    l1extra_.tkElectronV2PassesLooseTrackID.push_back(quality);
+    l1extra_.tkElectronV2PassesPhotonID.push_back(quality);
+    l1extra_.nTkElectronsV2++;
+  }}
+
+
+}
+
+
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkEM(const edm::Handle<l1t::TkEmCollection> tkPhoton, const edm::Handle<l1t::TkEmCollection> tkPhotonHGC, unsigned maxL1Extra)
 {
   for(l1t::TkEmCollection::const_iterator it=tkPhoton->begin(); it!=tkPhoton->end() && l1extra_.nTkPhotons<maxL1Extra; it++){
     if (it->et() > 5){
@@ -285,8 +333,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEM(const edm::Handle<l1t::TkEmCollectio
   }}
 }
 
-/*
-void L1Analysis::L1AnalysisPhaseII::SetTrkTau(const edm::Handle<l1t::L1TrkTauCollection> tkTau, unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTrkTau(const edm::Handle<l1t::L1TrkTauCollection> tkTau, unsigned maxL1Extra)
 {
 
   for(l1t::L1TrkTauCollection::const_iterator it=tkTau->begin(); it!=tkTau->end() && l1extra_.nTkTau<maxL1Extra; it++){
@@ -301,7 +348,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTrkTau(const edm::Handle<l1t::L1TrkTauCol
   }
 }
 
-void L1Analysis::L1AnalysisPhaseII::SetCaloTkTau(const edm::Handle<l1t::L1CaloTkTauCollection> caloTkTau, unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetCaloTkTau(const edm::Handle<l1t::L1CaloTkTauCollection> caloTkTau, unsigned maxL1Extra)
 {
 
   for(l1t::L1CaloTkTauCollection::const_iterator it=caloTkTau->begin(); it!=caloTkTau->end() && l1extra_.nCaloTkTau<maxL1Extra; it++){
@@ -316,7 +363,7 @@ void L1Analysis::L1AnalysisPhaseII::SetCaloTkTau(const edm::Handle<l1t::L1CaloTk
   }
 }
 
-void L1Analysis::L1AnalysisPhaseII::SetTkEGTau(const edm::Handle<l1t::TkEGTauCollection> tkEGTau, unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkEGTau(const edm::Handle<l1t::TkEGTauCollection> tkEGTau, unsigned maxL1Extra)
 {
 
   for(l1t::TkEGTauCollection::const_iterator it=tkEGTau->begin(); it!=tkEGTau->end() && l1extra_.nTkEGTau<maxL1Extra; it++){
@@ -331,10 +378,10 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEGTau(const edm::Handle<l1t::TkEGTauCol
     l1extra_.nTkEGTau++;
   }
 }
-*/
-/*
+
+
 // TkJet
-void L1Analysis::L1AnalysisPhaseII::SetTkJet(const edm::Handle<l1t::TkJetCollection> trackerJet, unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkJet(const edm::Handle<l1t::TkJetCollection> trackerJet, unsigned maxL1Extra)
 {
 
   for(l1t::TkJetCollection::const_iterator it=trackerJet->begin(); it!=trackerJet->end() && l1extra_.nTrackerJets<maxL1Extra; it++){
@@ -347,7 +394,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkJet(const edm::Handle<l1t::TkJetCollect
   }
 }
 
-void L1Analysis::L1AnalysisPhaseII::SetTkCaloJet(const edm::Handle<l1t::TkJetCollection> tkCaloJet, unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkCaloJet(const edm::Handle<l1t::TkJetCollection> tkCaloJet, unsigned maxL1Extra)
 {
 
   for(l1t::TkJetCollection::const_iterator it=tkCaloJet->begin(); it!=tkCaloJet->end() && l1extra_.nTkCaloJets<maxL1Extra; it++){
@@ -359,9 +406,11 @@ void L1Analysis::L1AnalysisPhaseII::SetTkCaloJet(const edm::Handle<l1t::TkJetCol
     l1extra_.nTkCaloJets++;
   }
 }
-*/
 
-void L1Analysis::L1AnalysisPhaseII::SetTkMuon(const edm::Handle<l1t::TkMuonCollection> muon, unsigned maxL1Extra)
+
+
+
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkMuon(const edm::Handle<l1t::TkMuonCollection> muon, unsigned maxL1Extra)
 {
 
   for(l1t::TkMuonCollection::const_iterator it=muon->begin(); it!=muon->end() && l1extra_.nTkMuons<maxL1Extra; it++){
@@ -397,7 +446,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuon(const edm::Handle<l1t::TkMuonColle
 }
 
 /*
-void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubs(const edm::Handle<l1t::TkMuonCollection> muon, unsigned maxL1Extra, unsigned int muonDetector)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkMuonStubs(const edm::Handle<l1t::TkMuonCollection> muon, unsigned maxL1Extra, unsigned int muonDetector)
 {
 
   for(l1t::TkMuonCollection::const_iterator it=muon->begin(); it!=muon->end() && l1extra_.nTkMuonStubs<maxL1Extra; it++){
@@ -413,14 +462,14 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubs(const edm::Handle<l1t::TkMuon
     l1extra_.tkMuonStubszVtx.push_back(it->trkzVtx());
     l1extra_.tkMuonStubsBx .push_back(0); //it->bx());
     l1extra_.tkMuonStubsQual .push_back(1);
-    //l1extra_.tkMuonStubsBarrelStubs.push_back(it->matchedStubs().size());
+    l1extra_.tkMuonStubsBarrelStubs.push_back(it->matchedStubs().size());
     l1extra_.tkMuonStubsRegion.push_back(muonDetector);
     l1extra_.nTkMuonStubs++;
   }
 }
 */
 /*
-void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubsOMTF(const edm::Handle<l1t::BayesMuCorrTrackBxCollection> muon, unsigned maxL1Extra, unsigned int muonDetector)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkMuonStubsOMTF(const edm::Handle<l1t::BayesMuCorrTrackBxCollection> muon, unsigned maxL1Extra, unsigned int muonDetector)
 {
 
   for (int ibx = muon->getFirstBX(); ibx <= muon->getLastBX(); ++ibx) {
@@ -445,7 +494,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuonStubsOMTF(const edm::Handle<l1t::Ba
 
 }
 
-void L1Analysis::L1AnalysisPhaseII::SetHSCP(const edm::Handle<l1t::BayesMuCorrTrackBxCollection> muon, unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetHSCP(const edm::Handle<l1t::BayesMuCorrTrackBxCollection> muon, unsigned maxL1Extra)
 {
 
   for (int ibx = muon->getFirstBX(); ibx <= muon->getLastBX(); ++ibx) {
@@ -464,8 +513,9 @@ void L1Analysis::L1AnalysisPhaseII::SetHSCP(const edm::Handle<l1t::BayesMuCorrTr
 }
 */
 
-/*
-void L1Analysis::L1AnalysisPhaseII::SetTkGlbMuon(const edm::Handle<l1t::TkGlbMuonCollection> muon, unsigned maxL1Extra)
+
+
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkGlbMuon(const edm::Handle<l1t::TkGlbMuonCollection> muon, unsigned maxL1Extra)
 {
   for(l1t::TkGlbMuonCollection::const_iterator it=muon->begin(); it!=muon->end() && l1extra_.nTkGlbMuons<maxL1Extra; it++){
 
@@ -485,10 +535,9 @@ void L1Analysis::L1AnalysisPhaseII::SetTkGlbMuon(const edm::Handle<l1t::TkGlbMuo
     l1extra_.nTkGlbMuons++;
   }
 }
-*/
-/*
+
 // trackerMet
-void L1Analysis::L1AnalysisPhaseII::SetTkMET(const edm::Handle<l1t::TkEtMissCollection> trackerMets)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkMET(const edm::Handle<l1t::TkEtMissCollection> trackerMets)
 {
   for(l1t::TkEtMissCollection::const_iterator it=trackerMets->begin(); it!=trackerMets->end(); it++) {
     l1extra_.trackerMetSumEt.    push_back( it->etTotal() );
@@ -500,7 +549,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMET(const edm::Handle<l1t::TkEtMissColl
 }
 
 
-void L1Analysis::L1AnalysisPhaseII::SetTkMHT(const edm::Handle<l1t::TkHTMissCollection > trackerMHTs){
+void L1Analysis::L1AnalysisPhaseIIExtended::SetTkMHT(const edm::Handle<l1t::TkHTMissCollection > trackerMHTs){
    // Hardcoding it like this, but this needs to be changed to a vector
 
   for(l1t::TkHTMissCollection::const_iterator it=trackerMHTs->begin(); it!=trackerMHTs->end(); it++) {
@@ -511,9 +560,8 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMHT(const edm::Handle<l1t::TkHTMissColl
   }
 
 }
-*/
-/*
-void L1Analysis::L1AnalysisPhaseII::SetL1PfPhase1L1TJet(const      edm::Handle< std::vector<reco::CaloJet> >  l1L1PFPhase1L1Jet,    unsigned maxL1Extra){
+
+void L1Analysis::L1AnalysisPhaseIIExtended::SetL1PfPhase1L1TJet(const      edm::Handle< std::vector<reco::CaloJet> >  l1L1PFPhase1L1Jet,    unsigned maxL1Extra){
 
    double mHT30_px=0, mHT30_py=0, HT30=0;
   double mHT30_3p5_px=0, mHT30_3p5_py=0, HT30_3p5=0; 
@@ -558,7 +606,7 @@ void L1Analysis::L1AnalysisPhaseII::SetL1PfPhase1L1TJet(const      edm::Handle< 
 
 
 /*
-void L1Analysis::L1AnalysisPhaseII::SetPFJetForMET(const edm::Handle<l1t::PFJetCollection> PFJet, unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetPFJetForMET(const edm::Handle<l1t::PFJetCollection> PFJet, unsigned maxL1Extra)
 {
 
   for(l1t::PFJetCollection::const_iterator it=PFJet->begin(); it!=PFJet->end() && l1extra_.nPuppiJetForMETs<maxL1Extra; it++){
@@ -572,8 +620,8 @@ void L1Analysis::L1AnalysisPhaseII::SetPFJetForMET(const edm::Handle<l1t::PFJetC
   }
 }
 */
-/*
-void L1Analysis::L1AnalysisPhaseII::SetPFJet(const edm::Handle<l1t::PFJetCollection> PFJet, unsigned maxL1Extra)
+
+void L1Analysis::L1AnalysisPhaseIIExtended::SetPFJet(const edm::Handle<l1t::PFJetCollection> PFJet, unsigned maxL1Extra)
 {
   double mHT30_px=0, mHT30_py=0, HT30=0;
   double mHT30_3p5_px=0, mHT30_3p5_py=0, HT30_3p5=0;
@@ -611,16 +659,15 @@ void L1Analysis::L1AnalysisPhaseII::SetPFJet(const edm::Handle<l1t::PFJetCollect
   l1extra_.nPuppiMHT=2;
 
 }
-*/
-void L1Analysis::L1AnalysisPhaseII::SetL1METPF(const edm::Handle< std::vector<reco::PFMET> > l1MetPF)
+
+void L1Analysis::L1AnalysisPhaseIIExtended::SetL1METPF(const edm::Handle< std::vector<reco::PFMET> > l1MetPF)
 {
   reco::PFMET met=l1MetPF->at(0);
   l1extra_.puppiMETEt = met.et();
   l1extra_.puppiMETPhi = met.phi();
 }
 
-/*
-void L1Analysis::L1AnalysisPhaseII::SetPFObjects(const edm::Handle< vector<l1t::PFCandidate> >  l1pfCandidates,  unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetPFObjects(const edm::Handle< vector<l1t::PFCandidate> >  l1pfCandidates,  unsigned maxL1Extra)
 {
       for (unsigned int i=0; i<l1pfCandidates->size() && l1extra_.nPFMuons<maxL1Extra; i++){
            //enum Kind { ChargedHadron=0, Electron=1, NeutralHadron=2, Photon=3, Muon=4 };
@@ -655,9 +702,8 @@ void L1Analysis::L1AnalysisPhaseII::SetPFObjects(const edm::Handle< vector<l1t::
 
 
 }
-*/
 /*
-void L1Analysis::L1AnalysisPhaseII::SetPFTaus(const edm::Handle< vector<l1t::PFTau> >  l1pfTaus,  unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetPFTaus(const edm::Handle< vector<l1t::PFTau> >  l1pfTaus,  unsigned maxL1Extra)
 {
 
       for (unsigned int i=0; i<l1pfTaus->size() && l1extra_.nPFTaus<maxL1Extra; i++){
@@ -683,7 +729,7 @@ void L1Analysis::L1AnalysisPhaseII::SetPFTaus(const edm::Handle< vector<l1t::PFT
 }
 */
 /*
-void L1Analysis::L1AnalysisPhaseII::SetHPSPFTaus(const edm::Handle<l1t::L1HPSPFTauCollection >  l1HPSPFTaus,  unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetHPSPFTaus(const edm::Handle<l1t::L1HPSPFTauCollection >  l1HPSPFTaus,  unsigned maxL1Extra)
 {     
 
       for (unsigned int i=0; i<l1HPSPFTaus->size() && l1extra_.nHPSTaus<maxL1Extra; i++){
@@ -702,7 +748,7 @@ void L1Analysis::L1AnalysisPhaseII::SetHPSPFTaus(const edm::Handle<l1t::L1HPSPFT
 */
 
 
-void L1Analysis::L1AnalysisPhaseII::SetNNTaus(const edm::Handle< vector<l1t::PFTau> >  l1nnTaus,  unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetNNTaus(const edm::Handle< vector<l1t::PFTau> >  l1nnTaus,  unsigned maxL1Extra)
 {
  
       for (unsigned int i=0; i<l1nnTaus->size() && l1extra_.nNNTaus<maxL1Extra; i++){
@@ -723,7 +769,7 @@ void L1Analysis::L1AnalysisPhaseII::SetNNTaus(const edm::Handle< vector<l1t::PFT
  
 }
 
-void L1Analysis::L1AnalysisPhaseII::SetNNTauPFs(const edm::Handle< vector<l1t::PFTau> >  l1nnTauPFs,  unsigned maxL1Extra)
+void L1Analysis::L1AnalysisPhaseIIExtended::SetNNTauPFs(const edm::Handle< vector<l1t::PFTau> >  l1nnTauPFs,  unsigned maxL1Extra)
 {
 
       for (unsigned int i=0; i<l1nnTauPFs->size() && l1extra_.nNNTauPFs<maxL1Extra; i++){
@@ -746,8 +792,8 @@ void L1Analysis::L1AnalysisPhaseII::SetNNTauPFs(const edm::Handle< vector<l1t::P
 
 
 
-/*
-void L1Analysis::L1AnalysisPhaseII::SetBsCands (const      edm::Handle< std::vector<l1t::TkBsCandidate>>  l1TkBs,    unsigned maxL1Extra, int kind)
+
+void L1Analysis::L1AnalysisPhaseIIExtended::SetBsCands (const      edm::Handle< std::vector<l1t::TkBsCandidate>>  l1TkBs,    unsigned maxL1Extra, int kind)
 {
       for (unsigned int i=0; i<l1TkBs->size() && l1extra_.nTkBsCands<maxL1Extra; i++){
            l1extra_.tkBsCandPt.push_back(l1TkBs->at(i).pt());
@@ -771,4 +817,4 @@ void L1Analysis::L1AnalysisPhaseII::SetBsCands (const      edm::Handle< std::vec
 
 
 }
-*/
+

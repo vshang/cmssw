@@ -1,5 +1,5 @@
-#ifndef __L1Analysis_L1AnalysisPhaseIIStep1DataFormat_H__
-#define __L1Analysis_L1AnalysisPhaseIIStep1DataFormat_H__
+#ifndef __L1Analysis_L1AnalysisPhaseIIDataFormat_H__
+#define __L1Analysis_L1AnalysisPhaseIIDataFormat_H__
 
 //-------------------------------------------------------------------------------
 // Created 20/04/2010 - E. Conte, A.C. Le Bihan
@@ -85,6 +85,7 @@ namespace L1Analysis
       tkElectronPassesLooseTrackID.clear();
       tkElectronPassesPhotonID.clear();
 
+
       nTkPhotons = 0;
       tkPhotonEt.clear();
       tkPhotonEta.clear();
@@ -119,18 +120,6 @@ namespace L1Analysis
       tkMuonMuRefChg.clear();
       tkMuonRegion.clear();
 
-      nTkMuonStubs = 0;
-      tkMuonStubsPt.clear();
-      tkMuonStubsEta.clear();
-      tkMuonStubsPhi.clear();
-      tkMuonStubsChg.clear();
-      tkMuonStubsTrkIso.clear();
-      tkMuonStubsBx.clear();
-      tkMuonStubsQual.clear();
-      tkMuonStubszVtx.clear();
-      tkMuonStubsBarrelStubs.clear();
-      tkMuonStubsRegion.clear();
-
       puppiMETEt=0;
       puppiMETPhi=0;
 
@@ -159,25 +148,6 @@ namespace L1Analysis
       nnTauPFPassLoosePF.clear();
       nnTauPFPassTightPF.clear();
       nnTauPFPassTightNN.clear();
-
-
-      nTkBsCands=0;
-      tkBsCandPt.clear();
-      tkBsCandEta.clear();
-      tkBsCandPhi.clear();
-      tkBsCandMass.clear();
-      tkBsCandPhi1Pt.clear();
-      tkBsCandPhi2Pt.clear();
-      tkBsCandPhi1Eta.clear();
-      tkBsCandPhi2Eta.clear();
-      tkBsCandPhi1Phi.clear();
-      tkBsCandPhi2Phi.clear();
-      tkBsCandPhi1Mass.clear();
-      tkBsCandPhi2Mass.clear();
-      tkBsCandDRPhiPair.clear(); 
-      tkBsCandDxyPhiPair.clear();
-      tkBsCandDzPhiPair.clear(); 
-      tkBsCandKind.clear();
 
     }
  
@@ -247,6 +217,7 @@ namespace L1Analysis
     std::vector<unsigned int> tkElectronPassesLooseTrackID;
     std::vector<unsigned int> tkElectronPassesPhotonID;
 
+
     unsigned int nTkPhotons;
     std::vector<double> tkPhotonEt;
     std::vector<double> tkPhotonEta;
@@ -262,6 +233,7 @@ namespace L1Analysis
     std::vector<unsigned int> tkPhotonHGC;
     std::vector<unsigned int> tkPhotonPassesLooseTrackID;
     std::vector<unsigned int> tkPhotonPassesPhotonID;
+
 
 
     unsigned int nTkMuons;
@@ -286,17 +258,6 @@ namespace L1Analysis
     std::vector<int>  tkMuonMuRefChg;
     std::vector<unsigned int>   tkMuonRegion;
 
-    unsigned int nTkMuonStubs;
-    std::vector<double>   tkMuonStubsPt;
-    std::vector<double>   tkMuonStubsEta;
-    std::vector<double>   tkMuonStubsPhi;
-    std::vector<int>      tkMuonStubsChg;
-    std::vector<int>      tkMuonStubsBx;
-    std::vector<double>   tkMuonStubsTrkIso;
-    std::vector<unsigned int>      tkMuonStubsQual;
-    std::vector<double>   tkMuonStubszVtx;
-    std::vector<double>   tkMuonStubsBarrelStubs;
-    std::vector<unsigned int>   tkMuonStubsRegion;
 
     double puppiMETEt;
     double puppiMETPhi;
@@ -328,24 +289,6 @@ namespace L1Analysis
     std::vector<unsigned int>   nnTauPFPassTightPF;
     std::vector<unsigned int>   nnTauPFPassTightNN;
 
-
-   unsigned int nTkBsCands;
-   std::vector<double> tkBsCandPt;
-   std::vector<double> tkBsCandEta;
-   std::vector<double> tkBsCandPhi;
-   std::vector<double> tkBsCandMass;
-   std::vector<double> tkBsCandPhi1Pt;
-   std::vector<double> tkBsCandPhi2Pt;
-   std::vector<double> tkBsCandPhi1Eta;
-   std::vector<double> tkBsCandPhi2Eta;
-   std::vector<double> tkBsCandPhi1Phi;
-   std::vector<double> tkBsCandPhi2Phi;
-   std::vector<double> tkBsCandPhi1Mass;
-   std::vector<double> tkBsCandPhi2Mass;
-   std::vector<double> tkBsCandDRPhiPair;    
-   std::vector<double> tkBsCandDxyPhiPair;   
-   std::vector<double> tkBsCandDzPhiPair;    
-   std::vector<int>    tkBsCandKind;
 
   }; 
 }

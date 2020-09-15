@@ -125,9 +125,9 @@ class L1PhaseIITreeStep1Producer : public edm::EDAnalyzer {
                 // tree
                 TTree * tree_;
 
-                edm::EDGetTokenT<l1t::MuonBxCollection> muonToken_;
+                //edm::EDGetTokenT<l1t::MuonBxCollection> muonToken_;
 
-                edm::EDGetTokenT<l1t::JetBxCollection> caloJetToken_;
+                //edm::EDGetTokenT<l1t::JetBxCollection> caloJetToken_;
 
                 edm::EDGetTokenT<l1t::EGammaBxCollection>  egToken_;
                 edm::EDGetTokenT<l1t::TkElectronCollection>  tkEGToken_;
@@ -140,7 +140,7 @@ class L1PhaseIITreeStep1Producer : public edm::EDAnalyzer {
                 edm::EDGetTokenT<l1t::TkEmCollection>  tkEMTokenHGC_;
 
                 edm::EDGetTokenT<l1t::TkMuonCollection> TkMuonToken_;
-                edm::EDGetTokenT<l1t::TkGlbMuonCollection> TkGlbMuonToken_;
+             //   edm::EDGetTokenT<l1t::TkGlbMuonCollection> TkGlbMuonToken_;
 
           //      edm::EDGetTokenT<l1t::TkMuonCollection> TkMuonStubsTokenBMTF_;
           //      edm::EDGetTokenT<l1t::TkMuonCollection> TkMuonStubsTokenEMTF_;
@@ -148,20 +148,20 @@ class L1PhaseIITreeStep1Producer : public edm::EDAnalyzer {
           //      edm::EDGetTokenT<l1t::TkMuonCollection> TkMuonStubsTokenME0_;
          //       edm::EDGetTokenT<l1t::BayesMuCorrTrackBxCollection> TkMuonStubsTokenHSCP_; // and yet another class... why not?
 
-                edm::EDGetTokenT<l1t::TkJetCollection> tkTrackerJetToken_;
-                edm::EDGetTokenT<l1t::TkEtMissCollection> tkMetToken_;
+              //  edm::EDGetTokenT<l1t::TkJetCollection> tkTrackerJetToken_;
+              //  edm::EDGetTokenT<l1t::TkEtMissCollection> tkMetToken_;
 
-                edm::EDGetTokenT<l1t::L1TrkTauCollection> tkTauToken_;
-                edm::EDGetTokenT<l1t::TkEGTauCollection> tkEGTauToken_;
-                edm::EDGetTokenT<l1t::L1CaloTkTauCollection> caloTkTauToken_;
+             //   edm::EDGetTokenT<l1t::L1TrkTauCollection> tkTauToken_;
+             //   edm::EDGetTokenT<l1t::TkEGTauCollection> tkEGTauToken_;
+              //  edm::EDGetTokenT<l1t::L1CaloTkTauCollection> caloTkTauToken_;
 
-                std::vector< edm::EDGetTokenT<l1t::TkHTMissCollection> > tkMhtToken_;
+              //  std::vector< edm::EDGetTokenT<l1t::TkHTMissCollection> > tkMhtToken_;
 
-                edm::EDGetTokenT<l1t::TkJetCollection> tkCaloJetToken_;
+               // edm::EDGetTokenT<l1t::TkJetCollection> tkCaloJetToken_;
                 edm::EDGetTokenT<l1t::TauBxCollection> caloTauToken_;
-                edm::EDGetTokenT<float>  caloJetHTTToken_; 
+               // edm::EDGetTokenT<float>  caloJetHTTToken_; 
 
-                edm::EDGetTokenT<std::vector<l1t::PFJet>> ak4L1PF_;
+               // edm::EDGetTokenT<std::vector<l1t::PFJet>> ak4L1PF_;
 //                edm::EDGetTokenT<std::vector<l1t::PFJet>> ak4L1PFForMET_;
 
              //   edm::EDGetTokenT<l1t::RegionalMuonCandBxCollection> muonKalman_;
@@ -178,7 +178,7 @@ class L1PhaseIITreeStep1Producer : public edm::EDAnalyzer {
                 edm::EDGetTokenT<l1t::TkPrimaryVertexCollection> l1TkPrimaryVertexToken_;
 
                 //edm::EDGetTokenT<l1t::PFTauCollection> PFTauToken_;
-                edm::EDGetTokenT< std::vector<l1t::PFCandidate> > l1PFCandidates_; 
+                //edm::EDGetTokenT< std::vector<l1t::PFCandidate> > l1PFCandidates_; 
 
                 edm::EDGetTokenT<l1t::PFTauCollection> L1NNTauToken_;
                 edm::EDGetTokenT<l1t::PFTauCollection> L1NNTauPFToken_;
@@ -186,18 +186,18 @@ class L1PhaseIITreeStep1Producer : public edm::EDAnalyzer {
                 //edm::EDGetTokenT<l1t::L1HPSPFTauCollection> L1HPSPFTauToken_;
 
 
-                edm::EDGetTokenT<l1t::TkBsCandidateCollection> L1TkBsCandToken_;          
-                edm::EDGetTokenT<l1t::TkBsCandidateCollection> L1TkBsCandLooseToken_;
-                edm::EDGetTokenT<l1t::TkBsCandidateCollection> L1TkBsCandTightToken_;
+                //edm::EDGetTokenT<l1t::TkBsCandidateCollection> L1TkBsCandToken_;          
+                //edm::EDGetTokenT<l1t::TkBsCandidateCollection> L1TkBsCandLooseToken_;
+                //edm::EDGetTokenT<l1t::TkBsCandidateCollection> L1TkBsCandTightToken_;
 
 };
 
 L1PhaseIITreeStep1Producer::L1PhaseIITreeStep1Producer(const edm::ParameterSet& iConfig){
-        muonToken_ = consumes<l1t::MuonBxCollection>(iConfig.getUntrackedParameter<edm::InputTag>("muonToken"));
+        //muonToken_ = consumes<l1t::MuonBxCollection>(iConfig.getUntrackedParameter<edm::InputTag>("muonToken"));
 
-        caloJetToken_ = consumes<l1t::JetBxCollection>(iConfig.getParameter<edm::InputTag>("caloJetToken"));
+        //caloJetToken_ = consumes<l1t::JetBxCollection>(iConfig.getParameter<edm::InputTag>("caloJetToken"));
         caloTauToken_ = consumes<l1t::TauBxCollection>(iConfig.getParameter<edm::InputTag>("caloTauToken"));
-        caloJetHTTToken_= consumes< float > (iConfig.getParameter<edm::InputTag>("caloJetHTTToken")); 
+        //caloJetHTTToken_= consumes< float > (iConfig.getParameter<edm::InputTag>("caloJetHTTToken")); 
 
         egToken_ = consumes<l1t::EGammaBxCollection>(iConfig.getParameter<edm::InputTag>("egTokenBarrel"));
         egTokenHGC_ = consumes<l1t::EGammaBxCollection>(iConfig.getParameter<edm::InputTag>("egTokenHGC"));
@@ -212,7 +212,7 @@ L1PhaseIITreeStep1Producer::L1PhaseIITreeStep1Producer(const edm::ParameterSet& 
 
         TkMuonToken_ = consumes<l1t::TkMuonCollection>(iConfig.getParameter<edm::InputTag>("TkMuonToken"));
 
-        TkGlbMuonToken_ = consumes<l1t::TkGlbMuonCollection>(iConfig.getParameter<edm::InputTag>("TkGlbMuonToken"));
+        //TkGlbMuonToken_ = consumes<l1t::TkGlbMuonCollection>(iConfig.getParameter<edm::InputTag>("TkGlbMuonToken"));
 
         //TkMuonStubsTokenBMTF_ = consumes<l1t::TkMuonCollection>(iConfig.getParameter<edm::InputTag>("TkMuonStubsTokenBMTF"));
         //TkMuonStubsTokenEMTF_ = consumes<l1t::TkMuonCollection>(iConfig.getParameter<edm::InputTag>("TkMuonStubsTokenEMTF"));
@@ -221,22 +221,22 @@ L1PhaseIITreeStep1Producer::L1PhaseIITreeStep1Producer(const edm::ParameterSet& 
 
         //TkMuonStubsTokenHSCP_ = consumes<l1t::BayesMuCorrTrackBxCollection>(iConfig.getParameter<edm::InputTag>("TkMuonStubsTokenHSCP"));
 
-        tkTauToken_ = consumes<l1t::L1TrkTauCollection>(iConfig.getParameter<edm::InputTag>("tkTauToken"));
-        caloTkTauToken_ = consumes<l1t::L1CaloTkTauCollection>(iConfig.getParameter<edm::InputTag>("caloTkTauToken"));
-        tkEGTauToken_ = consumes<l1t::TkEGTauCollection>(iConfig.getParameter<edm::InputTag>("tkEGTauToken"));
+        //tkTauToken_ = consumes<l1t::L1TrkTauCollection>(iConfig.getParameter<edm::InputTag>("tkTauToken"));
+        //caloTkTauToken_ = consumes<l1t::L1CaloTkTauCollection>(iConfig.getParameter<edm::InputTag>("caloTkTauToken"));
+        //tkEGTauToken_ = consumes<l1t::TkEGTauCollection>(iConfig.getParameter<edm::InputTag>("tkEGTauToken"));
 
-        tkTrackerJetToken_ = consumes<l1t::TkJetCollection>(iConfig.getParameter<edm::InputTag>("tkTrackerJetToken"));
-        tkMetToken_ = consumes<l1t::TkEtMissCollection>(iConfig.getParameter<edm::InputTag>("tkMetToken"));
+        //tkTrackerJetToken_ = consumes<l1t::TkJetCollection>(iConfig.getParameter<edm::InputTag>("tkTrackerJetToken"));
+        //tkMetToken_ = consumes<l1t::TkEtMissCollection>(iConfig.getParameter<edm::InputTag>("tkMetToken"));
         //tkMhtToken_ = consumes<l1t::TkHTMissCollection>(iConfig.getParameter<edm::InputTag>("tkMhtToken"));
 
-        const auto& mhttokens=iConfig.getParameter<std::vector<edm::InputTag>>("tkMhtTokens");
-        for (const auto& mhttoken: mhttokens) {
-                tkMhtToken_.push_back(consumes<l1t::TkHTMissCollection>(mhttoken));
-        }
+        //const auto& mhttokens=iConfig.getParameter<std::vector<edm::InputTag>>("tkMhtTokens");
+        //for (const auto& mhttoken: mhttokens) {
+        //        tkMhtToken_.push_back(consumes<l1t::TkHTMissCollection>(mhttoken));
+        //}
 
-        tkCaloJetToken_ = consumes<l1t::TkJetCollection>(iConfig.getParameter<edm::InputTag>("tkCaloJetToken"));
+        //tkCaloJetToken_ = consumes<l1t::TkJetCollection>(iConfig.getParameter<edm::InputTag>("tkCaloJetToken"));
 
-        ak4L1PF_ = consumes<std::vector<l1t::PFJet> > (iConfig.getParameter<edm::InputTag>("ak4L1PF"));
+        //ak4L1PF_ = consumes<std::vector<l1t::PFJet> > (iConfig.getParameter<edm::InputTag>("ak4L1PF"));
 
         //l1pfPhase1L1TJetToken_ = consumes<std::vector<reco::CaloJet> > (iConfig.getParameter<edm::InputTag>("l1pfPhase1L1TJetToken"));
 
@@ -251,7 +251,7 @@ L1PhaseIITreeStep1Producer::L1PhaseIITreeStep1Producer(const edm::ParameterSet& 
         //l1verticesToken_  = consumes< l1t::VertexCollection> (iConfig.getParameter<edm::InputTag>("l1vertices"));
         l1TkPrimaryVertexToken_ = consumes< l1t::TkPrimaryVertexCollection> (iConfig.getParameter<edm::InputTag>("l1TkPrimaryVertex"));
 
-        l1PFCandidates_ =consumes <std::vector<l1t::PFCandidate> > (iConfig.getParameter<edm::InputTag>("l1PFCandidates")); 
+        //l1PFCandidates_ =consumes <std::vector<l1t::PFCandidate> > (iConfig.getParameter<edm::InputTag>("l1PFCandidates")); 
         //PFTauToken_ = consumes<l1t::PFTauCollection>(iConfig.getParameter<edm::InputTag>("PFTauToken"));
 
         L1NNTauToken_ = consumes<l1t::PFTauCollection>(iConfig.getParameter<edm::InputTag>("L1NNTauToken"));
@@ -259,9 +259,9 @@ L1PhaseIITreeStep1Producer::L1PhaseIITreeStep1Producer(const edm::ParameterSet& 
 
         //L1HPSPFTauToken_ = consumes<l1t::L1HPSPFTauCollection>(iConfig.getParameter<edm::InputTag>("L1HPSPFTauToken"));
 
-        L1TkBsCandToken_ =consumes<l1t::TkBsCandidateCollection>(iConfig.getParameter<edm::InputTag>("L1TkBsCandsToken"));
-        L1TkBsCandLooseToken_ =consumes<l1t::TkBsCandidateCollection>(iConfig.getParameter<edm::InputTag>("L1TkBsCandsLooseToken"));
-        L1TkBsCandTightToken_ =consumes<l1t::TkBsCandidateCollection>(iConfig.getParameter<edm::InputTag>("L1TkBsCandsTightToken"));
+        //L1TkBsCandToken_ =consumes<l1t::TkBsCandidateCollection>(iConfig.getParameter<edm::InputTag>("L1TkBsCandsToken"));
+        //L1TkBsCandLooseToken_ =consumes<l1t::TkBsCandidateCollection>(iConfig.getParameter<edm::InputTag>("L1TkBsCandsLooseToken"));
+        //L1TkBsCandTightToken_ =consumes<l1t::TkBsCandidateCollection>(iConfig.getParameter<edm::InputTag>("L1TkBsCandsTightToken"));
 
         maxL1Extra_ = iConfig.getParameter<unsigned int>("maxL1Extra");
 
@@ -296,8 +296,8 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
 
         l1Extra->Reset();
 
-        edm::Handle<l1t::MuonBxCollection> muon;
-        edm::Handle<l1t::TkGlbMuonCollection> TkGlbMuon;
+        //edm::Handle<l1t::MuonBxCollection> muon;
+        //edm::Handle<l1t::TkGlbMuonCollection> TkGlbMuon;
         edm::Handle<l1t::TkMuonCollection> TkMuon;
         edm::Handle<l1t::TkMuonCollection> TkMuonStubsBMTF;
         edm::Handle<l1t::TkMuonCollection> TkMuonStubsEMTF;
@@ -305,8 +305,8 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
 
         //edm::Handle<l1t::BayesMuCorrTrackBxCollection> TkMuonStubsOMTF;
 
-        iEvent.getByToken(muonToken_, muon);
-        iEvent.getByToken(TkGlbMuonToken_,TkGlbMuon);
+      //  iEvent.getByToken(muonToken_, muon);
+       // iEvent.getByToken(TkGlbMuonToken_,TkGlbMuon);
         iEvent.getByToken(TkMuonToken_,TkMuon);
        // iEvent.getByToken(TkMuonStubsTokenBMTF_,TkMuonStubsBMTF);
        // iEvent.getByToken(TkMuonStubsTokenEMTF_,TkMuonStubsEMTF);
@@ -328,13 +328,14 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
         edm::Handle<l1t::RegionalMuonCandBxCollection> muonsEndcap;
         iEvent.getByToken(muonEndcap_,muonsEndcap);
 */
+/*
         edm::Handle<l1t::L1TrkTauCollection> tkTau;
         iEvent.getByToken(tkTauToken_, tkTau);
         edm::Handle<l1t::L1CaloTkTauCollection> caloTkTau;
         iEvent.getByToken(caloTkTauToken_, caloTkTau);
         edm::Handle<l1t::TkEGTauCollection> tkEGTau;
         iEvent.getByToken(tkEGTauToken_, tkEGTau);
-
+*/
         //edm::Handle<l1t::PFTauCollection> PFTau;
         //iEvent.getByToken(PFTauToken_,PFTau);
 
@@ -348,27 +349,27 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
         //edm::Handle<l1t::L1HPSPFTauCollection> l1HPSPFTau;
         //iEvent.getByToken(L1HPSPFTauToken_,l1HPSPFTau);
 
-        edm::Handle<std::vector<l1t::PFCandidate>> l1PFCandidates;
-        iEvent.getByToken(l1PFCandidates_,l1PFCandidates);
+        //edm::Handle<std::vector<l1t::PFCandidate>> l1PFCandidates;
+        //iEvent.getByToken(l1PFCandidates_,l1PFCandidates);
 
-        edm::Handle<l1t::JetBxCollection> caloJet;
-        iEvent.getByToken(caloJetToken_,  caloJet);
+        //edm::Handle<l1t::JetBxCollection> caloJet;
+        //iEvent.getByToken(caloJetToken_,  caloJet);
 
         edm::Handle<l1t::TauBxCollection> caloTau;
         iEvent.getByToken(caloTauToken_,  caloTau);
 
-        edm::Handle<l1t::TkJetCollection> tkTrackerJet;
-        edm::Handle<l1t::TkJetCollection> tkCaloJet;
-        edm::Handle<l1t::TkEtMissCollection> tkMets;
+        //edm::Handle<l1t::TkJetCollection> tkTrackerJet;
+        //edm::Handle<l1t::TkJetCollection> tkCaloJet;
+        //edm::Handle<l1t::TkEtMissCollection> tkMets;
         //edm::Handle<l1t::TkHTMissCollection> tkMhts;
 
-        iEvent.getByToken(tkTrackerJetToken_, tkTrackerJet);
-        iEvent.getByToken(tkCaloJetToken_, tkCaloJet);
-        iEvent.getByToken(tkMetToken_, tkMets);
+        //iEvent.getByToken(tkTrackerJetToken_, tkTrackerJet);
+        //iEvent.getByToken(tkCaloJetToken_, tkCaloJet);
+        //iEvent.getByToken(tkMetToken_, tkMets);
         //iEvent.getByToken(tkMhtToken_, tkMhts);
 
-        edm::Handle<std::vector<l1t::PFJet>> ak4L1PFs;
-        iEvent.getByToken(ak4L1PF_,ak4L1PFs);
+     //   edm::Handle<std::vector<l1t::PFJet>> ak4L1PFs;
+     //   iEvent.getByToken(ak4L1PF_,ak4L1PFs);
 //        edm::Handle<std::vector<l1t::PFJet>> ak4L1PFForMETs;
 //        iEvent.getByToken(ak4L1PFForMET_,ak4L1PFForMETs);
 
@@ -395,16 +396,16 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
 
 
         // Why just a value? no HTMiss? No angles?
-        edm::Handle<float> caloJetHTTs;
-        iEvent.getByToken(caloJetHTTToken_, caloJetHTTs);
+      //  edm::Handle<float> caloJetHTTs;
+      //  iEvent.getByToken(caloJetHTTToken_, caloJetHTTs);
       //float caloJetHTT=*caloJetHTTs;
 
-        edm::Handle<std::vector<l1t::TkBsCandidate>> tkBsCands;
-        iEvent.getByToken(L1TkBsCandToken_,tkBsCands); 
-        edm::Handle<std::vector<l1t::TkBsCandidate>> tkBsCandsLoose;
-        iEvent.getByToken(L1TkBsCandLooseToken_,tkBsCandsLoose);
-        edm::Handle<std::vector<l1t::TkBsCandidate>> tkBsCandsTight;
-        iEvent.getByToken(L1TkBsCandTightToken_,tkBsCandsTight);
+      //  edm::Handle<std::vector<l1t::TkBsCandidate>> tkBsCands;
+      //  iEvent.getByToken(L1TkBsCandToken_,tkBsCands); 
+      //  edm::Handle<std::vector<l1t::TkBsCandidate>> tkBsCandsLoose;
+      //  iEvent.getByToken(L1TkBsCandLooseToken_,tkBsCandsLoose);
+      //  edm::Handle<std::vector<l1t::TkBsCandidate>> tkBsCandsTight;
+      //  iEvent.getByToken(L1TkBsCandTightToken_,tkBsCandsTight);
 
 
 
@@ -420,7 +421,7 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
       //          std::cout<<"Getting the vertices!"<<std::endl;
       //          std::cout<<Z0<<"   "<<l1vertextdr->size() <<"  "<< l1vertices->size() <<"   "<<  l1TkPrimaryVertex->size()<<std::endl;
       //  }
-
+/*
         if (caloJet.isValid() && caloJetHTTs.isValid()){
                 float caloJetHTT=*caloJetHTTs;
                 l1Extra->SetCaloJet(caloJet, maxL1Extra_, caloJetHTT);
@@ -428,7 +429,7 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
                 edm::LogWarning("MissingProduct") << "L1Upgrade caloJets not found. Branch will not be filled" << std::endl;
         }
 
-        
+  */      
 
         if (caloTau.isValid()){
                 l1Extra->SetCaloTau(caloTau, maxL1Extra_);
@@ -436,11 +437,11 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
                 edm::LogWarning("MissingProduct") << "L1Upgrade caloTaus not found. Branch will not be filled" << std::endl;
         }
 
-        if (muon.isValid()){ 
-                l1Extra->SetMuon(muon, maxL1Extra_);
-        } else {
-                edm::LogWarning("MissingProduct") << "L1Upgrade Muons not found. Branch will not be filled" << std::endl;
-        }
+        //if (muon.isValid()){ 
+        //        l1Extra->SetMuon(muon, maxL1Extra_);
+        //} else {
+        //        edm::LogWarning("MissingProduct") << "L1Upgrade Muons not found. Branch will not be filled" << std::endl;
+        //}
 /*
         if (muonsKalman.isValid()){
                 l1Extra->SetMuonKF(muonsKalman, maxL1Extra_,1);
@@ -505,6 +506,7 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
                         edm::LogWarning("MissingProduct") << "L1PhaseII  TkEM not found. Branch will not be filled" << std::endl;
                 }
 
+/*
         if (tkTau.isValid()){
                 l1Extra->SetTrkTau(tkTau, maxL1Extra_);
         } else {
@@ -520,7 +522,8 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
         } else {
                 edm::LogWarning("MissingProduct") << "L1PhaseII TkEGTau not found. Branch will not be filled" << std::endl;
         }
-
+*/
+/*
         if (tkTrackerJet.isValid()){
                 l1Extra->SetTkJet(tkTrackerJet, maxL1Extra_);
         } else {
@@ -533,18 +536,18 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
                 edm::LogWarning("MissingProduct") << "L1PhaseII TkCaloJets not found. Branch will not be filled" << std::endl;
         }
 
-
+*/
       //  if (l1pfPhase1L1TJet.isValid()){
       //          l1Extra->SetL1PfPhase1L1TJet(l1pfPhase1L1TJet, maxL1Extra_);
       //  } else {
        //         edm::LogWarning("MissingProduct") << "L1PhaseII l1pfPhase1L1TJets not found. Branch will not be filled" << std::endl;
        // }
 
-        if (TkGlbMuon.isValid()){
-                l1Extra->SetTkGlbMuon(TkGlbMuon, maxL1Extra_);
-        } else {
-                edm::LogWarning("MissingProduct") << "L1PhaseII TkGlbMuons not found. Branch will not be filled" << std::endl;
-        }
+      //  if (TkGlbMuon.isValid()){
+      //          l1Extra->SetTkGlbMuon(TkGlbMuon, maxL1Extra_);
+      //  } else {
+      //          edm::LogWarning("MissingProduct") << "L1PhaseII TkGlbMuons not found. Branch will not be filled" << std::endl;
+     //   }
         if (TkMuon.isValid()){
                 l1Extra->SetTkMuon(TkMuon, maxL1Extra_);
 //                l1Extra->SetDiMuonTk(TkMuon,maxL1Extra_);
@@ -582,7 +585,7 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
         //}
 
 
-
+/*
         if (tkMets.isValid()){
                 l1Extra->SetTkMET(tkMets);
         } else {
@@ -599,13 +602,14 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
                         edm::LogWarning("MissingProduct") << "L1PhaseII TkMHT not found. Branch will not be filled" << std::endl;
                 }
         }
-
+*/
+/*
         if (ak4L1PFs.isValid()){
                 l1Extra->SetPFJet(ak4L1PFs, maxL1Extra_);
         } else {
                 edm::LogWarning("MissingProduct") << "L1PhaseII PFJets not found. Branch will not be filled" << std::endl;
         }
-
+*/
 
 
 /*        if (ak4L1PFForMETs.isValid()){
@@ -621,13 +625,13 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
         } else{
                 edm::LogWarning("MissingProduct") << "L1PFMet missing"<<std::endl;
         }
-
+/*
         if(l1PFCandidates.isValid()){
                 l1Extra->SetPFObjects(l1PFCandidates,maxL1Extra_);  
         } else {
                  edm::LogWarning("MissingProduct") << "L1PFCandidates missing, no L1PFMuons will be found"<<std::endl;   
         }
-
+*/
         //if(PFTau.isValid()){
         //        l1Extra->SetPFTaus(PFTau,maxL1Extra_);
         //} else{
@@ -656,7 +660,7 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
         //        edm::LogWarning("MissingProduct") << "L1HPSPFTaus missing"<<std::endl;
         //}
 
-
+/*
         if(tkBsCands.isValid()){
                   l1Extra->SetBsCands(tkBsCands,maxL1Extra_,0);
        }else{
@@ -672,7 +676,7 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
        }else{
                   edm::LogWarning("MissingProduct") << "L1TkBsCandsTight missing "<<std::endl;
       }
-
+*/
         tree_->Fill();
 
 }

@@ -92,7 +92,7 @@ Implementation:
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "TTree.h"
 
-#include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseII.h"
+#include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIExtended.h"
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
 
 //
@@ -112,7 +112,7 @@ class L1PhaseIITreeProducer : public edm::EDAnalyzer {
 
         public:
 
-                L1Analysis::L1AnalysisPhaseII* l1Extra;
+                L1Analysis::L1AnalysisPhaseIIExtended* l1Extra;
                 L1Analysis::L1AnalysisPhaseIIDataFormat * l1ExtraData;
 
         private:
@@ -265,7 +265,7 @@ L1PhaseIITreeProducer::L1PhaseIITreeProducer(const edm::ParameterSet& iConfig){
 
         maxL1Extra_ = iConfig.getParameter<unsigned int>("maxL1Extra");
 
-        l1Extra     = new L1Analysis::L1AnalysisPhaseII();
+        l1Extra     = new L1Analysis::L1AnalysisPhaseIIExtended();
         l1ExtraData = l1Extra->getData();
 
         // set up output
