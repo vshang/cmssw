@@ -242,6 +242,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEG(const edm::Handle<l1t::TkElectronCol
 
 }
 
+
 void L1Analysis::L1AnalysisPhaseII::SetTkEGV2(const edm::Handle<l1t::TkElectronCollection> tkElectronV2, const edm::Handle<l1t::TkElectronCollection> tkElectronV2HGC,unsigned maxL1Extra)
 {
   for(l1t::TkElectronCollection::const_iterator it=tkElectronV2->begin(); it!=tkElectronV2->end() && l1extra_.nTkElectronsV2<maxL1Extra; it++){
@@ -289,6 +290,7 @@ void L1Analysis::L1AnalysisPhaseII::SetTkEGV2(const edm::Handle<l1t::TkElectronC
 
 
 }
+
 
 void L1Analysis::L1AnalysisPhaseII::SetTkEM(const edm::Handle<l1t::TkEmCollection> tkPhoton, const edm::Handle<l1t::TkEmCollection> tkPhotonHGC, unsigned maxL1Extra)
 {

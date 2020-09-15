@@ -47,12 +47,6 @@ namespace L1Analysis
       caloTauIsMerged.clear();
       caloTauHwQual.clear();
 
-      nCaloJets = 0;
-      caloJetEt.clear();
-      caloJetEta.clear();
-      caloJetPhi.clear();
-      caloJetBx.clear();
-     
       nPfPhase1L1Jets = 0;
       pfPhase1L1JetEt.clear();
       pfPhase1L1JetEta.clear();
@@ -63,42 +57,6 @@ namespace L1Analysis
       pfPhase1L1MHTPhi.clear();
       nPfPhase1L1MHT=0;
  
-      caloJetHTDefault = 0;
-      caloJetHT.clear();
-      caloJetMHTEt.clear();
-      caloJetMHTPhi.clear();
-      nCaloJetMHT=0;
-
-      nGlobalMuons = 0;
-      globalMuonPt.clear();
-      globalMuonEta.clear();
-      globalMuonPhi.clear();
-      globalMuonEtaAtVtx.clear();
-      globalMuonPhiAtVtx.clear();
-      globalMuonIEt.clear();
-      globalMuonIEta.clear();
-      globalMuonIPhi.clear();
-      globalMuonIEtaAtVtx.clear();
-      globalMuonIPhiAtVtx.clear();
-      globalMuonIDEta.clear();
-      globalMuonIDPhi.clear();
-      globalMuonChg.clear();
-      globalMuonIso.clear();
-      globalMuonQual.clear();
-      globalMuonTfMuonIdx.clear();
-      globalMuonBx.clear();
-
-      nStandaloneMuons = 0;
-      standaloneMuonPt.clear();
-      standaloneMuonPt2.clear();
-      standaloneMuonEta.clear();
-      standaloneMuonPhi.clear();
-      standaloneMuonChg.clear();
-      standaloneMuonQual.clear();
-      standaloneMuonBx.clear();
-      standaloneMuonRegion.clear();
-      standaloneMuonDXY.clear();
-
       nEG = 0;
       EGEt.clear();
       EGEta.clear();
@@ -127,24 +85,6 @@ namespace L1Analysis
       tkElectronPassesLooseTrackID.clear();
       tkElectronPassesPhotonID.clear();
 
-      /*
-      nTkElectronsV2 = 0;
-      tkElectronV2Et.clear();
-      tkElectronV2Eta.clear();
-      tkElectronV2Phi.clear();
-      tkElectronV2Chg.clear();
-      tkElectronV2Bx.clear();
-      tkElectronV2TrkIso.clear();
-      tkElectronV2zVtx.clear();
-      tkElectronV2HwQual.clear();
-      tkElectronV2EGRefPt.clear();
-      tkElectronV2EGRefEta.clear();
-      tkElectronV2EGRefPhi.clear();
-      tkElectronV2HGC.clear();
-      tkElectronV2PassesLooseTrackID.clear();         
-      tkElectronV2PassesPhotonID.clear();
-      */
-
       nTkPhotons = 0;
       tkPhotonEt.clear();
       tkPhotonEta.clear();
@@ -160,63 +100,6 @@ namespace L1Analysis
       tkPhotonHGC.clear();
       tkPhotonPassesLooseTrackID.clear();
       tkPhotonPassesPhotonID.clear();
-
-      // TkTaus
-      nTkTau = 0;
-      tkTauEt.clear();
-      tkTauEta.clear();
-      tkTauPhi.clear();
-      tkTauBx.clear();
-      tkTauTrkIso.clear();
-      tkTauzVtx.clear();
-
-      nCaloTkTau = 0;
-      caloTkTauEt.clear();
-      caloTkTauEta.clear();
-      caloTkTauPhi.clear();
-      caloTkTauBx.clear();
-      caloTkTauTrkIso.clear();
-      caloTkTauzVtx.clear();
-
-      nTkEGTau = 0;
-      tkEGTauEt.clear();
-      tkEGTauEta.clear();
-      tkEGTauPhi.clear();
-      tkEGTauBx.clear();
-      tkEGTauTrkIso.clear();
-      tkEGTauzVtx.clear();
-
-      // TkJets
-      nTrackerJets = 0;
-      trackerJetEt.clear();
-      trackerJetEta.clear();
-      trackerJetPhi.clear();
-      trackerJetBx.clear();
-      trackerJetzVtx.clear();
-
-      // TkCaloJets
-      nTkCaloJets = 0;
-      tkCaloJetEt.clear();
-      tkCaloJetEta.clear();
-      tkCaloJetPhi.clear();
-      tkCaloJetBx.clear();
-
-      // tkTkGlbMuons
-      nTkGlbMuons = 0;
-      tkGlbMuonPt.clear();
-      tkGlbMuonEta.clear();
-      tkGlbMuonPhi.clear();
-      tkGlbMuonChg.clear();
-      tkGlbMuonTrkIso.clear();
-      tkGlbMuonBx.clear();
-      tkGlbMuonQual.clear();
-      tkGlbMuonzVtx.clear();
-      tkGlbMuonMuRefPt.clear();
-      tkGlbMuonTrkRefPt.clear();
-      tkGlbMuonMuRefPhi.clear();
-      tkGlbMuonMuRefEta.clear();
-      tkGlbMuonDRMuTrack.clear();
-      tkGlbMuonNMatchedTracks.clear();
 
       nTkMuons = 0;
       tkMuonPt.clear();
@@ -248,79 +131,8 @@ namespace L1Analysis
       tkMuonStubsBarrelStubs.clear();
       tkMuonStubsRegion.clear();
 
-      nTkHSCPs = 0;
-      tkHSCPsPt.clear();
-      tkHSCPsEta.clear();
-      tkHSCPsPhi.clear();
-      tkHSCPsChg.clear();
-      tkHSCPsBx.clear();
-      tkHSCPszVtx.clear();
-
-      // TrackerMet
-      nTrackerMet = 0;
-      trackerMetSumEt.clear();
-      trackerMetEt.clear();
-      trackerMetPhi.clear();
-      trackerMetBx.clear();
-
-      //trackerMHT
-      nTrackerMHT = 0;
-      trackerHT.clear();
-      trackerMHT.clear();
-      trackerMHTPhi.clear();
-
-      // New Jet Collections
-      nPuppiJets = 0;
-      puppiJetEt.clear();
-      puppiJetEta.clear();
-      puppiJetPhi.clear();
-      puppiJetBx.clear();
-      puppiJetzVtx.clear();
-      puppiJetEtUnCorr.clear();
-
-/*      nPuppiJetForMETs = 0;
-      puppiJetForMETEt.clear();
-      puppiJetForMETEta.clear();
-      puppiJetForMETPhi.clear();
-      puppiJetForMETBx.clear();
-      puppiJetForMETzVtx.clear();
-      puppiJetForMETEtUnCorr.clear();
-*/
-
       puppiMETEt=0;
       puppiMETPhi=0;
-      puppiHT.clear();
-      puppiMHTEt.clear();
-      puppiMHTPhi.clear();
-      nPuppiMHT=0;
-
-      nPFMuons = 0;
-      pfMuonPt.clear();
-      pfMuonEta.clear();
-      pfMuonPhi.clear();
-      pfMuonzVtx.clear();
-      pfMuonChg.clear();
-
-      nPFCands = 0;
-      pfCandId.clear();
-      pfCandEt.clear();
-      pfCandEta.clear();
-      pfCandPhi.clear();
-      pfCandzVtx.clear();
-      pfCandChg.clear();
-
-      nPFTaus = 0; 
-      pfTauEt.clear();
-      pfTauEta.clear();
-      pfTauPhi.clear();
-      pfTauChargedIso.clear();
-      pfTauType.clear();
-      pfTauIsoFlag.clear();
-      pfTauRelIsoFlag.clear();
-      pfTauPassesMediumIso.clear();
-      pfTauChg.clear();
-      pfTauZ0.clear();
-
 
       nNNTaus = 0;
       nnTauEt.clear();
@@ -347,17 +159,6 @@ namespace L1Analysis
       nnTauPFPassLoosePF.clear();
       nnTauPFPassTightPF.clear();
       nnTauPFPassTightNN.clear();
-
-
-
-      nHPSTaus = 0;
-      hpsTauEt.clear();
-      hpsTauEta.clear();
-      hpsTauPhi.clear();
-      hpsTauChg.clear();
-      hpsTauPassTightRelIso.clear();
-      hpsTauType.clear();
-      hpsTauZ0.clear();
 
 
       nTkBsCands=0;
@@ -406,11 +207,6 @@ namespace L1Analysis
     std::vector<short int> caloTauIsMerged;
     std::vector<short int> caloTauHwQual;
 
-    unsigned short int nCaloJets;
-    std::vector<double> caloJetEt;
-    std::vector<double> caloJetEta;
-    std::vector<double> caloJetPhi;
-    std::vector<short int> caloJetBx;
 
     unsigned short int nPfPhase1L1Jets;
     std::vector<double> pfPhase1L1JetEt;
@@ -421,44 +217,6 @@ namespace L1Analysis
     std::vector<double> pfPhase1L1MHTEt;
     std::vector<double> pfPhase1L1MHTPhi;
      unsigned int nPfPhase1L1MHT;
-
-    float caloJetHTDefault;
-    std::vector<double> caloJetHT;
-    std::vector<double> caloJetMHTEt;
-    std::vector<double> caloJetMHTPhi;
-    unsigned int nCaloJetMHT;
-
-
-    unsigned short int nGlobalMuons;
-    std::vector<double>   globalMuonPt;
-    std::vector<double>   globalMuonEta;
-    std::vector<double>   globalMuonPhi;
-    std::vector<double>   globalMuonEtaAtVtx;
-    std::vector<double>   globalMuonPhiAtVtx;
-    std::vector<short int>   globalMuonIEt;
-    std::vector<short int>   globalMuonIEta;
-    std::vector<short int>   globalMuonIPhi;
-    std::vector<short int>   globalMuonIEtaAtVtx;
-    std::vector<short int>   globalMuonIPhiAtVtx;
-    std::vector<short int>   globalMuonIDEta;
-    std::vector<short int>   globalMuonIDPhi;
-    std::vector<short int>      globalMuonChg;
-    std::vector<unsigned short int> globalMuonIso;
-    std::vector<unsigned short int> globalMuonQual;
-    std::vector<unsigned short int> globalMuonTfMuonIdx;
-    std::vector<short int>      globalMuonBx;
-
-
-    unsigned short int nStandaloneMuons;
-    std::vector<double>   standaloneMuonPt;
-    std::vector<double>   standaloneMuonPt2;
-    std::vector<double>   standaloneMuonEta;
-    std::vector<double>   standaloneMuonPhi;
-    std::vector<short int>      standaloneMuonChg;
-    std::vector<unsigned short int> standaloneMuonQual;
-    std::vector<double> standaloneMuonDXY;
-    std::vector<short int>      standaloneMuonBx;
-    std::vector<unsigned int>     standaloneMuonRegion;
 
 
     unsigned int nEG;
@@ -489,24 +247,6 @@ namespace L1Analysis
     std::vector<unsigned int> tkElectronPassesLooseTrackID;
     std::vector<unsigned int> tkElectronPassesPhotonID;
 
-    /*
-    unsigned int nTkElectronsV2;
-    std::vector<double> tkElectronV2Et;
-    std::vector<double> tkElectronV2Eta;
-    std::vector<double> tkElectronV2Phi;
-    std::vector<double> tkElectronV2Chg;
-    std::vector<int>    tkElectronV2Bx;
-    std::vector<double> tkElectronV2TrkIso;
-    std::vector<double> tkElectronV2zVtx;
-    std::vector<double> tkElectronV2HwQual;
-    std::vector<double>   tkElectronV2EGRefPt;
-    std::vector<double>   tkElectronV2EGRefEta;
-    std::vector<double>   tkElectronV2EGRefPhi;
-    std::vector<unsigned int> tkElectronV2HGC;
-    std::vector<unsigned int> tkElectronV2PassesLooseTrackID;
-    std::vector<unsigned int> tkElectronV2PassesPhotonID;
-    */
-
     unsigned int nTkPhotons;
     std::vector<double> tkPhotonEt;
     std::vector<double> tkPhotonEta;
@@ -523,62 +263,6 @@ namespace L1Analysis
     std::vector<unsigned int> tkPhotonPassesLooseTrackID;
     std::vector<unsigned int> tkPhotonPassesPhotonID;
 
-
-    unsigned int nTkTau;
-    std::vector<double> tkTauEt;
-    std::vector<double> tkTauEta;
-    std::vector<double> tkTauPhi;
-    std::vector<int>    tkTauBx;
-    std::vector<double> tkTauTrkIso;
-    std::vector<double> tkTauzVtx;
-
-    unsigned int nCaloTkTau;
-    std::vector<double> caloTkTauEt;
-    std::vector<double> caloTkTauEta;
-    std::vector<double> caloTkTauPhi;
-    std::vector<int>    caloTkTauBx;
-    std::vector<double> caloTkTauTrkIso;
-    std::vector<double> caloTkTauzVtx;
-
-    unsigned int nTkEGTau;
-    std::vector<double> tkEGTauEt;
-    std::vector<double> tkEGTauEta;
-    std::vector<double> tkEGTauPhi;
-    std::vector<int>    tkEGTauBx;
-    std::vector<double> tkEGTauTrkIso;
-    std::vector<double> tkEGTauzVtx;
-
-
-    unsigned int nTrackerJets;
-    std::vector<double> trackerJetEt;
-    std::vector<double> trackerJetEta;
-    std::vector<double> trackerJetPhi;
-    std::vector<int>    trackerJetBx;
-    std::vector<double> trackerJetzVtx;
-
-    unsigned int nTkCaloJets;
-    std::vector<double> tkCaloJetEt;
-    std::vector<double> tkCaloJetEta;
-    std::vector<double> tkCaloJetPhi;
-    std::vector<int>    tkCaloJetBx;
-    std::vector<double> tkCaloJetzVtx;
-
-    unsigned int nTkGlbMuons;
-    std::vector<double>   tkGlbMuonPt;
-    std::vector<double>   tkGlbMuonEta;
-    std::vector<double>   tkGlbMuonPhi;
-    std::vector<int>      tkGlbMuonChg;
-    std::vector<unsigned int> tkGlbMuonIso;
-    std::vector<double> tkGlbMuonTrkIso;
-    std::vector<int>      tkGlbMuonBx;
-    std::vector<unsigned int>      tkGlbMuonQual;
-    std::vector<double>   tkGlbMuonzVtx;
-    std::vector<double> tkGlbMuonMuRefPt;
-    std::vector<double> tkGlbMuonTrkRefPt;
-    std::vector<double>  tkGlbMuonMuRefPhi;
-    std::vector<double>  tkGlbMuonMuRefEta;
-    std::vector<double>  tkGlbMuonDRMuTrack;
-    std::vector<double>  tkGlbMuonNMatchedTracks;
 
     unsigned int nTkMuons;
     std::vector<double>   tkMuonPt;
@@ -614,79 +298,8 @@ namespace L1Analysis
     std::vector<double>   tkMuonStubsBarrelStubs;
     std::vector<unsigned int>   tkMuonStubsRegion;
 
-    unsigned int nTkHSCPs;
-    std::vector<double>   tkHSCPsPt;
-    std::vector<double>   tkHSCPsEta;
-    std::vector<double>   tkHSCPsPhi;
-    std::vector<int>      tkHSCPsChg;
-    std::vector<int>      tkHSCPsBx;
-    std::vector<double>   tkHSCPszVtx;
-
-    unsigned int nTrackerMet;
-    std::vector<double> trackerMetSumEt;
-    std::vector<double> trackerMetEt;
-    std::vector<double> trackerMetPhi;
-    std::vector<double> trackerMetBx;
-
-    unsigned int nTrackerMHT;
-    std::vector<double> trackerHT;
-    std::vector<double> trackerMHT;
-    std::vector<double> trackerMHTPhi;
-
-
-    unsigned int nPuppiJets;
-    std::vector<double> puppiJetEt;
-    std::vector<double> puppiJetEta;
-    std::vector<double> puppiJetPhi;
-    std::vector<int>    puppiJetBx;
-    std::vector<double> puppiJetzVtx;
-    std::vector<double> puppiJetEtUnCorr;
-
-/*
-    unsigned int nPuppiJetForMETs;
-    std::vector<double> puppiJetForMETEt;
-    std::vector<double> puppiJetForMETEta;
-    std::vector<double> puppiJetForMETPhi;
-    std::vector<int>    puppiJetForMETBx;
-    std::vector<double> puppiJetForMETzVtx;
-    std::vector<double> puppiJetForMETEtUnCorr;
-*/
-
-
     double puppiMETEt;
     double puppiMETPhi;
-
-    std::vector<double> puppiHT;
-    std::vector<double> puppiMHTEt;
-    std::vector<double> puppiMHTPhi;
-     unsigned int nPuppiMHT;
-
-    unsigned int  nPFMuons;
-    std::vector<double> pfMuonPt;
-    std::vector<double> pfMuonEta;
-    std::vector<double> pfMuonPhi;
-    std::vector<double>pfMuonzVtx;
-    std::vector<int> pfMuonChg;
-
-    unsigned int  nPFCands;
-    std::vector<int> pfCandId;
-    std::vector<double> pfCandEt;
-    std::vector<double> pfCandEta;
-    std::vector<double> pfCandPhi;
-    std::vector<double>pfCandzVtx;
-    std::vector<int> pfCandChg;
-
-    unsigned int  nPFTaus;
-    std::vector<double> pfTauEt;
-    std::vector<double> pfTauEta;
-    std::vector<double> pfTauPhi;
-    std::vector<double> pfTauType;
-    std::vector<double> pfTauChargedIso;
-    std::vector<unsigned int> pfTauIsoFlag;
-    std::vector<unsigned int> pfTauRelIsoFlag;
-    std::vector<unsigned int> pfTauPassesMediumIso;
-    std::vector<int> pfTauChg;
-    std::vector<double> pfTauZ0;
 
     unsigned int nNNTaus;
     std::vector<double>   nnTauEt;
@@ -714,17 +327,6 @@ namespace L1Analysis
     std::vector<unsigned int>   nnTauPFPassLoosePF;
     std::vector<unsigned int>   nnTauPFPassTightPF;
     std::vector<unsigned int>   nnTauPFPassTightNN;
-
-
-    unsigned int nHPSTaus;
-    std::vector<double>   hpsTauEt;
-    std::vector<double>   hpsTauEta;
-    std::vector<double>   hpsTauPhi;
-    std::vector<int>   hpsTauChg;
-    std::vector<double>   hpsTauPassTightRelIso;
-    std::vector<unsigned int>   hpsTauType;
-    std::vector<double>   hpsTauZ0;
-
 
 
    unsigned int nTkBsCands;
