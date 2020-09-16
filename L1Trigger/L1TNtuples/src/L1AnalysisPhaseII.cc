@@ -414,7 +414,6 @@ void L1Analysis::L1AnalysisPhaseII::SetTkMuon(const edm::Handle<l1t::TkMuonColle
 {
 
   for(l1t::TkMuonCollection::const_iterator it=muon->begin(); it!=muon->end() && l1extra_.nTkMuons<maxL1Extra; it++){
-    cout<<"I am dealing with tkmuons!"<<endl;
     l1extra_.tkMuonPt .push_back(it->pt());
     l1extra_.tkMuonEta.push_back(it->eta());
     l1extra_.tkMuonPhi.push_back(it->phi());
