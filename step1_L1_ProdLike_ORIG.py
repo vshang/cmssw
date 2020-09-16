@@ -7,6 +7,8 @@ import FWCore.ParameterSet.Config as cms
 
 from Configuration.Eras.Era_Phase2C9_cff import Phase2C9
 
+step1Menu = True
+
 process = cms.Process('L1',Phase2C9)
 
 # import of standard configurations
@@ -123,12 +125,17 @@ process.L1simulation_step = cms.Path(process.SimL1Emulator)
 process.endjob_step = cms.EndPath(process.endOfProcess)
 process.FEVTDEBUGHLToutput_step = cms.EndPath(process.FEVTDEBUGHLToutput)
 
-process.load("L1Trigger.L1TNtuples.l1PhaseIITreeProducer_cfi")
-
-
-process.TFileService = cms.Service("TFileService",
-    fileName = cms.string('L1NtuplePhaseII_160.root')
-)
+if step1Menu:
+    print "Producing skimmed ntuple according to the step1 menu"
+    process.load("L1Trigger.L1TNtuples.l1PhaseIITreeStep1Producer_cfi")
+    process.TFileService = cms.Service("TFileService",
+        fileName = cms.string('L1NtuplePhaseII_160_Step1.root')
+    )
+else:
+    process.load("L1Trigger.L1TNtuples.l1PhaseIITreeProducer_cfi") 
+    process.TFileService = cms.Service("TFileService",
+        fileName = cms.string('L1NtuplePhaseII_160.root')
+    )
 
 
 # Schedule definition

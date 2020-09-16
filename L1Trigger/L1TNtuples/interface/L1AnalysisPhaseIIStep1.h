@@ -1,5 +1,5 @@
-#ifndef __L1Analysis_L1AnalysisPhaseII_H__
-#define __L1Analysis_L1AnalysisPhaseII_H__
+#ifndef __L1Analysis_L1AnalysisPhaseIIStep1_H__
+#define __L1Analysis_L1AnalysisPhaseIIStep1_H__
 
 //-------------------------------------------------------------------------------
 // Created 02/03/2010 - A.C. Le Bihan
@@ -70,77 +70,47 @@
 
 #include "DataFormats/JetReco/interface/CaloJet.h"
 
-#include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
+#include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIStep1DataFormat.h"
+
+
 
 namespace L1Analysis
 {
-  class L1AnalysisPhaseII 
+  class L1AnalysisPhaseIIStep1 
   {
   public:
-    L1AnalysisPhaseII();
-    ~L1AnalysisPhaseII();
+    L1AnalysisPhaseIIStep1();
+    ~L1AnalysisPhaseIIStep1();
     void Reset() {l1extra_.Reset();}
 
     // Fill DZ of Vertex, different algorithms
     void SetVertices(float z0Puppi, const edm::Handle<std::vector<l1t::TkPrimaryVertex> > TkPrimaryVertex);
 
 
-    // Old style objects (Phase I)
-//    void SetJet  (const edm::Handle<l1t::JetBxCollection>    jet,  unsigned maxL1Extra);
-//    void SetSum  (const edm::Handle<l1t::EtSumBxCollection>  sums, unsigned maxL1Extra);
-    void SetMuon (const edm::Handle<l1t::MuonBxCollection>   muon, unsigned maxL1Extra);
-
     // Add new standalone objects 
     void SetEG   (const edm::Handle<l1t::EGammaBxCollection> EG,  const edm::Handle<l1t::EGammaBxCollection> EGHGC, unsigned maxL1Extra);
-    void SetMuonKF (const edm::Handle<l1t::RegionalMuonCandBxCollection>   muonKF, unsigned maxL1Extra, unsigned int muonDetector);
-    void SetCaloJet  (const edm::Handle<l1t::JetBxCollection>    calojet,  unsigned maxL1Extra, float caloJetHTT);
     void SetCaloTau  (const edm::Handle<l1t::TauBxCollection>    calotau,  unsigned maxL1Extra);
 
 
     // Add L1TrackTriggerObjects
     void SetTkEG   (const  edm::Handle<l1t::TkElectronCollection>   tkEG,  const  edm::Handle<l1t::TkElectronCollection>   tkEGHGC,    unsigned maxL1Extra);
-    void SetTkEGV2   (const  edm::Handle<l1t::TkElectronCollection>   tkEGV2, const  edm::Handle<l1t::TkElectronCollection>   tkEGV2HGc,    unsigned maxL1Extra);
     void SetTkEM   (const  edm::Handle<l1t::TkEmCollection>   tkEM,  const  edm::Handle<l1t::TkEmCollection>   tkEMHGC,    unsigned maxL1Extra);
-    void SetTkGlbMuon (const  edm::Handle<l1t::TkGlbMuonCollection> TkGlbMuon,   unsigned maxL1Extra);
+
     void SetTkMuon (const  edm::Handle<l1t::TkMuonCollection> TkMuon,   unsigned maxL1Extra);
-    void SetTkMuonStubs (const  edm::Handle<l1t::TkMuonCollection> TkMuon,   unsigned maxL1Extra,unsigned int muonDetector);
-    //void SetTkMuonStubsOMTF (const  edm::Handle<l1t::BayesMuCorrTrackBxCollection> TkMuonOMTF,   unsigned maxL1Extra,unsigned int muonDetector);
-
-    //void SetHSCP (const  edm::Handle<l1t::BayesMuCorrTrackBxCollection> TkMuonHSCP,   unsigned maxL1Extra);
-
-    void SetTrkTau  (const  edm::Handle<l1t::L1TrkTauCollection> tkTau, unsigned maxL1Extra);
-    void SetCaloTkTau  (const  edm::Handle<l1t::L1CaloTkTauCollection> L1CaloTkTau, unsigned maxL1Extra);
-    void SetTkEGTau  (const  edm::Handle<l1t::TkEGTauCollection> TkEGTau, unsigned maxL1Extra);
-
-
-    void SetTkJet  (const  edm::Handle<l1t::TkJetCollection>  tkTrackerJet,    unsigned maxL1Extra);
-    void SetTkCaloJet  (const  edm::Handle<l1t::TkJetCollection>  tkCaloJet,    unsigned maxL1Extra);
-    void SetTkMET  (const  edm::Handle<l1t::TkEtMissCollection> trackerMets);
-    void SetTkMHT  (const  edm::Handle<l1t::TkHTMissCollection> trackerMHTs);
 
     // Add new PFJet collections 
-    void SetPFJet  (const      edm::Handle<l1t::PFJetCollection>  PFJet,    unsigned maxL1Extra);
     void SetL1METPF(const edm::Handle< std::vector<reco::PFMET> > l1MetPF);
-    void SetPFObjects(const edm::Handle< vector<l1t::PFCandidate> > l1pfCandidates,unsigned maxL1Extra);
-//    void SetPFJetForMET  (const      edm::Handle<l1t::PFJetCollection>  PFJet,    unsigned maxL1Extra); // this needs to be done better 
 
     // reco::caloJet collection for "Phase1L1Jets" ...
     void SetL1PfPhase1L1TJet(const      edm::Handle< std::vector<reco::CaloJet> >  l1L1PFPhase1L1Jet,    unsigned maxL1Extra);
 
 
-
     // Add new PFTau
-    void SetPFTaus  (const      edm::Handle< std::vector<l1t::PFTau>>  l1pfTaus,    unsigned maxL1Extra);
     void SetNNTaus  (const      edm::Handle< std::vector<l1t::PFTau>>  l1nnTaus,    unsigned maxL1Extra);
-    //void SetHPSPFTaus  (const  edm::Handle<l1t::L1HPSPFTauCollection> HPSPFTau, unsigned maxL1Extra);
     void SetNNTauPFs  (const      edm::Handle< std::vector<l1t::PFTau>>  l1nnTauPFs,    unsigned maxL1Extra);
 
-    void SetBsCands (const      edm::Handle< std::vector<l1t::TkBsCandidate>>  l1TkBs,    unsigned maxL1Extra, int kind);
+    L1AnalysisPhaseIIStep1DataFormat * getData() {return &l1extra_;}
 
-    L1AnalysisPhaseIIDataFormat * getData() {return &l1extra_;}
-
-    // DiObjects
-    void SetDiMuonTk(const edm::Handle<l1t::TkMuonCollection> muon, unsigned maxL1Extra); 
 
     static int transverseCoord(double cxa, double cya, double ra,
                        double cxb, double cyb, double rb,
@@ -156,7 +126,7 @@ namespace L1Analysis
 
 
   private :
-    L1AnalysisPhaseIIDataFormat l1extra_;
+    L1AnalysisPhaseIIStep1DataFormat l1extra_;
     int tk_nFitParams_=4 ; // Harcoding this, choosing 4,
                               // to not have to store the chosen fitParams for all objects in this tree producer as a configuration.
                               // (it would be cleaner if all objects save the Z directly as well as the pointer to the track, or if

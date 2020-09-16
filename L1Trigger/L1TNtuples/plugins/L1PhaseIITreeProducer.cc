@@ -92,7 +92,7 @@ Implementation:
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 #include "TTree.h"
 
-#include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIExtended.h"
+#include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseII.h"
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIDataFormat.h"
 
 //
@@ -112,7 +112,7 @@ class L1PhaseIITreeProducer : public edm::EDAnalyzer {
 
         public:
 
-                L1Analysis::L1AnalysisPhaseIIExtended* l1Extra;
+                L1Analysis::L1AnalysisPhaseII* l1Extra;
                 L1Analysis::L1AnalysisPhaseIIDataFormat * l1ExtraData;
 
         private:
@@ -131,12 +131,12 @@ class L1PhaseIITreeProducer : public edm::EDAnalyzer {
 
                 edm::EDGetTokenT<l1t::EGammaBxCollection>  egToken_;
                 edm::EDGetTokenT<l1t::TkElectronCollection>  tkEGToken_;
-                edm::EDGetTokenT<l1t::TkElectronCollection>  tkEGV2Token_;
+                //edm::EDGetTokenT<l1t::TkElectronCollection>  tkEGV2Token_;
                 edm::EDGetTokenT<l1t::TkEmCollection>  tkEMToken_;
 
                 edm::EDGetTokenT<l1t::EGammaBxCollection>  egTokenHGC_;
                 edm::EDGetTokenT<l1t::TkElectronCollection>  tkEGTokenHGC_;
-                edm::EDGetTokenT<l1t::TkElectronCollection>  tkEGV2TokenHGC_;
+                //edm::EDGetTokenT<l1t::TkElectronCollection>  tkEGV2TokenHGC_;
                 edm::EDGetTokenT<l1t::TkEmCollection>  tkEMTokenHGC_;
 
                 edm::EDGetTokenT<l1t::TkMuonCollection> TkMuonToken_;
@@ -203,11 +203,11 @@ L1PhaseIITreeProducer::L1PhaseIITreeProducer(const edm::ParameterSet& iConfig){
         egTokenHGC_ = consumes<l1t::EGammaBxCollection>(iConfig.getParameter<edm::InputTag>("egTokenHGC"));
 
         tkEGToken_ = consumes<l1t::TkElectronCollection>(iConfig.getParameter<edm::InputTag>("tkEGTokenBarrel"));
-        tkEGV2Token_ = consumes<l1t::TkElectronCollection>(iConfig.getParameter<edm::InputTag>("tkEGV2TokenBarrel"));
+        //tkEGV2Token_ = consumes<l1t::TkElectronCollection>(iConfig.getParameter<edm::InputTag>("tkEGV2TokenBarrel"));
         tkEMToken_ = consumes<l1t::TkEmCollection>(iConfig.getParameter<edm::InputTag>("tkEMTokenBarrel"));
 
         tkEGTokenHGC_ = consumes<l1t::TkElectronCollection>(iConfig.getParameter<edm::InputTag>("tkEGTokenHGC"));
-        tkEGV2TokenHGC_ = consumes<l1t::TkElectronCollection>(iConfig.getParameter<edm::InputTag>("tkEGV2TokenHGC"));
+        //tkEGV2TokenHGC_ = consumes<l1t::TkElectronCollection>(iConfig.getParameter<edm::InputTag>("tkEGV2TokenHGC"));
         tkEMTokenHGC_ = consumes<l1t::TkEmCollection>(iConfig.getParameter<edm::InputTag>("tkEMTokenHGC"));
 
         TkMuonToken_ = consumes<l1t::TkMuonCollection>(iConfig.getParameter<edm::InputTag>("TkMuonToken"));
@@ -265,7 +265,7 @@ L1PhaseIITreeProducer::L1PhaseIITreeProducer(const edm::ParameterSet& iConfig){
 
         maxL1Extra_ = iConfig.getParameter<unsigned int>("maxL1Extra");
 
-        l1Extra     = new L1Analysis::L1AnalysisPhaseIIExtended();
+        l1Extra     = new L1Analysis::L1AnalysisPhaseII();
         l1ExtraData = l1Extra->getData();
 
         // set up output
@@ -397,7 +397,7 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         // Why just a value? no HTMiss? No angles?
         edm::Handle<float> caloJetHTTs;
         iEvent.getByToken(caloJetHTTToken_, caloJetHTTs);
-        float caloJetHTT=*caloJetHTTs;
+        //float caloJetHTT=*caloJetHTTs;
 
         edm::Handle<std::vector<l1t::TkBsCandidate>> tkBsCands;
         iEvent.getByToken(L1TkBsCandToken_,tkBsCands); 
@@ -465,23 +465,23 @@ L1PhaseIITreeProducer::analyze(const edm::Event& iEvent, const edm::EventSetup& 
         edm::Handle<l1t::TkElectronCollection> tkEGHGC;
         iEvent.getByToken(tkEGTokenHGC_, tkEGHGC);
 
-        edm::Handle<l1t::TkElectronCollection> tkEGV2;
-        iEvent.getByToken(tkEGV2Token_, tkEGV2);
-        edm::Handle<l1t::TkElectronCollection> tkEGV2HGC;
-        iEvent.getByToken(tkEGV2TokenHGC_, tkEGV2HGC);
+        //edm::Handle<l1t::TkElectronCollection> tkEGV2;
+        //iEvent.getByToken(tkEGV2Token_, tkEGV2);
+        //edm::Handle<l1t::TkElectronCollection> tkEGV2HGC;
+        //iEvent.getByToken(tkEGV2TokenHGC_, tkEGV2HGC);
 
                 if (tkEG.isValid() && tkEGHGC.isValid()){
                         l1Extra->SetTkEG(tkEG, tkEGHGC, maxL1Extra_);
                 } else {
                         edm::LogWarning("MissingProduct") << "L1PhaseII TkEG not found. Branch will not be filled" << std::endl;
                 }
-
+/*
                 if (tkEGV2.isValid() && tkEGV2HGC.isValid()){
                         l1Extra->SetTkEGV2(tkEGV2, tkEGV2HGC, maxL1Extra_);
                 } else {
                         edm::LogWarning("MissingProduct") << "L1PhaseII tkEGV2 not found. Branch will not be filled" << std::endl;
                 }
-
+*/
         edm::Handle<l1t::EGammaBxCollection> eg;
         iEvent.getByToken(egToken_,   eg);
         edm::Handle<l1t::EGammaBxCollection> egHGC;
