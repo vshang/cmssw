@@ -251,15 +251,25 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
 
       //  float vertexTDRZ0=-999; 
       //  if(l1vertextdr->size()>0) vertexTDRZ0=l1vertextdr->at(0).z0();
-
-      //  if(l1vertices.isValid() && l1TkPrimaryVertex.isValid() &&  l1vertices->size()>0 && l1TkPrimaryVertex->size()>0){
-      //        l1Extra->SetVertices(Z0,vertexTDRZ0,l1vertices,l1TkPrimaryVertex);
-      //  }
-      //  else {
-      //          edm::LogWarning("MissingProduct") << "One of the L1TVertex collections is not valid " << std::endl;
-      //          std::cout<<"Getting the vertices!"<<std::endl;
-      //          std::cout<<Z0<<"   "<<l1vertextdr->size() <<"  "<< l1vertices->size() <<"   "<<  l1TkPrimaryVertex->size()<<std::endl;
-      //  }
+/*
+       if(l1vertices.isValid() && l1TkPrimaryVertex.isValid() &&  l1vertices->size()>0 && l1TkPrimaryVertex->size()>0){
+             l1Extra->SetVertices(Z0,vertexTDRZ0,l1vertices,l1TkPrimaryVertex);
+       }
+       else {
+                edm::LogWarning("MissingProduct") << "One of the L1TVertex collections is not valid " << std::endl;
+                std::cout<<"Getting the vertices!"<<std::endl;
+                std::cout<<Z0<<"   "<<l1vertextdr->size() <<"  "<< l1vertices->size() <<"   "<<  l1TkPrimaryVertex->size()<<std::endl;
+        }
+*/
+  
+        if(l1TkPrimaryVertex.isValid() && l1TkPrimaryVertex->size()>0){
+             l1Extra->SetVertices(Z0,l1TkPrimaryVertex);
+       }
+       else {
+                edm::LogWarning("MissingProduct") << "One of the L1TVertex collections is not valid " << std::endl;
+                std::cout<<"Getting the vertices!"<<std::endl;
+                std::cout<<Z0<<" "<< l1TkPrimaryVertex->size()<<std::endl;
+        }      
 
         if (caloTau.isValid()){
                 l1Extra->SetCaloTau(caloTau, maxL1Extra_);
@@ -330,13 +340,6 @@ L1PhaseIITreeStep1Producer::analyze(const edm::Event& iEvent, const edm::EventSe
         } else{
                 edm::LogWarning("MissingProduct") << "L1NNTaus missing"<<std::endl;
         }
-
-        if(l1NNTauPF.isValid()){
-                l1Extra->SetNNTauPFs(l1NNTauPF,maxL1Extra_);
-        } else{
-                edm::LogWarning("MissingProduct") << "L1NNTauPFs missing"<<std::endl;
-        }
-
 
         tree_->Fill();
 

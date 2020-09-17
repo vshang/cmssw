@@ -105,9 +105,8 @@ namespace L1Analysis
     void SetL1PfPhase1L1TJet(const      edm::Handle< std::vector<reco::CaloJet> >  l1L1PFPhase1L1Jet,    unsigned maxL1Extra);
 
 
-    // Add new PFTau
+    // Add nntaus
     void SetNNTaus  (const      edm::Handle< std::vector<l1t::PFTau>>  l1nnTaus,    unsigned maxL1Extra);
-    void SetNNTauPFs  (const      edm::Handle< std::vector<l1t::PFTau>>  l1nnTauPFs,    unsigned maxL1Extra);
 
     L1AnalysisPhaseIIStep1DataFormat * getData() {return &l1extra_;}
 

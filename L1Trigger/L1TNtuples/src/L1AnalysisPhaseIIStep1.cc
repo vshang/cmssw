@@ -13,7 +13,6 @@ L1Analysis::L1AnalysisPhaseIIStep1::~L1AnalysisPhaseIIStep1()
 
 void L1Analysis::L1AnalysisPhaseIIStep1::SetVertices(float z0Puppi, const edm::Handle< std::vector<l1t::TkPrimaryVertex> > TkPrimaryVertex){
       l1extra_.z0Puppi=z0Puppi;
-
       for (unsigned int i=0; i<TkPrimaryVertex->size() ; i++){
                   l1extra_.z0L1TkPV.push_back(TkPrimaryVertex->at(i).zvertex());
                   l1extra_.sumL1TkPV.push_back(TkPrimaryVertex->at(i).sum());
@@ -288,26 +287,6 @@ void L1Analysis::L1AnalysisPhaseIIStep1::SetNNTaus(const edm::Handle< vector<l1t
  
 }
 
-void L1Analysis::L1AnalysisPhaseIIStep1::SetNNTauPFs(const edm::Handle< vector<l1t::PFTau> >  l1nnTauPFs,  unsigned maxL1Extra)
-{
-
-      for (unsigned int i=0; i<l1nnTauPFs->size() && l1extra_.nNNTauPFs<maxL1Extra; i++){
-                   if(l1nnTauPFs->at(i).pt()<1) continue;
-                   l1extra_.nnTauPFEt.push_back(l1nnTauPFs->at(i).pt());
-                   l1extra_.nnTauPFEta.push_back(l1nnTauPFs->at(i).eta());
-                   l1extra_.nnTauPFPhi.push_back(l1nnTauPFs->at(i).phi());
-                   l1extra_.nnTauPFChg.push_back(l1nnTauPFs->at(i).charge());
-                   l1extra_.nnTauPFChargedIso.push_back(l1nnTauPFs->at(i).chargedIso());
-                   l1extra_.nnTauPFFullIso.push_back(l1nnTauPFs->at(i).fullIso());
-                   l1extra_.nnTauPFID.push_back(l1nnTauPFs->at(i).id());
-                   l1extra_.nnTauPFPassLooseNN.push_back(l1nnTauPFs->at(i).passLooseNN());
-                   l1extra_.nnTauPFPassLoosePF.push_back(l1nnTauPFs->at(i).passLoosePF());
-                   l1extra_.nnTauPFPassTightPF.push_back(l1nnTauPFs->at(i).passTightPF());
-                   l1extra_.nnTauPFPassTightNN.push_back(l1nnTauPFs->at(i).passTightNN());
-                   l1extra_.nNNTauPFs++;
-      }
-
-}
 
 
 
