@@ -109,7 +109,6 @@ namespace L1Analysis
       tkMuonQual.clear();
       tkMuonzVtx.clear();
       tkMuonMuRefPt.clear();
-      tkMuonTrkRefPt.clear();
       tkMuonMuRefPhi.clear(); 
       tkMuonMuRefEta.clear();
       tkMuonDRMuTrack.clear();
@@ -222,16 +221,11 @@ namespace L1Analysis
     std::vector<double>   tkMuonEta;
     std::vector<double>   tkMuonPhi;
     std::vector<int>      tkMuonChg;
-    std::vector<unsigned int> tkMuonIso;
     std::vector<double> tkMuonTrkIso;
-    std::vector<unsigned int> tkMuonFwd;
-    std::vector<unsigned int> tkMuonMip;
-    std::vector<unsigned int> tkMuonRPC;
     std::vector<int>      tkMuonBx;
     std::vector<unsigned int>      tkMuonQual;
     std::vector<double>   tkMuonzVtx;
     std::vector<double> tkMuonMuRefPt;
-    std::vector<double> tkMuonTrkRefPt;
     std::vector<double>  tkMuonMuRefPhi;
     std::vector<double>  tkMuonMuRefEta;
     std::vector<double>  tkMuonDRMuTrack;
