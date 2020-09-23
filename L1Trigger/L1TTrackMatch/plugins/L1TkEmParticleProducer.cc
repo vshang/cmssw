@@ -148,8 +148,7 @@ void TkEmProducer::produce(edm::StreamID, edm::Event& iEvent, const edm::EventSe
   }
 
   if (!L1TTTrackHandle.isValid()) {
-    LogError("TkEmProducer") << "\nWarning: L1TTTrackCollectionType not found in the event. Exit."
-                                       << std::endl;
+    LogError("TkEmProducer") << "\nWarning: L1TTTrackCollectionType not found in the event. Exit." << std::endl;
     return;
   }
 

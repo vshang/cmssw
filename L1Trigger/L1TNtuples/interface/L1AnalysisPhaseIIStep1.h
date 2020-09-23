@@ -3,8 +3,8 @@
 
 //-------------------------------------------------------------------------------
 // Created 02/03/2010 - A.C. Le Bihan
-// 
-// 
+//
+//
 // Original code : UserCode/L1TriggerDPG/L1ExtraTreeProducer - Jim Brooke
 //-------------------------------------------------------------------------------
 
@@ -55,7 +55,7 @@
 #include "DataFormats/L1TParticleFlow/interface/PFJet.h"
 
 #include "DataFormats/METReco/interface/PFMET.h"
-#include "DataFormats/L1TParticleFlow/interface/PFCandidate.h" 
+#include "DataFormats/L1TParticleFlow/interface/PFCandidate.h"
 
 #include "DataFormats/L1TParticleFlow/interface/PFTau.h"
 #include "DataFormats/L1TParticleFlow/interface/PFTau.h"
@@ -66,72 +66,75 @@
 #include "DataFormats/L1TCorrelator/interface/TkBsCandidate.h"
 #include "DataFormats/L1TCorrelator/interface/TkBsCandidateFwd.h"
 
-//#include "DataFormats/L1TMuon/interface/BayesMuCorrelatorTrack.h" 
+//#include "DataFormats/L1TMuon/interface/BayesMuCorrelatorTrack.h"
 
 #include "DataFormats/JetReco/interface/CaloJet.h"
 
 #include "L1Trigger/L1TNtuples/interface/L1AnalysisPhaseIIStep1DataFormat.h"
 
-
-
-namespace L1Analysis
-{
-  class L1AnalysisPhaseIIStep1 
-  {
+namespace L1Analysis {
+  class L1AnalysisPhaseIIStep1 {
   public:
     L1AnalysisPhaseIIStep1();
     ~L1AnalysisPhaseIIStep1();
-    void Reset() {l1extra_.Reset();}
+    void Reset() { l1extra_.Reset(); }
 
     // Fill DZ of Vertex, different algorithms
-    void SetVertices(float z0Puppi, const edm::Handle<std::vector<l1t::TkPrimaryVertex> > TkPrimaryVertex);
+    void SetVertices(float z0Puppi, const edm::Handle<std::vector<l1t::TkPrimaryVertex>> TkPrimaryVertex);
 
-
-    // Add new standalone objects 
-    void SetEG   (const edm::Handle<l1t::EGammaBxCollection> EG,  const edm::Handle<l1t::EGammaBxCollection> EGHGC, unsigned maxL1Extra);
-    void SetCaloTau  (const edm::Handle<l1t::TauBxCollection>    calotau,  unsigned maxL1Extra);
-
+    // Add new standalone objects
+    void SetEG(const edm::Handle<l1t::EGammaBxCollection> EG,
+               const edm::Handle<l1t::EGammaBxCollection> EGHGC,
+               unsigned maxL1Extra);
+    void SetCaloTau(const edm::Handle<l1t::TauBxCollection> calotau, unsigned maxL1Extra);
 
     // Add L1TrackTriggerObjects
-    void SetTkEG   (const  edm::Handle<l1t::TkElectronCollection>   tkEG,  const  edm::Handle<l1t::TkElectronCollection>   tkEGHGC,    unsigned maxL1Extra);
-    void SetTkEM   (const  edm::Handle<l1t::TkEmCollection>   tkEM,  const  edm::Handle<l1t::TkEmCollection>   tkEMHGC,    unsigned maxL1Extra);
+    void SetTkEG(const edm::Handle<l1t::TkElectronCollection> tkEG,
+                 const edm::Handle<l1t::TkElectronCollection> tkEGHGC,
+                 unsigned maxL1Extra);
+    void SetTkEM(const edm::Handle<l1t::TkEmCollection> tkEM,
+                 const edm::Handle<l1t::TkEmCollection> tkEMHGC,
+                 unsigned maxL1Extra);
 
-    void SetTkMuon (const  edm::Handle<l1t::TkMuonCollection> TkMuon,   unsigned maxL1Extra);
+    void SetTkMuon(const edm::Handle<l1t::TkMuonCollection> TkMuon, unsigned maxL1Extra);
 
-    // Add new PFJet collections 
-    void SetL1METPF(const edm::Handle< std::vector<reco::PFMET> > l1MetPF);
+    // Add new PFJet collections
+    void SetL1METPF(const edm::Handle<std::vector<reco::PFMET>> l1MetPF);
 
     // reco::caloJet collection for "Phase1L1Jets" ...
-    void SetL1PfPhase1L1TJet(const      edm::Handle< std::vector<reco::CaloJet> >  l1L1PFPhase1L1Jet,    unsigned maxL1Extra);
-
+    void SetL1PfPhase1L1TJet(const edm::Handle<std::vector<reco::CaloJet>> l1L1PFPhase1L1Jet, unsigned maxL1Extra);
 
     // Add nntaus
-    void SetNNTaus  (const      edm::Handle< std::vector<l1t::PFTau>>  l1nnTaus,    unsigned maxL1Extra);
+    void SetNNTaus(const edm::Handle<std::vector<l1t::PFTau>> l1nnTaus, unsigned maxL1Extra);
 
-    L1AnalysisPhaseIIStep1DataFormat * getData() {return &l1extra_;}
+    L1AnalysisPhaseIIStep1DataFormat* getData() { return &l1extra_; }
 
-
-    static int transverseCoord(double cxa, double cya, double ra,
-                       double cxb, double cyb, double rb,
-                       double & xg1, double & yg1,
-                       double & xg2, double & yg2)  dso_internal;
+    static int transverseCoord(double cxa,
+                               double cya,
+                               double ra,
+                               double cxb,
+                               double cyb,
+                               double rb,
+                               double& xg1,
+                               double& yg1,
+                               double& xg2,
+                               double& yg2) dso_internal;
 
     // Computes z-coordinate on helix at given transverse coordinates
-    static double zCoord(const GlobalVector& mom, const GlobalPoint& pos,
-                        double r, double xc, double yc, double xg, double yg)  dso_internal;
+    static double zCoord(const GlobalVector& mom,
+                         const GlobalPoint& pos,
+                         double r,
+                         double xc,
+                         double yc,
+                         double xg,
+                         double yg) dso_internal;
 
-
-
-
-
-  private :
+  private:
     L1AnalysisPhaseIIStep1DataFormat l1extra_;
-    int tk_nFitParams_=4 ; // Harcoding this, choosing 4,
-                              // to not have to store the chosen fitParams for all objects in this tree producer as a configuration.
-                              // (it would be cleaner if all objects save the Z directly as well as the pointer to the track, or if
-                              // it is clear that the default is 4 unless specifically stated)
-  }; 
-}
+    int tk_nFitParams_ = 4;  // Harcoding this, choosing 4,
+        // to not have to store the chosen fitParams for all objects in this tree producer as a configuration.
+        // (it would be cleaner if all objects save the Z directly as well as the pointer to the track, or if
+        // it is clear that the default is 4 unless specifically stated)
+  };
+}  // namespace L1Analysis
 #endif
-
-
