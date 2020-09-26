@@ -1,9 +1,9 @@
-#ifndef __L1Analysis_L1AnalysisGeneratorDataFormat_H__
-#define __L1Analysis_L1AnalysisGeneratorDataFormat_H__
+#ifndef __L1Analysis_L1AnalysisCustomGeneratorDataFormat_H__
+#define __L1Analysis_L1AnalysisCustomGeneratorDataFormat_H__
 
 //-------------------------------------------------------------------------------
 // Created 15/04/2010 - E. Conte, A.C. Le Bihan
-//
+// Edited  18/06/2018 - M. Toumazou
 //
 // Original code : L1Trigger/L1TNtuples/L1NtupleProducer
 //-------------------------------------------------------------------------------
@@ -12,9 +12,9 @@
 //#include <TString.h>
 
 namespace L1Analysis {
-  struct L1AnalysisGeneratorDataFormat {
-    L1AnalysisGeneratorDataFormat() { Reset(); };
-    ~L1AnalysisGeneratorDataFormat(){};
+  struct L1AnalysisCustomGeneratorDataFormat {
+    L1AnalysisCustomGeneratorDataFormat() { Reset(); };
+    ~L1AnalysisCustomGeneratorDataFormat(){};
 
     void Reset() {
       weight = -999.;
@@ -25,30 +25,26 @@ namespace L1Analysis {
       nPart = 0;
       partId.resize(0);
       partStat.resize(0);
-      partParent.resize(0);
       partPt.resize(0);
       partEta.resize(0);
       partPhi.resize(0);
+      partMass.resize(0);
       partE.resize(0);
       partCh.resize(0);
-      partP.resize(0);
-      partDxy.resize(0);
-      partLxy.resize(0);
-      partVx.resize(0);
-      partVy.resize(0);
-      partVz.resize(0);
+      partVertexX.resize(0);
+      partVertexY.resize(0);
+      partVertexZ.resize(0);
+      partMothers.resize(0);
+      partDaughters.resize(0);
 
       nJet = 0;
       jetPt.resize(0);
       jetEta.resize(0);
       jetPhi.resize(0);
       jetM.resize(0);
-
-      genMetTrue = 0;
-      genMetCalo = 0;
     }
 
-    // ---- L1AnalysisGeneratorDataFormat information.
+    // ---- L1AnalysisCustomGeneratorDataFormat information.
 
     float weight;
     float pthat;
@@ -58,27 +54,23 @@ namespace L1Analysis {
     int nPart;
     std::vector<int> partId;
     std::vector<int> partStat;
-    std::vector<int> partParent;
     std::vector<float> partPt;
     std::vector<float> partEta;
     std::vector<float> partPhi;
+    std::vector<float> partMass;
     std::vector<float> partE;
     std::vector<int> partCh;
-    std::vector<float> partP;
-    std::vector<float> partDxy;
-    std::vector<float> partLxy;
-    std::vector<float> partVx;
-    std::vector<float> partVy;
-    std::vector<float> partVz;
+    std::vector<float> partVertexX;
+    std::vector<float> partVertexY;
+    std::vector<float> partVertexZ;
+    std::vector<std::vector<unsigned short> > partMothers;
+    std::vector<std::vector<unsigned short> > partDaughters;
 
     int nJet;
     std::vector<float> jetPt;
     std::vector<float> jetEta;
     std::vector<float> jetPhi;
     std::vector<float> jetM;
-
-    float genMetTrue;
-    float genMetCalo;
   };
 }  // namespace L1Analysis
 #endif
